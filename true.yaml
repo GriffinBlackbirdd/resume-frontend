@@ -1,0 +1,74 @@
+# RenderCV Resume Configuration
+cv:
+  name: Garv Khurana
+  location: Delhi
+  email: hamidarreyan@gmail.com
+  website: https://linkedin.com/in/arreyanhamid
+
+  sections:
+    summary:
+      - Analytical and problem-solving AI Engineer with extensive Python proficiency, specializing in machine learning, NLP, and agentic systems. Proven experience designing and deploying scalable AI models, including classification systems akin to product recommendation and translation systems , with strong data preprocessing, ETL, and model evaluation skills. Adept at leveraging AWS cloud platforms (with conceptual understanding of Azure and GCP) for robust model deployment and operational efficiency. Expert in AI orchestration tools like LangChain, CrewAI, and Phidata, driving innovation in AI agents and workflows. Committed to delivering impactful solutions that enhance clinical outcomes and marketplace performance, demonstrating attention to detail, teamwork, and communication
+
+    experience:
+      - company: Peaks2Tails
+        position: Data Analyst Intern
+        location: 
+        start_date: 2024-09
+        end_date: 2024-11
+        highlights:
+          - Executed data preprocessing and ETL operations on raw datasets, handling missing values and ensuring accuracy, to support analytical insights and improve operational efficiency.
+          - Performed statistical analysis using descriptive and inferential methods to identify trends and patterns, informing business requirements and enhancing problem-solving.
+          - Collaborated with cross-functional teams to translate data findings into actionable insights, demonstrating strong communication and teamwork for improved decision-making.
+
+    projects:
+      - name: Malicious URL Detection
+        summary: Python, Docker, AWS, Kubernetes, Jenkins, Grafana, Flask, DVC, MLflow
+        highlights:
+          - Engineered a Python/Flask ML pipeline for Malicious URL Detection, achieving 92% accuracy, applying classification techniques similar to recommendation systems for enhanced operational efficiency and security.
+          - Implemented CI/CD on AWS with Jenkins and Docker for automated model deployment, managing artifacts via S3, ensuring scalable and reproducible production environments.
+          - Automated ML lifecycle from data ingestion to deployment, tracking experiments with MLflow and monitoring system health with Grafana, improving model reliability and attention to detail.
+      - name: Auto Apply AI agent Email sender
+        summary: Python, LangChain, Groq, Streamlit, GitHub Actions, Docker, AWS ECR, EC2, phi.tools
+        highlights:
+          - Developed a Python AI agent using LangChain and Groq (LLaMA 3) for automated email generation, demonstrating expertise in agentic systems and NLP, applicable to translation systems and marketplaces.
+          - Implemented CI/CD with GitHub Actions, Docker, and AWS (ECR, EC2) for automated testing and production deployment, ensuring scalable and reliable AI model deployment.
+          - Designed modular architecture with Phidata for secure credential handling and dynamic API key input, facilitating scalable AI agent deployment and operational efficiency.
+      - name: Student performance prediction
+        summary: Python, MongoDB, GitHub Actions, Docker, AWS
+        highlights:
+          - Crafted a Python ML pipeline to forecast student performance, implementing ETL for data preprocessing and feature extraction from MongoDB, improving educational outcomes and operational efficiency.
+          - Engineered dynamic workflow for data refinement and model assessment, integrating CI/CD with GitHub Actions, Docker, and AWS for smooth model iteration and reliable deployment.
+          - Applied machine learning to predict student outcomes, demonstrating analytical and problem-solving skills to enhance operational efficiency in academic settings.
+
+    education:
+      - institution: Bhagwan Parshuram Institute of Technology
+        area: Artificial Intelligence and Data Science
+        degree: BTech
+        start_date: 2022-09
+        end_date: 2026-06
+        highlights:
+          - 'CGPA: 8.0'
+
+    technologies:
+      - label: Programming
+        details: Python (Expert), SQL
+      - label: ML/AI Frameworks
+        details: TensorFlow, scikit-learn, Keras, PyTorch, LangChain, CrewAI, Phidata, Groq, LLaMA 3, Streamlit, MLflow, DVC, Numpy, Pandas, Flask
+      - label: Cloud & DevOps
+        details: AWS (EC2, S3, ECR, VPC, IAM), Docker, Jenkins, GitHub Actions, Kubernetes, Git, CI/CD, Production Deployment, Scalable AI/ML Infrastructure, Azure (conceptual), GCP (conceptual)
+      - label: Databases & Data Processing
+        details: MySQL, MongoDB, FAISS, ETL, Data Preprocessing, Feature Engineering, Data Manipulation
+      - label: AI/ML Concepts
+        details: Machine Learning, Deep Learning, NLP, Reinforcement Learning, AI Agents, Agentic Systems, Recommendation Systems, Marketplaces, Translation Systems, MLOps, Supervised and Unsupervised Learning, Transfer Learning, RNN, LSTM, ANN, CNN
+      - label: Tools
+        details: Jupyter Notebook, Grafana, Apache Airflow
+
+    Achievment:
+      - name: AI/ML Head, Bhagwan Parshuram Institute of Technology
+        date: 2024-08
+        highlights:
+          - Led as AI/ML Head, assisting juniors in understanding ML concepts, algorithms, and best practices, fostering teamwork.
+          - Mentored juniors to improve coding structure, modularity, and debugging skills, integrating ML into interdisciplinary projects and promoting problem-solving.
+
+design:
+  theme: engineeringClassic
