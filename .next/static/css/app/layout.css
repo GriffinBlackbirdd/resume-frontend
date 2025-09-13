@@ -1540,9 +1540,6 @@ video {
 .border-green-500\/20 {
   border-color: rgb(34 197 94 / 0.2);
 }
-.border-green-500\/50 {
-  border-color: rgb(34 197 94 / 0.5);
-}
 .border-input {
   border-color: hsl(var(--input));
 }
@@ -1949,11 +1946,6 @@ video {
   --tw-gradient-to: rgb(34 197 94 / 0) var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
-.from-green-600 {
-  --tw-gradient-from: #16a34a var(--tw-gradient-from-position);
-  --tw-gradient-to: rgb(22 163 74 / 0) var(--tw-gradient-to-position);
-  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
-}
 .from-indigo-400 {
   --tw-gradient-from: #818cf8 var(--tw-gradient-from-position);
   --tw-gradient-to: rgb(129 140 248 / 0) var(--tw-gradient-to-position);
@@ -2132,9 +2124,6 @@ video {
 }
 .to-emerald-400\/0 {
   --tw-gradient-to: rgb(52 211 153 / 0) var(--tw-gradient-to-position);
-}
-.to-emerald-600 {
-  --tw-gradient-to: #059669 var(--tw-gradient-to-position);
 }
 .to-green-400 {
   --tw-gradient-to: #4ade80 var(--tw-gradient-to-position);
@@ -2686,10 +2675,6 @@ video {
   --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
-.shadow-green-600\/20 {
-  --tw-shadow-color: rgb(22 163 74 / 0.2);
-  --tw-shadow: var(--tw-shadow-colored);
-}
 .shadow-input {
   --tw-shadow-color: hsl(var(--input));
   --tw-shadow: var(--tw-shadow-colored);
@@ -3160,10 +3145,6 @@ input[type="month"]::-webkit-calendar-picker-indicator:hover {
   border-color: rgb(74 222 128 / var(--tw-border-opacity, 1));
 }
 
-.hover\:border-green-400\/50:hover {
-  border-color: rgb(74 222 128 / 0.5);
-}
-
 .hover\:border-purple-400\/50:hover {
   border-color: rgb(192 132 252 / 0.5);
 }
@@ -3311,12 +3292,6 @@ input[type="month"]::-webkit-calendar-picker-indicator:hover {
   background-color: rgb(39 39 42 / 0.5);
 }
 
-.hover\:from-green-700:hover {
-  --tw-gradient-from: #15803d var(--tw-gradient-from-position);
-  --tw-gradient-to: rgb(21 128 61 / 0) var(--tw-gradient-to-position);
-  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
-}
-
 .hover\:from-purple-500\/30:hover {
   --tw-gradient-from: rgb(168 85 247 / 0.3) var(--tw-gradient-from-position);
   --tw-gradient-to: rgb(168 85 247 / 0) var(--tw-gradient-to-position);
@@ -3331,10 +3306,6 @@ input[type="month"]::-webkit-calendar-picker-indicator:hover {
 
 .hover\:to-blue-500\/30:hover {
   --tw-gradient-to: rgb(59 130 246 / 0.3) var(--tw-gradient-to-position);
-}
-
-.hover\:to-emerald-700:hover {
-  --tw-gradient-to: #047857 var(--tw-gradient-to-position);
 }
 
 .hover\:to-white\/15:hover {

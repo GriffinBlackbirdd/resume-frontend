@@ -7,6 +7,7 @@ import { useSearchParams } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import MarkdownRenderer from "@/components/MarkdownRenderer";
 import * as yaml from 'js-yaml';
+import { User, Link, FileText, Briefcase, Rocket, GraduationCap, Zap, Award, Star } from 'lucide-react';
 
 export default function ResumeEditor() {
   const searchParams = useSearchParams();
@@ -115,16 +116,32 @@ design:
   const [completedSteps, setCompletedSteps] = useState<Set<number>>(new Set());
 
   const formSteps = [
-    { id: 0, title: 'Personal Information', icon: '👤' },
-    { id: 1, title: 'Social Networks', icon: '🔗' },
-    { id: 2, title: 'Professional Summary', icon: '📝' },
-    { id: 3, title: 'Work Experience', icon: '💼' },
-    { id: 4, title: 'Projects', icon: '🚀' },
-    { id: 5, title: 'Education', icon: '🎓' },
-    { id: 6, title: 'Technologies', icon: '⚡' },
-    { id: 7, title: 'Certifications', icon: '🏆' },
-    { id: 8, title: 'Achievements', icon: '🌟' }
+    { id: 0, title: 'Personal Information', icon: 'User' },
+    { id: 1, title: 'Social Networks', icon: 'Link' },
+    { id: 2, title: 'Professional Summary', icon: 'FileText' },
+    { id: 3, title: 'Work Experience', icon: 'Briefcase' },
+    { id: 4, title: 'Projects', icon: 'Rocket' },
+    { id: 5, title: 'Education', icon: 'GraduationCap' },
+    { id: 6, title: 'Technologies', icon: 'Zap' },
+    { id: 7, title: 'Certifications', icon: 'Award' },
+    { id: 8, title: 'Achievements', icon: 'Star' }
   ];
+
+  const getIcon = (iconName: string, size: string = "w-4 h-4") => {
+    const icons = {
+      User,
+      Link,
+      FileText,
+      Briefcase,
+      Rocket,
+      GraduationCap,
+      Zap,
+      Award,
+      Star
+    };
+    const IconComponent = icons[iconName as keyof typeof icons];
+    return IconComponent ? <IconComponent className={size} /> : null;
+  };
 
   // Form data state
   const [formData, setFormData] = useState({
@@ -1527,7 +1544,7 @@ design:
                           </div>
                           <div className="flex-1">
                             <div className="flex items-center space-x-2">
-                              <span className="text-lg">{step.icon}</span>
+                              {getIcon(step.icon)}
                               <span className="font-medium text-sm">{step.title}</span>
                             </div>
                             {index === currentStep && (
@@ -1551,7 +1568,7 @@ design:
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-4">
                         <div className="w-12 h-12 bg-purple-600/20 rounded-xl flex items-center justify-center">
-                          <span className="text-2xl">{formSteps[currentStep].icon}</span>
+                          {getIcon(formSteps[currentStep].icon, "w-6 h-6")}
                         </div>
                         <div>
                           <h2 className="text-2xl font-bold text-white">{formSteps[currentStep].title}</h2>
@@ -2468,28 +2485,13 @@ design:
                           ))}
                         </div>
                         
-                        {currentStep < formSteps.length - 1 ? (
+                        {currentStep < formSteps.length - 1 && (
                           <button
                             onClick={nextStep}
                             className="flex items-center space-x-2 px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-sm font-medium transition-all duration-200 border border-purple-500/50 hover:border-purple-400/50 shadow-lg shadow-purple-600/20"
                           >
                             <span>Next Step</span>
                             <span>→</span>
-                          </button>
-                        ) : (
-                          <button
-                            onClick={() => {
-                              if (validateCurrentStep()) {
-                                setCompletedSteps(prev => new Set([...prev, currentStep]));
-                                alert('Resume form completed! Check the PDF preview.');
-                              } else {
-                                alert('Please fill in required fields before completing.');
-                              }
-                            }}
-                            className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white rounded-xl text-sm font-medium transition-all duration-200 border border-green-500/50 hover:border-green-400/50 shadow-lg shadow-green-600/20"
-                          >
-                            <span>✓</span>
-                            <span>Complete Resume</span>
                           </button>
                         )}
                       </div>
