@@ -7,7 +7,7 @@ import { useSearchParams } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import MarkdownRenderer from "@/components/MarkdownRenderer";
 import * as yaml from 'js-yaml';
-import { User, Link, FileText, Briefcase, Rocket, GraduationCap, Zap, Award, Star } from 'lucide-react';
+import { User, Link, FileText, Briefcase, Rocket, GraduationCap, Zap, Award, Star, Settings, Eye, Download, BarChart3, RefreshCw, Palette, Play, Pause } from 'lucide-react';
 
 export default function ResumeEditor() {
   const searchParams = useSearchParams();
@@ -1139,255 +1139,146 @@ design:
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Header */}
-      <header className="border-b border-white/10 bg-gray-900/50 backdrop-blur-sm">
+      <header className="border-b border-white/10 bg-gradient-to-r from-gray-900 to-gray-800 backdrop-blur-sm shadow-lg">
         <div className="flex items-center justify-between px-6 py-4">
-          <div className="flex items-center space-x-4">
-            <h1 className="text-xl font-bold text-white">Resume Editor</h1>
-            <div className="text-sm text-white/60">resume.yaml</div>
-          </div>
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-2 text-sm">
-              <div className={cn(
-                "w-2 h-2 rounded-full",
-                autoRenderEnabled ? "bg-green-400 animate-pulse" : "bg-gray-400"
-              )}></div>
-              <span className="text-white/60">
-                {autoRenderEnabled ? "Auto-Render" : "Manual Mode"}
-              </span>
-            </div>
-
-            {/* Control buttons */}
-            <div className="flex items-center space-x-2">
-              {/* Theme Selector */}
-              <div className="flex items-center space-x-2">
-                <span className="text-sm text-white/60">Theme:</span>
-                <select
-                  value={selectedTheme}
-                  onChange={(e) => handleThemeChange(e.target.value)}
-                  className="px-2 py-1 bg-gray-700 border border-gray-600 rounded text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  {themes.map((theme) => (
-                    <option key={theme.value} value={theme.value}>
-                      {theme.label}
-                    </option>
-                  ))}
-                </select>
+          {/* Left Section - Branding */}
+          <div className="flex items-center space-x-6">
+            <div className="flex items-center space-x-3">
+              <div className="w-8 h-8 bg-gradient-to-br from-gray-600 to-gray-700 rounded-lg flex items-center justify-center">
+                <FileText className="w-4 h-4 text-white" />
               </div>
-
-              <button
-                onClick={toggleAutoRender}
-                className={cn(
-                  "px-3 py-1 text-white rounded text-sm",
-                  autoRenderEnabled
-                    ? "bg-green-600 hover:bg-green-700"
-                    : "bg-gray-600 hover:bg-gray-700"
-                )}
-              >
-                {autoRenderEnabled ? "Auto: ON" : "Auto: OFF"}
-              </button>
-              <button
-                onClick={() => renderResume()}
-                disabled={isRendering}
-                className="px-3 py-1 bg-purple-600 hover:bg-purple-700 disabled:bg-purple-800 disabled:opacity-50 text-white rounded text-sm"
-              >
-                {isRendering ? "Rendering..." : "Render Now"}
-              </button>
+              <div>
+                <h1 className="text-xl font-bold text-white">Resume Editor</h1>
+                <div className="text-xs text-white/50">Professional Resume Builder</div>
+              </div>
             </div>
+            <div className="hidden md:flex items-center space-x-2 px-3 py-1 bg-white/5 rounded-full border border-white/10">
+              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+              <span className="text-xs text-white/70">resume.yaml</span>
+            </div>
+          </div>
+
+          {/* Center Section - Key Actions */}
+          <div className="hidden lg:flex items-center space-x-4">
+            {/* ATS Score */}
+            <div className="flex items-center space-x-3 px-4 py-2 bg-white/5 rounded-xl border border-white/10">
+              <BarChart3 className="w-4 h-4 text-blue-400" />
+              <div className="flex items-center space-x-3">
+                <div className="flex items-center space-x-2">
+                  <span className="text-xs text-white/60">ATS:</span>
+                  {atsScore !== null ? (
+                    <div className={cn(
+                      "flex items-center space-x-1 px-2 py-1 rounded-full text-xs font-medium",
+                      atsScore >= 80 ? "bg-green-500/20 text-green-400" :
+                      atsScore >= 60 ? "bg-yellow-500/20 text-yellow-400" :
+                      "bg-red-500/20 text-red-400"
+                    )}>
+                      <div className={cn(
+                        "w-1.5 h-1.5 rounded-full",
+                        atsScore >= 80 ? "bg-green-400" :
+                        atsScore >= 60 ? "bg-yellow-400" :
+                        "bg-red-400"
+                      )}></div>
+                      <span>{atsScore}%</span>
+                    </div>
+                  ) : isLoadingAtsScore ? (
+                    <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                  ) : (
+                    <span className="text-xs text-white/40">--</span>
+                  )}
+                </div>
+                {!projectId && oldAtsScore !== null && atsScore !== null && (
+                  <div className="flex items-center space-x-1">
+                    {atsScore > oldAtsScore ? (
+                      <div className="flex items-center space-x-1 text-xs text-green-400">
+                        <span>↑</span>
+                        <span>+{(atsScore - oldAtsScore).toFixed(1)}%</span>
+                      </div>
+                    ) : atsScore < oldAtsScore ? (
+                      <div className="flex items-center space-x-1 text-xs text-red-400">
+                        <span>↓</span>
+                        <span>{(atsScore - oldAtsScore).toFixed(1)}%</span>
+                      </div>
+                    ) : null}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Auto-Render Status */}
+            <div className="flex items-center space-x-3 px-4 py-2 bg-white/5 rounded-xl border border-white/10">
+              <div className="flex items-center space-x-2">
+                {autoRenderEnabled ? (
+                  <><RefreshCw className="w-4 h-4 text-green-400" />
+                  <span className="text-sm text-green-400 font-medium">Auto-Render</span></>
+                ) : (
+                  <><Pause className="w-4 h-4 text-yellow-400" />
+                  <span className="text-sm text-yellow-400 font-medium">Manual Mode</span></>
+                )}
+              </div>
+              <div className={cn(
+                "w-2 h-2 rounded-full transition-all duration-300",
+                autoRenderEnabled ? "bg-green-400 animate-pulse" : "bg-yellow-400"
+              )}></div>
+            </div>
+
+            {/* Theme Selector */}
+            <div className="flex items-center space-x-2 px-4 py-2 bg-white/5 rounded-xl border border-white/10">
+              <Palette className="w-4 h-4 text-gray-400" />
+              <select
+                value={selectedTheme}
+                onChange={(e) => handleThemeChange(e.target.value)}
+                className="bg-transparent border-none text-sm text-white focus:outline-none cursor-pointer"
+              >
+                {themes.map((theme) => (
+                  <option key={theme.value} value={theme.value} className="bg-gray-800">
+                    {theme.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          {/* Right Section - Controls */}
+          <div className="flex items-center space-x-3">
+            {/* Auto-Render Toggle */}
+            <button
+              onClick={toggleAutoRender}
+              className={cn(
+                "flex items-center space-x-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 border",
+                autoRenderEnabled
+                  ? "bg-green-600/20 text-green-400 border-green-500/30 hover:bg-green-600/30"
+                  : "bg-gray-700/50 text-gray-300 border-gray-600/50 hover:bg-gray-600/60"
+              )}
+            >
+              {autoRenderEnabled ? <RefreshCw className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+              <span className="hidden sm:inline">
+                {autoRenderEnabled ? "Auto: ON" : "Auto: OFF"}
+              </span>
+            </button>
+
+            {/* Render Now Button */}
+            <button
+              onClick={() => renderResume()}
+              disabled={isRendering}
+              className="flex items-center space-x-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 disabled:bg-gray-800 disabled:opacity-50 text-white rounded-xl text-sm font-medium transition-all duration-200 border border-gray-600 hover:border-gray-500 shadow-lg"
+            >
+              {isRendering ? (
+                <RefreshCw className="w-4 h-4 animate-spin" />
+              ) : (
+                <Eye className="w-4 h-4" />
+              )}
+              <span>{isRendering ? "Rendering..." : "Preview"}</span>
+            </button>
+
+            {/* Settings Menu (Mobile) */}
+            <button className="lg:hidden p-2 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 transition-all duration-200">
+              <Settings className="w-4 h-4 text-white" />
+            </button>
           </div>
         </div>
       </header>
 
-      {/* ATS Score Section */}
-      <div className="border-b border-white/10 bg-gray-900/30 px-6 py-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-6">
-            <h2 className="text-lg font-semibold text-white">ATS Score</h2>
-
-            {/* New Resume Score */}
-            <div className="flex items-center space-x-2">
-              <span className="text-sm text-white/60">Current:</span>
-              {atsScore !== null && (
-                <div className={cn(
-                  "flex items-center space-x-2 px-3 py-1 rounded-full text-sm font-medium",
-                  atsScore >= 80 ? "bg-green-500/20 text-green-400" :
-                  atsScore >= 60 ? "bg-yellow-500/20 text-yellow-400" :
-                  "bg-red-500/20 text-red-400"
-                )}>
-                  <div className={cn(
-                    "w-2 h-2 rounded-full",
-                    atsScore >= 80 ? "bg-green-400" :
-                    atsScore >= 60 ? "bg-yellow-400" :
-                    "bg-red-400"
-                  )}></div>
-                  <span>{atsScore}%</span>
-                </div>
-              )}
-              {isLoadingAtsScore && (
-                <div className="flex items-center space-x-2 text-sm text-white/60">
-                  <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-                  <span>Calculating...</span>
-                </div>
-              )}
-              {atsError && (
-                <div className="flex items-center space-x-2 text-sm text-red-400">
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                  </svg>
-                  <span>Error</span>
-                </div>
-              )}
-            </div>
-
-            {/* Old Resume Score - Only show for non-cloud projects */}
-            {!projectId && (
-              <div className="flex items-center space-x-2">
-                <span className="text-sm text-white/60">Original:</span>
-                {oldAtsScore !== null && (
-                  <div className={cn(
-                    "flex items-center space-x-2 px-3 py-1 rounded-full text-sm font-medium",
-                    oldAtsScore >= 80 ? "bg-green-500/20 text-green-400" :
-                    oldAtsScore >= 60 ? "bg-yellow-500/20 text-yellow-400" :
-                    "bg-red-500/20 text-red-400"
-                  )}>
-                    <div className={cn(
-                      "w-2 h-2 rounded-full",
-                      oldAtsScore >= 80 ? "bg-green-400" :
-                      oldAtsScore >= 60 ? "bg-yellow-400" :
-                      "bg-red-400"
-                    )}></div>
-                    <span>{oldAtsScore}%</span>
-                  </div>
-                )}
-                {isLoadingOldAtsScore && (
-                  <div className="flex items-center space-x-2 text-sm text-white/60">
-                    <div className="w-4 h-4 border-2 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
-                    <span>Calculating...</span>
-                  </div>
-                )}
-                {oldAtsError && (
-                  <div className="flex items-center space-x-2 text-sm text-red-400">
-                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                    </svg>
-                    <span>Error</span>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* Improvement indicator - Only show for non-cloud projects */}
-            {!projectId && atsScore !== null && oldAtsScore !== null && (
-              <div className="flex items-center space-x-2">
-                {atsScore > oldAtsScore ? (
-                  <div className="flex items-center space-x-1 text-sm text-green-400">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                    </svg>
-                    <span>+{(atsScore - oldAtsScore).toFixed(2)}%</span>
-                  </div>
-                ) : atsScore < oldAtsScore ? (
-                  <div className="flex items-center space-x-1 text-sm text-red-400">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" />
-                    </svg>
-                    <span>{(atsScore - oldAtsScore).toFixed(2)}%</span>
-                  </div>
-                ) : (
-                  <div className="flex items-center space-x-1 text-sm text-gray-400">
-                    <span>=</span>
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-
-          {/* Gap Analysis Button - Only show for session-based projects */}
-          {!projectId && hasJobDescription && originalResumePath && (
-            <div className="flex items-center">
-              {!gapAnalysisCompleted ? (
-                <button
-                  onClick={runGapAnalysis}
-                  disabled={isGapAnalysisRunning}
-                  className="relative inline-flex h-12 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
-                  <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-6 py-1 text-sm font-medium text-white backdrop-blur-3xl">
-                    {isGapAnalysisRunning ? (
-                      <div className="flex items-center space-x-2">
-                        <div className="w-4 h-4 border-2 border-purple-300 border-t-transparent rounded-full animate-spin"></div>
-                        <span>Analyzing...</span>
-                      </div>
-                    ) : (
-                      "Get Gap Analysis"
-                    )}
-                  </span>
-                </button>
-              ) : (
-                <div className="relative group">
-                  <button className="relative inline-flex h-12 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
-                    <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#A7F3D0_0%,#059669_50%,#A7F3D0_100%)]" />
-                    <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-6 py-1 text-sm font-medium text-white backdrop-blur-3xl">
-                      See Gap Analysis
-                    </span>
-                  </button>
-
-                  {/* Dropdown Menu */}
-                  <div className="absolute right-0 top-full mt-2 w-56 bg-gray-800 rounded-lg shadow-xl border border-gray-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                    <div className="py-2">
-                      <button
-                        onClick={() => showGapAnalysisContent('gap-analysis')}
-                        className="w-full text-left px-4 py-2 text-sm text-white hover:bg-gray-700 transition-colors flex items-center space-x-2"
-                      >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
-                        <span>Gap Analysis</span>
-                      </button>
-                      <button
-                        onClick={() => showGapAnalysisContent('upskill')}
-                        className="w-full text-left px-4 py-2 text-sm text-white hover:bg-gray-700 transition-colors flex items-center space-x-2"
-                      >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                        </svg>
-                        <span>Upskill Plan</span>
-                      </button>
-                      <button
-                        onClick={() => showGapAnalysisContent('project-recommendations')}
-                        className="w-full text-left px-4 py-2 text-sm text-white hover:bg-gray-700 transition-colors flex items-center space-x-2"
-                      >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                        </svg>
-                        <span>Project Recommendations</span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
-
-        </div>
-
-        {/* Gap Analysis Error */}
-        {gapAnalysisError && (
-          <div className="text-sm text-red-400 mt-2 px-6">
-            {gapAnalysisError}
-          </div>
-        )}
-
-        {!hasJobDescription && !atsScore && !isLoadingAtsScore && (
-          <p className="text-sm text-white/40 mt-2">
-            Job description from the stepper is required for ATS scoring. Please go back to the revamp flow to upload a job description.
-          </p>
-        )}
-        {hasJobDescription && !atsScore && !isLoadingAtsScore && (
-          <p className="text-sm text-white/40 mt-2">
-            ATS score will be calculated automatically as you edit your resume.
-          </p>
-        )}
-      </div>
 
       {/* Main Editor Layout */}
       <div className="flex h-[calc(100vh-145px)]">
@@ -1400,7 +1291,7 @@ design:
               className={cn(
                 "flex-1 px-4 py-2 text-sm font-medium border-b-2 transition-colors",
                 activeTab === 'yaml'
-                  ? "text-white border-purple-500 bg-gray-800/50"
+                  ? "text-white border-blue-500 bg-gray-800/50"
                   : "text-white/60 border-transparent hover:text-white/80 hover:bg-gray-800/30"
               )}
             >
@@ -1411,7 +1302,7 @@ design:
               className={cn(
                 "flex-1 px-4 py-2 text-sm font-medium border-b-2 transition-colors",
                 activeTab === 'form'
-                  ? "text-white border-purple-500 bg-gray-800/50"
+                  ? "text-white border-blue-500 bg-gray-800/50"
                   : "text-white/60 border-transparent hover:text-white/80 hover:bg-gray-800/30"
               )}
             >
@@ -1472,7 +1363,7 @@ design:
                     <div className="flex items-center space-x-2 text-sm">
                       <span className="text-white/40">Resume Builder</span>
                       <span className="text-white/40">/</span>
-                      <span className="text-purple-400 font-medium">{formSteps[currentStep].title}</span>
+                      <span className="text-blue-400 font-medium">{formSteps[currentStep].title}</span>
                     </div>
                   </div>
 
@@ -1520,7 +1411,7 @@ design:
                         className={cn(
                           "w-full p-3 mb-2 rounded-lg text-left transition-all duration-200",
                           index === currentStep
-                            ? "bg-purple-600/20 border border-purple-500/30 text-white"
+                            ? "bg-gray-700/50 border border-gray-600/50 text-white"
                             : completedSteps.has(index)
                             ? "bg-green-600/10 border border-green-500/20 text-green-400 hover:bg-green-600/20 cursor-pointer"
                             : index < currentStep
@@ -1533,7 +1424,7 @@ design:
                           <div className={cn(
                             "w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium",
                             index === currentStep
-                              ? "bg-purple-500 text-white"
+                              ? "bg-gray-600 text-white"
                               : completedSteps.has(index)
                               ? "bg-green-500 text-white"
                               : index < currentStep
@@ -1567,7 +1458,7 @@ design:
                   <div className="p-6 border-b border-white/10">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-4">
-                        <div className="w-12 h-12 bg-purple-600/20 rounded-xl flex items-center justify-center">
+                        <div className="w-12 h-12 bg-gray-700/30 rounded-xl flex items-center justify-center">
                           {getIcon(formSteps[currentStep].icon, "w-6 h-6")}
                         </div>
                         <div>
@@ -1576,7 +1467,7 @@ design:
                         </div>
                       </div>
                       <div className="text-right">
-                        <div className="text-2xl font-bold text-purple-400">
+                        <div className="text-2xl font-bold text-blue-400">
                           {Math.round(((currentStep + 1) / formSteps.length) * 100)}%
                         </div>
                         <div className="text-xs text-white/60">Complete</div>
@@ -1604,7 +1495,7 @@ design:
                             }}
                             onFocus={handleFormFieldFocus}
                             onBlur={handleFormFieldBlur}
-                            className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                            className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             placeholder="John Doe"
                           />
                         </div>
@@ -1622,7 +1513,7 @@ design:
                             }}
                             onFocus={handleFormFieldFocus}
                             onBlur={handleFormFieldBlur}
-                            className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                            className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             placeholder="john@example.com"
                           />
                         </div>
@@ -1640,7 +1531,7 @@ design:
                             }}
                             onFocus={handleFormFieldFocus}
                             onBlur={handleFormFieldBlur}
-                            className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                            className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             placeholder="New York, NY"
                           />
                         </div>
@@ -1658,7 +1549,7 @@ design:
                             }}
                             onFocus={handleFormFieldFocus}
                             onBlur={handleFormFieldBlur}
-                            className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                            className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             placeholder="https://yourwebsite.com"
                           />
                         </div>
@@ -1686,7 +1577,7 @@ design:
                                   }}
                                   onFocus={handleFormFieldFocus}
                                   onBlur={handleFormFieldBlur}
-                                  className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent [color-scheme:dark]"
+                                  className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent [color-scheme:dark]"
                                 >
                                   <option value="GitHub">GitHub</option>
                                   <option value="LinkedIn">LinkedIn</option>
@@ -1707,7 +1598,7 @@ design:
                                   }}
                                   onFocus={handleFormFieldFocus}
                                   onBlur={handleFormFieldBlur}
-                                  className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent [color-scheme:dark]"
+                                  className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent [color-scheme:dark]"
                                   placeholder="your-username"
                                 />
                               </div>
@@ -1729,7 +1620,7 @@ design:
                           onClick={() => setFormData(prev => ({ ...prev, socialNetworks: [...prev.socialNetworks, {
                             network: 'GitHub', username: ''
                           }] }))}
-                          className="px-4 py-2 bg-purple-600/20 text-purple-400 border border-purple-600/30 rounded-lg hover:bg-purple-600/30 transition-colors text-sm"
+                          className="px-4 py-2 bg-gray-700/30 text-gray-300 border border-gray-600/50 rounded-lg hover:bg-gray-600/50 transition-colors text-sm"
                         >
                           + Add Social Network
                         </button>
@@ -1753,7 +1644,7 @@ design:
                             onFocus={handleFormFieldFocus}
                             onBlur={handleFormFieldBlur}
                             rows={2}
-                            className="flex-1 px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
+                            className="flex-1 px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
                             placeholder="Professional summary point..."
                           />
                           {formData.summary.length > 1 && (
@@ -1771,7 +1662,7 @@ design:
                       ))}
                       <button
                         onClick={() => setFormData(prev => ({ ...prev, summary: [...prev.summary, ''] }))}
-                        className="px-4 py-2 bg-purple-600/20 text-purple-400 border border-purple-600/30 rounded-lg hover:bg-purple-600/30 transition-colors text-sm"
+                        className="px-4 py-2 bg-gray-700/30 text-gray-300 border border-gray-600/50 rounded-lg hover:bg-gray-600/50 transition-colors text-sm"
                       >
                         + Add Summary Point
                       </button>
@@ -1798,7 +1689,7 @@ design:
                                   }}
                                   onFocus={handleFormFieldFocus}
                                   onBlur={handleFormFieldBlur}
-                                  className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent [color-scheme:dark]"
+                                  className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent [color-scheme:dark]"
                                   placeholder="Company Name"
                                 />
                               </div>
@@ -1815,7 +1706,7 @@ design:
                                   }}
                                   onFocus={handleFormFieldFocus}
                                   onBlur={handleFormFieldBlur}
-                                  className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent [color-scheme:dark]"
+                                  className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent [color-scheme:dark]"
                                   placeholder="Job Title"
                                 />
                               </div>
@@ -1832,7 +1723,7 @@ design:
                                   }}
                                   onFocus={handleFormFieldFocus}
                                   onBlur={handleFormFieldBlur}
-                                  className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent [color-scheme:dark]"
+                                  className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent [color-scheme:dark]"
                                   placeholder="City, State"
                                 />
                               </div>
@@ -1850,7 +1741,7 @@ design:
                                     }}
                                     onFocus={handleFormFieldFocus}
                                     onBlur={handleFormFieldBlur}
-                                    className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent [color-scheme:dark]"
+                                    className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent [color-scheme:dark]"
                                     placeholder="2021-01"
                                   />
                                 </div>
@@ -1869,7 +1760,7 @@ design:
                                       onFocus={handleFormFieldFocus}
                                       onBlur={handleFormFieldBlur}
                                       disabled={exp.end_date === 'present'}
-                                      className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed [color-scheme:dark]"
+                                      className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed [color-scheme:dark]"
                                       placeholder="2023-12"
                                     />
                                     <label className="flex items-center text-white/70 text-sm cursor-pointer select-none">
@@ -1907,7 +1798,7 @@ design:
                                     }}
                                     onFocus={handleFormFieldFocus}
                                     onBlur={handleFormFieldBlur}
-                                    className="flex-1 px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                    className="flex-1 px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     placeholder="Achievement or responsibility..."
                                   />
                                   {exp.highlights.length > 1 && (
@@ -1952,7 +1843,7 @@ design:
                           onClick={() => setFormData(prev => ({ ...prev, experience: [...prev.experience, {
                             company: '', position: '', location: '', start_date: '', end_date: 'present', highlights: ['']
                           }] }))}
-                          className="px-4 py-2 bg-purple-600/20 text-purple-400 border border-purple-600/30 rounded-lg hover:bg-purple-600/30 transition-colors text-sm"
+                          className="px-4 py-2 bg-gray-700/30 text-gray-300 border border-gray-600/50 rounded-lg hover:bg-gray-600/50 transition-colors text-sm"
                         >
                           + Add Experience
                         </button>
@@ -1981,7 +1872,7 @@ design:
                                   }}
                                   onFocus={handleFormFieldFocus}
                                   onBlur={handleFormFieldBlur}
-                                  className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent [color-scheme:dark]"
+                                  className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent [color-scheme:dark]"
                                   placeholder="My Awesome Project"
                                 />
                               </div>
@@ -1998,7 +1889,7 @@ design:
                                   onFocus={handleFormFieldFocus}
                                   onBlur={handleFormFieldBlur}
                                   rows={3}
-                                  className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
+                                  className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
                                   placeholder="Brief project description..."
                                 />
                               </div>
@@ -2017,7 +1908,7 @@ design:
                                       }}
                                       onFocus={handleFormFieldFocus}
                                       onBlur={handleFormFieldBlur}
-                                      className="flex-1 px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                      className="flex-1 px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                       placeholder="Key achievement or feature..."
                                     />
                                     {project.highlights.length > 1 && (
@@ -2061,7 +1952,7 @@ design:
                         ))}
                         <button
                           onClick={() => setFormData(prev => ({ ...prev, projects: [...prev.projects, { name: '', summary: '', highlights: [''] }] }))}
-                          className="px-4 py-2 bg-purple-600/20 text-purple-400 border border-purple-600/30 rounded-lg hover:bg-purple-600/30 transition-colors text-sm"
+                          className="px-4 py-2 bg-gray-700/30 text-gray-300 border border-gray-600/50 rounded-lg hover:bg-gray-600/50 transition-colors text-sm"
                         >
                           + Add Project
                         </button>
@@ -2089,7 +1980,7 @@ design:
                                   }}
                                   onFocus={handleFormFieldFocus}
                                   onBlur={handleFormFieldBlur}
-                                  className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent [color-scheme:dark]"
+                                  className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent [color-scheme:dark]"
                                   placeholder="University Name"
                                 />
                               </div>
@@ -2106,7 +1997,7 @@ design:
                                   }}
                                   onFocus={handleFormFieldFocus}
                                   onBlur={handleFormFieldBlur}
-                                  className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent [color-scheme:dark]"
+                                  className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent [color-scheme:dark]"
                                   placeholder="BTech"
                                 />
                               </div>
@@ -2123,7 +2014,7 @@ design:
                                   }}
                                   onFocus={handleFormFieldFocus}
                                   onBlur={handleFormFieldBlur}
-                                  className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent [color-scheme:dark]"
+                                  className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent [color-scheme:dark]"
                                   placeholder="Computer Science"
                                 />
                               </div>
@@ -2140,7 +2031,7 @@ design:
                                   }}
                                   onFocus={handleFormFieldFocus}
                                   onBlur={handleFormFieldBlur}
-                                  className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent [color-scheme:dark]"
+                                  className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent [color-scheme:dark]"
                                   placeholder="8.0/10.0 or 3.8/4.0"
                                 />
                               </div>
@@ -2158,7 +2049,7 @@ design:
                                     }}
                                     onFocus={handleFormFieldFocus}
                                     onBlur={handleFormFieldBlur}
-                                    className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent [color-scheme:dark]"
+                                    className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent [color-scheme:dark]"
                                     placeholder="2015-09"
                                   />
                                 </div>
@@ -2175,7 +2066,7 @@ design:
                                     }}
                                     onFocus={handleFormFieldFocus}
                                     onBlur={handleFormFieldBlur}
-                                    className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent [color-scheme:dark]"
+                                    className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent [color-scheme:dark]"
                                     placeholder="2019-06"
                                   />
                                 </div>
@@ -2198,7 +2089,7 @@ design:
                           onClick={() => setFormData(prev => ({ ...prev, education: [...prev.education, {
                             institution: '', area: '', degree: '', start_date: '', end_date: '', gpa: '', highlights: []
                           }] }))}
-                          className="px-4 py-2 bg-purple-600/20 text-purple-400 border border-purple-600/30 rounded-lg hover:bg-purple-600/30 transition-colors text-sm"
+                          className="px-4 py-2 bg-gray-700/30 text-gray-300 border border-gray-600/50 rounded-lg hover:bg-gray-600/50 transition-colors text-sm"
                         >
                           + Add Education
                         </button>
@@ -2225,7 +2116,7 @@ design:
                                 }}
                                 onFocus={handleFormFieldFocus}
                                 onBlur={handleFormFieldBlur}
-                                className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                 placeholder="Languages"
                               />
                             </div>
@@ -2243,7 +2134,7 @@ design:
                                   }}
                                   onFocus={handleFormFieldFocus}
                                   onBlur={handleFormFieldBlur}
-                                  className="flex-1 px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                  className="flex-1 px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                   placeholder="JavaScript, TypeScript, Python"
                                 />
                                 {formData.technologies.length > 1 && (
@@ -2263,7 +2154,7 @@ design:
                         ))}
                         <button
                           onClick={() => setFormData(prev => ({ ...prev, technologies: [...prev.technologies, { label: '', details: '' }] }))}
-                          className="px-4 py-2 bg-purple-600/20 text-purple-400 border border-purple-600/30 rounded-lg hover:bg-purple-600/30 transition-colors text-sm"
+                          className="px-4 py-2 bg-gray-700/30 text-gray-300 border border-gray-600/50 rounded-lg hover:bg-gray-600/50 transition-colors text-sm"
                         >
                           + Add Technology Category
                         </button>
@@ -2292,7 +2183,7 @@ design:
                                   }}
                                   onFocus={handleFormFieldFocus}
                                   onBlur={handleFormFieldBlur}
-                                  className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent [color-scheme:dark]"
+                                  className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent [color-scheme:dark]"
                                   placeholder="AWS Certified Solutions Architect"
                                 />
                               </div>
@@ -2309,7 +2200,7 @@ design:
                                   }}
                                   onFocus={handleFormFieldFocus}
                                   onBlur={handleFormFieldBlur}
-                                  className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent [color-scheme:dark]"
+                                  className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent [color-scheme:dark]"
                                   placeholder="2021-05"
                                 />
                               </div>
@@ -2329,7 +2220,7 @@ design:
                         ))}
                         <button
                           onClick={() => setFormData(prev => ({ ...prev, certifications: [...prev.certifications, { name: '', date: '' }] }))}
-                          className="px-4 py-2 bg-purple-600/20 text-purple-400 border border-purple-600/30 rounded-lg hover:bg-purple-600/30 transition-colors text-sm"
+                          className="px-4 py-2 bg-gray-700/30 text-gray-300 border border-gray-600/50 rounded-lg hover:bg-gray-600/50 transition-colors text-sm"
                         >
                           + Add Certification
                         </button>
@@ -2359,7 +2250,7 @@ design:
                                     }}
                                     onFocus={handleFormFieldFocus}
                                     onBlur={handleFormFieldBlur}
-                                    className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent [color-scheme:dark]"
+                                    className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent [color-scheme:dark]"
                                     placeholder="Some Project"
                                   />
                                 </div>
@@ -2376,7 +2267,7 @@ design:
                                     }}
                                     onFocus={handleFormFieldFocus}
                                     onBlur={handleFormFieldBlur}
-                                    className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent [color-scheme:dark]"
+                                    className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent [color-scheme:dark]"
                                     placeholder="2021-09"
                                   />
                                 </div>
@@ -2396,7 +2287,7 @@ design:
                                       }}
                                       onFocus={handleFormFieldFocus}
                                       onBlur={handleFormFieldBlur}
-                                      className="flex-1 px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                      className="flex-1 px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                       placeholder="Became employee of the year"
                                     />
                                     {achievement.highlights.length > 1 && (
@@ -2440,7 +2331,7 @@ design:
                         ))}
                         <button
                           onClick={() => setFormData(prev => ({ ...prev, achievements: [...prev.achievements, { name: '', date: '', highlights: [''] }] }))}
-                          className="px-4 py-2 bg-purple-600/20 text-purple-400 border border-purple-600/30 rounded-lg hover:bg-purple-600/30 transition-colors text-sm"
+                          className="px-4 py-2 bg-gray-700/30 text-gray-300 border border-gray-600/50 rounded-lg hover:bg-gray-600/50 transition-colors text-sm"
                         >
                           + Add Achievement
                         </button>
@@ -2474,7 +2365,7 @@ design:
                               className={cn(
                                 "w-2 h-2 rounded-full transition-all duration-300",
                                 index === currentStep
-                                  ? "bg-purple-500 w-6"
+                                  ? "bg-blue-500 w-6"
                                   : completedSteps.has(index)
                                   ? "bg-green-500"
                                   : index < currentStep
@@ -2488,7 +2379,7 @@ design:
                         {currentStep < formSteps.length - 1 && (
                           <button
                             onClick={nextStep}
-                            className="flex items-center space-x-2 px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-sm font-medium transition-all duration-200 border border-purple-500/50 hover:border-purple-400/50 shadow-lg shadow-purple-600/20"
+                            className="flex items-center space-x-2 px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-xl text-sm font-medium transition-all duration-200 border border-gray-600 hover:border-gray-500 shadow-lg"
                           >
                             <span>Next Step</span>
                             <span>→</span>
@@ -2511,7 +2402,7 @@ design:
           <div className="h-full p-4 flex items-center justify-center">
             {isRendering ? (
               <div className="text-center">
-                <div className="w-8 h-8 border-2 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
                 <p className="text-white/60">Rendering your resume...</p>
                 <p className="text-white/40 text-xs mt-2">Using {themes.find(t => t.value === selectedTheme)?.label} design...</p>
               </div>
@@ -2531,7 +2422,7 @@ design:
                 <div className="mt-4 flex space-x-2 justify-center">
                   <button
                     onClick={() => renderResume()}
-                    className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-sm"
+                    className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg text-sm"
                   >
                     Try Again
                   </button>
@@ -2566,7 +2457,7 @@ design:
                 <div className="mt-4 flex space-x-2 justify-center">
                   <button
                     onClick={() => renderResume()}
-                    className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-sm"
+                    className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg text-sm"
                   >
                     Render Now
                   </button>
