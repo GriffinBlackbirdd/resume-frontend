@@ -533,11 +533,17 @@ design:
   const handleThemeChange = (newTheme: string) => {
     console.log('Theme changed to:', newTheme);
     setSelectedTheme(newTheme);
+    setLastUserSelectedTheme(newTheme); // Track user's explicit selection
     // If auto-render is enabled, render immediately with new theme
     if (autoRenderEnabled && yamlContent.trim() !== '') {
       renderResume(newTheme); // Pass the new theme directly to avoid closure issues
     }
   };
+
+  // Track the last theme that was explicitly set by the user
+  const [lastUserSelectedTheme, setLastUserSelectedTheme] = useState<string>('engineeringClassic');
+  // Flag to prevent theme updates during sync
+  const [isUpdatingThemeFromYaml, setIsUpdatingThemeFromYaml] = useState<boolean>(false);
 
   // Function to get ATS score for session-based projects (using PDF blob and JD path)
   const getSessionAtsScore = async (resumeBlob: Blob) => {
@@ -670,11 +676,8 @@ cv:
 
     Achievment:${formData.achievements.filter(ach => ach.name.trim()).map(ach => `
       - name: ${ach.name}
-        date: ${ach.date}${ach.highlights.some(h => h.trim()) ? `\n        highlights:${ach.highlights.filter(h => h.trim()).map(h => `\n          - ${h}`).join('')}` : ''}`).join('')}` : ''}
+        date: ${ach.date}${ach.highlights.some(h => h.trim()) ? `\n        highlights:${ach.highlights.filter(h => h.trim()).map(h => `\n          - ${h}`).join('')}` : ''}`).join('')}` : ''}`;
 
-design:
-  theme: ${selectedTheme}`;
-    
     return yaml;
   };
 
@@ -682,7 +685,7 @@ design:
   const convertYamlToForm = (yamlString: string) => {
     try {
       const parsedYaml = yaml.load(yamlString) as any;
-      
+
       if (!parsedYaml || !parsedYaml.cv) {
         console.warn('Invalid YAML structure: missing cv section');
         return;
@@ -773,9 +776,11 @@ design:
       setFormData(newFormData);
       setFormDataInitialized(true);
 
-      // Update theme if present
-      if (design?.theme) {
+      // Update theme if present and not explicitly set by user
+      if (design?.theme && !isUpdatingThemeFromYaml) {
+        console.log('Updating theme from YAML:', design.theme);
         setSelectedTheme(design.theme);
+        setLastUserSelectedTheme(design.theme);
       }
 
     } catch (error) {
@@ -2375,7 +2380,7 @@ design:
                             />
                           ))}
                         </div>
-                        
+
                         {currentStep < formSteps.length - 1 && (
                           <button
                             onClick={nextStep}

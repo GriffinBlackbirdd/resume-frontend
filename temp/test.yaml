@@ -6,12 +6,12 @@ cv:
   website: https://johndosdadase.com
   linkedin: johndoe
   github: j
-  
+
   sections:
     summary:
       - Experienced software engineer with 5+ years in full-stack development
       - Passionate about creating scalable web applications and user experiences
-    
+
     experience:
       - company: Tech Cor
         position: Senior Software Engineer
@@ -22,7 +22,7 @@ cv:
           - Led development of microservices architecture serving 1M+ users
           - Reduced application load time by 40% through optimization
           - Mentored 3 junior developers and conducted code reviews
-      
+
       - company: StartupXYZ
         position: Full Stack Developer
         location: San Francisco, CA
@@ -31,14 +31,14 @@ cv:
         highlights:
           - Built responsive web applications using React and Node.js
           - Implemented CI/CD pipelines reducing deployment time by 60%
-    
+
     education:
       - institution: State University
         area: Computer Science
         degree: Bachelor of Science
         start_date: 2015
         end_date: 2019
-    
+
     technologies:
       - label: Languages
         details: JavaScript, TypeScript, Python, Java
@@ -48,6 +48,3 @@ cv:
         details: PostgreSQL, MongoDB, Redis
       - label: Tools
         details: AWS, Docker, Kubernetes, Git, CI/CD
-        
-design:
-  theme: sb2nov

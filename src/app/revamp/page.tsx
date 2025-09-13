@@ -70,7 +70,7 @@ export default function RevampPage() {
       if (formData.resumeFile) {
         apiFormData.append('resumeFile', formData.resumeFile);
       }
-      
+
       // Handle job description - either file or text
       if (formData.useJobDescriptionText && formData.jobDescriptionText.trim()) {
         apiFormData.append('jobDescriptionText', formData.jobDescriptionText.trim());
@@ -142,7 +142,7 @@ export default function RevampPage() {
       case 1:
         return formData.email && formData.phone && formData.linkedin;
       case 2:
-        const hasJobDescription = formData.useJobDescriptionText 
+        const hasJobDescription = formData.useJobDescriptionText
           ? formData.jobDescriptionText.trim().length > 0
           : formData.jobDescriptionFile !== null;
         return formData.jobRole && formData.resumeFile && hasJobDescription;
@@ -365,7 +365,7 @@ export default function RevampPage() {
                   <label className="block text-sm font-medium text-white mb-4">
                     Job Description *
                   </label>
-                  
+
                   {/* Checkbox for paste option */}
                   <div className="mb-4">
                     <label className="flex items-center space-x-3 cursor-pointer">
@@ -532,7 +532,7 @@ export default function RevampPage() {
                         <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                         </svg>
-                        {formData.useJobDescriptionText 
+                        {formData.useJobDescriptionText
                           ? `Text (${formData.jobDescriptionText.length} characters)`
                           : formData.jobDescriptionFile?.name
                         }

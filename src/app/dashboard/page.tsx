@@ -867,7 +867,7 @@ export default function DashboardPage() {
               </div>
               <span className="text-white font-semibold">Resume Builder</span>
             </div>
-            
+
             {/* Welcome message */}
             <span className="text-white text-lg">
               Welcome, {user?.full_name || user?.email?.split('@')[0]}
@@ -879,7 +879,7 @@ export default function DashboardPage() {
             <UserAccountAvatar />
           </div>
         </div>
-        
+
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center">
             <div className="text-red-400 text-lg mb-2">Failed to load dashboard</div>
@@ -912,7 +912,7 @@ export default function DashboardPage() {
             </div>
             <span className="text-white font-semibold">Resume Builder</span>
           </div>
-          
+
           {/* Welcome message */}
           <span className="text-white text-lg">
             Welcome, {user?.full_name || user?.email?.split('@')[0]}
