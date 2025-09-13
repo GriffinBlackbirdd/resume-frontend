@@ -83,6 +83,13 @@ design:
   const [isRendering, setIsRendering] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [autoRenderEnabled, setAutoRenderEnabled] = useState(true);
+
+  // Loading states
+  const [isLoadingProject, setIsLoadingProject] = useState(true);
+  const [showInitialLoadingOverlay, setShowInitialLoadingOverlay] = useState(!!projectId); // Show overlay only for projects
+  const [pdfRenderReady, setPdfRenderReady] = useState(false);
+  const [isProjectDataLoaded, setIsProjectDataLoaded] = useState(false); // Track when project YAML is loaded
+
   const [lastYamlContent, setLastYamlContent] = useState<string>('');
   const [selectedTheme, setSelectedTheme] = useState<string>('engineeringClassic');
   const [renderKey, setRenderKey] = useState<number>(0);
@@ -311,6 +318,9 @@ design:
               console.log('✅ Loaded existing ATS score:', data.ats_score);
             }
 
+            // Mark project data as loaded
+            setIsProjectDataLoaded(true);
+
             // Enable ATS scoring for projects loaded from cloud
             setHasJobDescription(true);
           } else {
@@ -318,7 +328,15 @@ design:
           }
         } catch (error) {
           console.error('Error loading project YAML:', error);
+        } finally {
+          // Mark project loading as complete
+          setIsLoadingProject(false);
         }
+      } else {
+        // No project ID, so not loading from project
+        setIsLoadingProject(false);
+        // For new resumes, data is considered loaded immediately
+        setIsProjectDataLoaded(true);
       }
     };
 
@@ -968,8 +986,12 @@ cv:
         setPdfUrl(urlWithTimestamp);
         setError(null);
         setRenderKey(prev => prev + 1); // Force iframe reload
+        setPdfRenderReady(true); // Mark PDF as ready
         console.log('PDF URL set successfully with theme:', themeToUse);
         console.log('PDF blob size:', blob.size, 'bytes');
+
+        // Hide loading overlay when PDF is ready
+        setShowInitialLoadingOverlay(false);
 
         // Get ATS score after successful rendering
         await getAtsScore(blob);
@@ -993,31 +1015,53 @@ cv:
     }
   };
 
+  // Effect to handle initial loading and delayed PDF rendering
   useEffect(() => {
-    // Auto-render on component mount with initial YAML
-    if (yamlContent && autoRenderEnabled) {
-      renderResume();
+    console.log('🔄 Loading effect check:', {
+      isLoadingProject,
+      isProjectDataLoaded,
+      autoRenderEnabled,
+      hasYamlContent: yamlContent.trim() !== '',
+      showInitialLoadingOverlay,
+      projectId
+    });
+
+    if (!isLoadingProject && isProjectDataLoaded && autoRenderEnabled && yamlContent.trim() !== '') {
+      console.log('⏰ Starting 2-second delay before PDF rendering...');
+      // Set a delay before rendering the PDF
+      const timer = setTimeout(() => {
+        console.log('🚀 Now rendering PDF after delay...');
+        renderResume();
+        // Hide loading overlay after PDF starts rendering (fallback)
+        setTimeout(() => {
+          console.log('⚠️ Fallback: Hiding loading overlay after 5 seconds...');
+          setShowInitialLoadingOverlay(false);
+        }, 5000);
+      }, 2000); // 2 second delay to ensure YAML is properly loaded
+
+      return () => clearTimeout(timer);
     }
-  }, []);
+  }, [isLoadingProject, yamlContent, autoRenderEnabled, renderResume]);
 
   useEffect(() => {
     // Auto-render when YAML content changes (debounced)
     const timeout = setTimeout(() => {
-      if (autoRenderEnabled && yamlContent !== lastYamlContent && yamlContent.trim() !== '') {
+      // Only render if project data is loaded to prevent empty YAML errors
+      if (isProjectDataLoaded && autoRenderEnabled && yamlContent !== lastYamlContent && yamlContent.trim() !== '') {
         setLastYamlContent(yamlContent);
         renderResume();
       }
     }, 1000); // 1 second debounce to avoid excessive renders while typing
 
     return () => clearTimeout(timeout);
-  }, [yamlContent, autoRenderEnabled, lastYamlContent]);
+  }, [yamlContent, autoRenderEnabled, lastYamlContent, isProjectDataLoaded]);
 
   useEffect(() => {
     // Auto-render when theme changes (no debounce needed for theme changes)
-    if (autoRenderEnabled && yamlContent.trim() !== '') {
+    if (isProjectDataLoaded && autoRenderEnabled && yamlContent.trim() !== '') {
       renderResume();
     }
-  }, [selectedTheme]);
+  }, [selectedTheme, isProjectDataLoaded]);
 
   // Store original YAML when it's loaded/changed
   useEffect(() => {
@@ -2439,47 +2483,72 @@ cv:
                   </button>
                 </div>
               </div>
-            ) : pdfUrl ? (
-              <div className="w-full h-full">
-                <iframe
-                  key={renderKey}
-                  src={pdfUrl}
-                  className="w-full h-full rounded-lg border border-white/10"
-                  title="Resume Preview"
-                  onLoad={() => console.log('PDF iframe loaded successfully')}
-                  onError={() => console.error('PDF iframe failed to load')}
-                />
-              </div>
             ) : (
-              <div className="text-center text-white/40">
-                <svg className="w-16 h-16 mx-auto mb-4 opacity-50" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
-                </svg>
-                <p>PDF preview will appear here</p>
-                <p className="text-sm mt-2">
-                  {autoRenderEnabled ? "Auto-render will trigger shortly..." : "Click 'Render Now' to generate PDF"}
-                </p>
-                <div className="mt-4 flex space-x-2 justify-center">
-                  <button
-                    onClick={() => renderResume()}
-                    className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg text-sm"
-                  >
-                    Render Now
-                  </button>
-                  <button
-                    onClick={toggleAutoRender}
-                    className={cn(
-                      "px-4 py-2 text-white rounded-lg text-sm",
-                      autoRenderEnabled
-                        ? "bg-green-600 hover:bg-green-700"
-                        : "bg-gray-600 hover:bg-gray-700"
-                    )}
-                  >
-                    {autoRenderEnabled ? "Auto: ON" : "Auto: OFF"}
-                  </button>
-                </div>
+              <div className="w-full h-full relative">
+                {/* Loading Overlay */}
+                {showInitialLoadingOverlay && (
+                  <div className="absolute inset-0 bg-gray-900/90 backdrop-blur-sm rounded-lg flex items-center justify-center z-10">
+                    <div className="text-center">
+                      <div className="w-12 h-12 border-3 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                      <p className="text-white/80 text-lg font-medium mb-2">Loading Resume Editor</p>
+                      <p className="text-white/60 text-sm">Preparing your resume template...</p>
+                      <div className="mt-4 flex justify-center space-x-1">
+                        <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                        <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                        <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {pdfUrl && !showInitialLoadingOverlay ? (
+                  <div className="w-full h-full">
+                    <iframe
+                      key={renderKey}
+                      src={pdfUrl}
+                      className="w-full h-full rounded-lg border border-white/10"
+                      title="Resume Preview"
+                      onLoad={() => {
+                        console.log('PDF iframe loaded successfully');
+                        // Hide loading overlay when PDF is fully loaded
+                        setShowInitialLoadingOverlay(false);
+                      }}
+                      onError={() => console.error('PDF iframe failed to load')}
+                    />
+                  </div>
+                ) : showInitialLoadingOverlay ? null : (
+                  <div className="text-center text-white/40">
+                    <svg className="w-16 h-16 mx-auto mb-4 opacity-50" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                    </svg>
+                    <p>PDF preview will appear here</p>
+                    <p className="text-sm mt-2">
+                      {autoRenderEnabled ? "Auto-render will trigger shortly..." : "Click 'Render Now' to generate PDF"}
+                    </p>
+                    <div className="mt-4 flex space-x-2 justify-center">
+                      <button
+                        onClick={() => renderResume()}
+                        className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg text-sm"
+                      >
+                        Render Now
+                      </button>
+                      <button
+                        onClick={toggleAutoRender}
+                        className={cn(
+                          "px-4 py-2 text-white rounded-lg text-sm",
+                          autoRenderEnabled
+                            ? "bg-green-600 hover:bg-green-700"
+                            : "bg-gray-600 hover:bg-gray-700"
+                        )}
+                      >
+                        {autoRenderEnabled ? "Disable Auto-Render" : "Enable Auto-Render"}
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
-            )}
+            )
+          }
           </div>
         </div>
       </div>

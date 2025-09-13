@@ -10,7 +10,7 @@ import subprocess
 import asyncio
 from typing import Optional, Dict, Any
 from typing import Iterator
-from agno.agent import Agent, RunResponse
+from agno.agent import Agent, RunOutput
 from agno.team import Team
 from agno.models.google import Gemini
 from agno.media import File as AgnoFile
@@ -347,18 +347,18 @@ async def get_user_dashboard_data(user_id: str, page: int = 1, projects_per_page
             job_role = p.get("job_role")
             target_company = p.get("target_company")
             print(f"🔍 DASHBOARD DEBUG: Processing project {p.get('id')} - job_role: '{job_role}', target_company: '{target_company}'")
-            
+
             if job_role:
                 # Create unique key combining job_role and company
                 role_company_key = f"{job_role}||{target_company or 'No Company'}"
-                
+
                 project_results = p.get("project_results")
                 print(f"🔍 DASHBOARD DEBUG: Project results type: {type(project_results)}, value: {project_results}")
-                
+
                 if project_results and isinstance(project_results, dict):
                     ats_score = project_results.get("ats_score")
                     print(f"🔍 DASHBOARD DEBUG: ATS Score: {ats_score} (type: {type(ats_score)})")
-                    
+
                     if ats_score and isinstance(ats_score, (int, float)):
                         print(f"🔍 DASHBOARD DEBUG: Adding to job_role_scores: key='{role_company_key}', score={ats_score}")
                         # Only update if this is a newer project or higher score for this role+company combination
@@ -754,11 +754,11 @@ def revamp(resumePath, jobRole, jobDescriptionPath):
 
     # Send POST request with file
     response = requests.post(url, files=files)
-    
+
     # Close file handles
     for file_obj in files.values():
         file_obj.close()
-    
+
     # Check for success
     if response.status_code == 200:
         data = response.json()
@@ -2742,7 +2742,7 @@ async def run_gap_analysis_cloud(
         jd_extension = None
         storage_jd_path = None
         jd_response = None
-        
+
         # Try .txt first (for pasted text), then .pdf (for uploaded files)
         for ext in ['txt', 'pdf']:
             test_jd_path = f"{session_folder}/job_description.{ext}"
@@ -2758,7 +2758,7 @@ async def run_gap_analysis_cloud(
             except Exception as e:
                 print(f"🔍 CLOUD GAP ANALYSIS: JD file not found as .{ext}: {e}")
                 continue
-                
+
         if not storage_jd_path:
             raise HTTPException(status_code=404, detail=f"Job description file not found in storage (tried both .txt and .pdf)")
 
@@ -2862,7 +2862,7 @@ async def run_gap_analysis_cloud(
         gap_analysis_dir = "/Users/arreyanhamid/Developer/ai-resume"
         markdown_files = ["gap_analysis.md", "upskilling_plan.md", "project_recommendations.md"]
         uploaded_files = []
-        
+
         for filename in markdown_files:
             local_file_path = f"{gap_analysis_dir}/{filename}"
             if os.path.exists(local_file_path):
@@ -2870,7 +2870,7 @@ async def run_gap_analysis_cloud(
                     # Read the markdown file
                     with open(local_file_path, "rb") as f:
                         file_content = f.read()
-                    
+
                     # Upload to cloud storage in session folder
                     storage_path = f"{session_folder}/{filename}"
                     upload_response = supabase_admin.storage.from_("user-documents").upload(
@@ -2878,13 +2878,13 @@ async def run_gap_analysis_cloud(
                         file=file_content,
                         file_options={"content-type": "text/plain", "upsert": "true"}
                     )
-                    
+
                     if upload_response:
                         print(f"✅ CLOUD GAP ANALYSIS: Uploaded {filename} to {storage_path}")
                         uploaded_files.append(filename)
                     else:
                         print(f"⚠️ CLOUD GAP ANALYSIS: Failed to upload {filename}")
-                        
+
                 except Exception as upload_error:
                     print(f"❌ CLOUD GAP ANALYSIS: Error uploading {filename}: {upload_error}")
             else:
@@ -2942,7 +2942,7 @@ async def download_gap_analysis_file(file_type: str, project_id: Optional[str] =
             try:
                 print(f"🔍 DOWNLOAD: Fetching {filename} from cloud storage for project {project_id}")
                 storage_path = f"session_{project_id}/{filename}"
-                
+
                 # Download from cloud storage
                 file_response = supabase_admin.storage.from_("user-documents").download(storage_path)
                 if file_response:
@@ -2950,7 +2950,7 @@ async def download_gap_analysis_file(file_type: str, project_id: Optional[str] =
                     print(f"✅ DOWNLOAD: Found {filename} in cloud storage")
                 else:
                     print(f"⚠️ DOWNLOAD: File not found in cloud storage: {storage_path}")
-                    
+
             except Exception as storage_error:
                 print(f"⚠️ DOWNLOAD: Cloud storage error: {storage_error}")
 
@@ -2958,7 +2958,7 @@ async def download_gap_analysis_file(file_type: str, project_id: Optional[str] =
         if content is None:
             print(f"🔍 DOWNLOAD: Trying local file for {filename}")
             file_path = f"/Users/arreyanhamid/Developer/ai-resume/{filename}"
-            
+
             if not os.path.exists(file_path):
                 raise HTTPException(
                     status_code=404,

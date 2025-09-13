@@ -1,4 +1,4 @@
-// File: /Volumes/Crucible/beckap/resumeFrontend/src/app/layout.tsx
+// File: /Volumes/Crucible/resume-frontend/src/app/layout.tsx
 import * as entry from '../../../src/app/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
