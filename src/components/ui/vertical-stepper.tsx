@@ -99,10 +99,10 @@ export default function VerticalStepper({
         >
           <div className="flex flex-col lg:flex-row min-h-[600px]">
             {/* Vertical Stepper Sidebar */}
-            <div className="w-full lg:w-80 bg-gray-50 dark:bg-gray-900/50 p-6 lg:p-8">
+            <div className="w-full lg:w-80 bg-vista-white border-r border-gray-200 p-6 lg:p-8">
               <div className="mb-8">
-                <h1 className="text-3xl font-bold brand-heading text-mine-shaft">Revamp Your Resume</h1>
-                <p className="mt-2 text-sm text-gray-600 brand-body">
+                <h1 className="text-3xl font-bebas tracking-tight text-mine-shaft">Revamp Your Resume</h1>
+                <p className="mt-2 text-sm text-mine-shaft/60 font-editorial">
                   Complete all steps to optimize your resume
                 </p>
               </div>
@@ -124,12 +124,12 @@ export default function VerticalStepper({
                         onClick={() => handleStepClick(stepNumber)}
                         disabled={status === 'inactive' && !validateStep(stepNumber - 1)}
                         className={cn(
-                          "group relative w-full rounded-lg p-3 lg:p-4 text-left transition-all duration-200",
+                          "group relative w-full rounded-2xl p-3 lg:p-4 text-left transition-all duration-200",
                           status === 'active'
-                            ? "bg-yellow-50 dark:bg-yellow-900/20 border-2 border-sunglow dark:border-yellow-400"
+                            ? "bg-sunglow/10 border-2 border-sunglow shadow-sm"
                             : status === 'complete'
-                            ? "bg-green-50 dark:bg-green-900/20 border-2 border-green-500 dark:border-green-400"
-                            : "bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600",
+                            ? "bg-emerald-50 border-2 border-emerald-300 shadow-sm"
+                            : "bg-vista-white border-2 border-gray-200 hover:border-sunglow/30 hover:bg-sunglow/5",
                           status === 'inactive' && !validateStep(stepNumber - 1) && "opacity-50 cursor-not-allowed"
                         )}
                       >
@@ -143,13 +143,13 @@ export default function VerticalStepper({
                             transition={{ duration: 0.2 }}
                           >
                             {status === 'complete' ? (
-                              <CheckCircle className="h-6 w-6 text-green-500 dark:text-green-400" />
+                              <CheckCircle className="h-6 w-6 text-emerald-500" />
                             ) : status === 'active' ? (
-                              <div className="h-6 w-6 rounded-full bg-sunglow flex items-center justify-center">
-                                <span className="text-xs font-bold text-mine-shaft">{stepNumber}</span>
+                              <div className="h-6 w-6 rounded-full bg-sunglow flex items-center justify-center shadow-sm">
+                                <span className="text-xs font-sf font-bold text-mine-shaft">{stepNumber}</span>
                               </div>
                             ) : (
-                              <Circle className="h-6 w-6 text-gray-400 dark:text-gray-500" />
+                              <Circle className="h-6 w-6 text-mine-shaft/30" />
                             )}
                           </motion.div>
 
@@ -161,22 +161,22 @@ export default function VerticalStepper({
                                 complete: { color: '#059669' }
                               }}
                               className={cn(
-                                "text-sm font-semibold transition-colors",
+                                "text-sm font-sf font-semibold transition-colors",
                                 status === 'active'
-                                  ? "text-gray-900 dark:text-white"
+                                  ? "text-mine-shaft"
                                   : status === 'complete'
-                                  ? "text-green-700 dark:text-green-400"
-                                  : "text-gray-500 dark:text-gray-400"
+                                  ? "text-emerald-600"
+                                  : "text-mine-shaft/50"
                               )}
                             >
                               {stepInfo.title}
                             </motion.h3>
                             {stepInfo.description && (
                               <p className={cn(
-                                "mt-1 text-xs transition-colors",
+                                "mt-1 text-xs font-editorial transition-colors",
                                 status === 'active'
-                                  ? "text-gray-700 dark:text-gray-300"
-                                  : "text-gray-500 dark:text-gray-400"
+                                  ? "text-mine-shaft/70"
+                                  : "text-mine-shaft/50"
                               )}>
                                 {stepInfo.description}
                               </p>
@@ -196,9 +196,9 @@ export default function VerticalStepper({
 
                       {/* Connector Line */}
                       {index < stepsArray.length - 1 && (
-                        <div className="absolute left-8 top-12 h-6 w-0.5 bg-gray-200 dark:bg-gray-700">
+                        <div className="absolute left-8 top-12 h-6 w-0.5 bg-gray-200">
                           <motion.div
-                            className="h-full bg-green-500"
+                            className="h-full bg-emerald-400"
                             initial={{ height: 0 }}
                             animate={{ height: status === 'complete' ? '100%' : '0%' }}
                             transition={{ duration: 0.3 }}
@@ -211,16 +211,16 @@ export default function VerticalStepper({
               </div>
 
               {/* Progress Indicator */}
-              <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+              <div className="mt-8 pt-6 border-t border-gray-200">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-600 dark:text-gray-400">Progress</span>
-                  <span className="font-semibold text-gray-900 dark:text-white">
+                  <span className="text-mine-shaft/60 font-editorial">Progress</span>
+                  <span className="font-sf font-semibold text-mine-shaft">
                     {Math.round(((currentStep - 1) / totalSteps) * 100)}%
                   </span>
                 </div>
-                <div className="mt-2 h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                <div className="mt-2 h-3 bg-gray-200 rounded-full overflow-hidden">
                   <motion.div
-                    className="h-full bg-gradient-to-r from-sunglow to-yellow-500"
+                    className="h-full bg-brand-gradient rounded-full"
                     initial={{ width: 0 }}
                     animate={{ width: `${((currentStep - 1) / totalSteps) * 100}%` }}
                     transition={{ duration: 0.5, ease: "easeOut" }}
@@ -241,11 +241,11 @@ export default function VerticalStepper({
               </StepContentWrapper>
 
               {!isCompleted && (
-                <div className={cn("mt-8 pt-6 border-t border-gray-200 dark:border-gray-700", footerClassName)}>
+                <div className={cn("mt-8 pt-6 border-t border-gray-200", footerClassName)}>
                   <div className={cn("flex", currentStep !== 1 ? 'justify-between' : 'justify-end')}>
                     {currentStep !== 1 && (
                       <BrandButton
-                        variant="secondary"
+                        variant="outline"
                         onClick={handleBack}
                         {...backButtonProps}
                       >
@@ -258,7 +258,7 @@ export default function VerticalStepper({
                       disabled={!validateStep(currentStep)}
                       {...nextButtonProps}
                     >
-                      {isLastStep ? 'Complete' : nextButtonText}
+                      {isLastStep ? 'Start Analysis' : nextButtonText}
                       {!isLastStep && (
                         <ChevronRight className="ml-2 h-4 w-4" />
                       )}

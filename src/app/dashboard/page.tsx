@@ -50,17 +50,30 @@ interface DashboardData {
 }
 
 
-const StatCard = ({ title, value, change, trend, description, isNegative = false, actionButton = null }: any) => {
+const StatCard = ({ title, value, change, trend, description, isNegative = false, actionButton = null, isHighestAts = false }: any) => {
   return (
-    <div className="bg-vista-white border border-gray-100 rounded-2xl p-8 hover:shadow-lg transition-all duration-300 shadow-sm relative overflow-hidden">
-      {/* Subtle gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-sunglow/5 to-transparent opacity-50"></div>
+    <div className={cn(
+      "bg-vista-white border rounded-2xl p-8 hover:shadow-lg transition-all duration-300 shadow-sm relative overflow-hidden",
+      isHighestAts ? "border-transparent" : "border-gray-100"
+    )}>
+      {/* Dynamic gradient background for Highest ATS Score */}
+      {isHighestAts ? (
+        <div className="absolute inset-0 bg-brand-gradient opacity-10"></div>
+      ) : (
+        <div className="absolute inset-0 bg-gradient-to-br from-sunglow/5 to-transparent opacity-50"></div>
+      )}
 
       <div className="relative z-10">
         <div className="flex items-start justify-between mb-6">
           <div>
-            <div className="text-mine-shaft/70 text-sm font-medium mb-2 font-sf uppercase tracking-wider">{title}</div>
-            <div className="text-mine-shaft text-4xl font-bebas tracking-tight">{value}</div>
+            <div className={cn(
+              "text-sm font-medium mb-2 font-sf uppercase tracking-wider",
+              isHighestAts ? "text-brand-gradient" : "text-mine-shaft/70"
+            )}>{title}</div>
+            <div className={cn(
+              "text-4xl font-bebas tracking-tight",
+              isHighestAts ? "text-brand-gradient bg-[length:200%_200%] animate-gradient-flow" : "text-mine-shaft"
+            )}>{value}</div>
           </div>
           <div className={cn(
             "flex items-center space-x-2 text-sm font-sf font-semibold px-3 py-1 rounded-full",
@@ -963,6 +976,7 @@ export default function DashboardPage() {
                 change={stats.ats_change}
                 trend="From latest resume"
                 description="Track your best performance"
+                isHighestAts={true}
                 actionButton={stats.highest_project_id && (
                   <ActionButton
                     size="sm"

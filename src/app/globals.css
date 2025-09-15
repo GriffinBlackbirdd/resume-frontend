@@ -408,6 +408,18 @@ input[type="month"]::-webkit-calendar-picker-indicator:hover {
   animation: gradient-flow 8s ease infinite;
 }
 
+/* Dynamic gradient at -45° as specified in design guide */
+.bg-brand-gradient {
+  background: linear-gradient(-45deg, #FFD200, #7A0EEF);
+}
+
+.text-brand-gradient {
+  background: linear-gradient(-45deg, #FFD200, #7A0EEF);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 /* Ensure modal appears above all elements */
 .modal-container {
   z-index: 999999 !important;
