@@ -183,7 +183,7 @@ export default function ResultsPage() {
                 blockquote: ({node, ...props}) => (
                   <blockquote className="border-l-4 border-blue-500 pl-4 py-2 bg-blue-50 my-4" {...props} />
                 ),
-                code: ({node, inline, ...props}) => 
+                code: ({node, inline, ...props}: any) =>
                   inline ? (
                     <code className="bg-gray-100 px-1 py-0.5 rounded text-sm" {...props} />
                   ) : (

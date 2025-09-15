@@ -74,7 +74,7 @@ cv:
         details: AWS, Docker, Kubernetes, Git, CI/CD
 
 design:
-  theme: sb2nov`;
+  theme: sb2novDesign`;
   };
 
   const [yamlContent, setYamlContent] = useState(getInitialYamlContent());
@@ -117,6 +117,8 @@ design:
   const [formEditTimeout, setFormEditTimeout] = useState<NodeJS.Timeout | null>(null);
   const [originalYamlContent, setOriginalYamlContent] = useState<string>('');
   const [yamlWasManuallyEdited, setYamlWasManuallyEdited] = useState(false);
+  const [skipInitialFormSync, setSkipInitialFormSync] = useState(false);
+  const [justInitializedForm, setJustInitializedForm] = useState(false);
 
   // Multi-step form state
   const [currentStep, setCurrentStep] = useState(0);
@@ -156,6 +158,7 @@ design:
       name: 'John Doe',
       location: 'New York, NY',
       email: 'john.doe@example.com',
+      phone: '',
       website: 'https://johndoe.com'
     },
     socialNetworks: [{
@@ -222,8 +225,7 @@ design:
     { value: 'classicDesign', label: 'Classic Design', filename: 'classicDesign.yaml' },
     { value: 'engineeringDesign', label: 'Engineering Design', filename: 'engineeringDesign.yaml' },
     { value: 'modernDesign', label: 'Modern Design', filename: 'modernDesign.yaml' },
-    { value: 'sb2novDesign', label: 'SB2Nov Design', filename: 'sb2novDesign.yaml' },
-    { value: 'test', label: 'Test Design', filename: 'test.yaml' }
+    { value: 'sb2novDesign', label: 'SB2Nov Design', filename: 'sb2novDesign.yaml' }
   ];
 
   // Load YAML content, JD path, original resume path, and original ATS score from sessionStorage if available
@@ -527,7 +529,7 @@ design:
 
   const nextStep = () => {
     if (validateCurrentStep()) {
-      setCompletedSteps(prev => new Set([...prev, currentStep]));
+      setCompletedSteps(prev => new Set([...Array.from(prev), currentStep]));
       if (currentStep < formSteps.length - 1) {
         setCurrentStep(currentStep + 1);
       }
@@ -622,33 +624,6 @@ design:
     }
   };
 
-  // Function to check if YAML content is more complex than form can handle
-  const isYamlMoreComplexThanForm = (yamlString: string) => {
-    try {
-      const parsedYaml = yaml.load(yamlString) as any;
-      if (!parsedYaml || !parsedYaml.cv) return false;
-
-      const cv = parsedYaml.cv;
-      const sections = cv.sections || {};
-
-      // Check for complex fields that form doesn't fully support
-      const hasComplexSummary = sections.summary && sections.summary.length > 5;
-      const hasComplexExperience = sections.experience && sections.experience.length > 3;
-      const hasComplexProjects = sections.projects && sections.projects.length > 3;
-      const hasComplexTechnologies = sections.technologies && sections.technologies.length > 6;
-      const hasLongHighlights = sections.experience && sections.experience.some((exp: any) =>
-        exp.highlights && exp.highlights.length > 5
-      );
-      const hasDetailedProjects = sections.projects && sections.projects.some((proj: any) =>
-        proj.highlights && proj.highlights.length > 3
-      );
-
-      return hasComplexSummary || hasComplexExperience || hasComplexProjects ||
-             hasComplexTechnologies || hasLongHighlights || hasDetailedProjects;
-    } catch (error) {
-      return false;
-    }
-  };
 
   // Function to convert form data to YAML
   const convertFormToYaml = () => {
@@ -657,6 +632,7 @@ cv:
   name: ${formData.personalInfo.name}
   location: ${formData.personalInfo.location}
   email: ${formData.personalInfo.email}
+  phone: ${formData.personalInfo.phone}
   website: ${formData.personalInfo.website}${formData.socialNetworks.some(sn => sn.network.trim() && sn.username.trim()) ? `
 
   social_networks:${formData.socialNetworks.filter(sn => sn.network.trim() && sn.username.trim()).map(sn => `
@@ -682,7 +658,7 @@ cv:
         area: ${edu.area}
         degree: ${edu.degree}
         start_date: ${edu.start_date}
-        end_date: ${edu.end_date}${edu.gpa && edu.gpa.trim() ? `\n        highlights:\n          - 'CGPA: ${edu.gpa}'` : ''}${edu.highlights && edu.highlights.some(h => h.trim()) ? `${edu.gpa && edu.gpa.trim() ? '' : '\n        highlights:'}${edu.highlights.filter(h => h.trim()).map(h => `\n          - '${h}'`).join('')}` : ''}`).join('')}
+        end_date: ${edu.end_date}${edu.gpa && (edu.gpa as string).trim() ? `\n        highlights:\n          - 'CGPA: ${edu.gpa}'` : ''}${edu.highlights && (edu.highlights as string[]).some(h => (h as string).trim()) ? `${edu.gpa && (edu.gpa as string).trim() ? '' : '\n        highlights:'}${(edu.highlights as string[]).filter(h => (h as string).trim()).map(h => `\n          - '${h}'`).join('')}` : ''}`).join('')}
 
     technologies:${formData.technologies.map(tech => `
       - label: ${tech.label}
@@ -699,6 +675,16 @@ cv:
     return yaml;
   };
 
+  // Flexible field mapping system to handle various naming conventions
+  const getFlexibleField = (sections: any, ...possibleNames: string[]) => {
+    for (const name of possibleNames) {
+      if (sections[name]) {
+        return sections[name];
+      }
+    }
+    return null;
+  };
+
   // Function to convert YAML to form data
   const convertYamlToForm = (yamlString: string) => {
     try {
@@ -711,6 +697,7 @@ cv:
 
       const cv = parsedYaml.cv;
       const design = parsedYaml.design;
+      const sections = cv.sections || {};
 
       // Update form data from YAML
       const newFormData = {
@@ -718,86 +705,116 @@ cv:
           name: cv.name || '',
           location: cv.location || '',
           email: cv.email || '',
+          phone: cv.phone || '',
           website: cv.website || ''
         },
         socialNetworks: cv.social_networks ? cv.social_networks.map((sn: any) => ({
           network: sn.network || '',
           username: sn.username || ''
         })) : [{ network: '', username: '' }],
-        summary: cv.sections?.summary || [''],
-        experience: cv.sections?.experience ? cv.sections.experience.map((exp: any) => ({
-          company: exp.company || '',
-          position: exp.position || '',
-          location: exp.location || '',
-          start_date: exp.start_date || '',
-          end_date: exp.end_date || '',
-          highlights: exp.highlights || ['']
-        })) : [{
-          company: '',
-          position: '',
-          location: '',
-          start_date: '',
-          end_date: '',
-          highlights: ['']
-        }],
-        projects: cv.sections?.projects ? cv.sections.projects.map((proj: any) => ({
-          name: proj.name || '',
-          summary: proj.summary || '',
-          highlights: proj.highlights || ['']
-        })) : [{
-          name: '',
-          summary: '',
-          highlights: ['']
-        }],
-        education: cv.sections?.education ? cv.sections.education.map((edu: any) => ({
-          institution: edu.institution || '',
-          area: edu.area || '',
-          degree: edu.degree || '',
-          start_date: edu.start_date || '',
-          end_date: edu.end_date || '',
-          gpa: edu.highlights?.find((h: string) => h.includes('CGPA:') || h.includes('GPA:'))?.replace(/CGPA:\s*|GPA:\s*|'/g, '') || '',
-          highlights: edu.highlights?.filter((h: string) => !h.includes('CGPA:') && !h.includes('GPA:')) || []
-        })) : [{
-          institution: '',
-          area: '',
-          degree: '',
-          start_date: '',
-          end_date: '',
-          gpa: '',
-          highlights: []
-        }],
-        technologies: cv.sections?.technologies ? cv.sections.technologies.map((tech: any) => ({
-          label: tech.label || '',
-          details: tech.details || ''
-        })) : [{
-          label: '',
-          details: ''
-        }],
-        certifications: cv.sections?.Certifications ? cv.sections.Certifications.map((cert: any) => ({
-          name: cert.name || '',
-          date: cert.date || ''
-        })) : [{
-          name: '',
-          date: ''
-        }],
-        achievements: cv.sections?.Achievment ? cv.sections.Achievment.map((ach: any) => ({
-          name: ach.name || '',
-          date: ach.date || '',
-          highlights: ach.highlights || ['']
-        })) : [{
-          name: '',
-          date: '',
-          highlights: ['']
-        }]
+        summary: getFlexibleField(sections, 'summary', 'Summary') || [''],
+        experience: (() => {
+          const expData = getFlexibleField(sections, 'experience', 'Experience', 'work_experience', 'Work Experience');
+          return expData ? expData.map((exp: any) => ({
+            company: exp.company || '',
+            position: exp.position || '',
+            location: exp.location || '',
+            start_date: exp.start_date || '',
+            end_date: exp.end_date || '',
+            highlights: exp.highlights || ['']
+          })) : [{
+            company: '',
+            position: '',
+            location: '',
+            start_date: '',
+            end_date: '',
+            highlights: ['']
+          }];
+        })(),
+        projects: (() => {
+          const projData = getFlexibleField(sections, 'projects', 'Projects');
+          return projData ? projData.map((proj: any) => ({
+            name: proj.name || '',
+            summary: proj.summary || '',
+            highlights: proj.highlights || ['']
+          })) : [{
+            name: '',
+            summary: '',
+            highlights: ['']
+          }];
+        })(),
+        education: (() => {
+          const eduData = getFlexibleField(sections, 'education', 'Education');
+          return eduData ? eduData.map((edu: any) => ({
+            institution: edu.institution || '',
+            area: edu.area || '',
+            degree: edu.degree || '',
+            start_date: edu.start_date || '',
+            end_date: edu.end_date || '',
+            gpa: edu.highlights?.find((h: string) => h.includes('CGPA:') || h.includes('GPA:'))?.replace(/CGPA:\s*|GPA:\s*|'/g, '') || '',
+            highlights: edu.highlights?.filter((h: string) => !h.includes('CGPA:') && !h.includes('GPA:')) || []
+          })) : [{
+            institution: '',
+            area: '',
+            degree: '',
+            start_date: '',
+            end_date: '',
+            gpa: '',
+            highlights: []
+          }];
+        })(),
+        technologies: (() => {
+          const techData = getFlexibleField(sections, 'technologies', 'Technologies', 'skills', 'Skills', 'Skills & Abilities', 'skills_abilities');
+          return techData ? techData.map((tech: any) => ({
+            label: tech.label || '',
+            details: tech.details || ''
+          })) : [{
+            label: '',
+            details: ''
+          }];
+        })(),
+        certifications: (() => {
+          const certData = getFlexibleField(sections, 'certifications', 'Certifications');
+          return certData ? certData.map((cert: any) => ({
+            name: cert.name || '',
+            date: cert.date || ''
+          })) : [{
+            name: '',
+            date: ''
+          }];
+        })(),
+        achievements: (() => {
+          const achData = getFlexibleField(sections, 'achievements', 'Achievements', 'achievment', 'Achievment');
+          return achData ? achData.map((ach: any) => ({
+            name: ach.name || '',
+            date: ach.date || '',
+            highlights: ach.highlights || ['']
+          })) : [{
+            name: '',
+            date: '',
+            highlights: ['']
+          }];
+        })()
       };
 
       setFormData(newFormData);
       setFormDataInitialized(true);
+      setJustInitializedForm(true);
+
+      // Skip the initial sync that would happen after form initialization
+      setSkipInitialFormSync(true);
+      setTimeout(() => {
+        setSkipInitialFormSync(false);
+      }, 200);
+
+      // Clear the just initialized flag after a longer delay
+      setTimeout(() => {
+        setJustInitializedForm(false);
+      }, 500);
 
       // Update theme if present and not explicitly set by user
       if (design?.theme && !isUpdatingThemeFromYaml) {
-        console.log('Updating theme from YAML:', design.theme);
-        setSelectedTheme(design.theme);
+                setSelectedTheme(design.theme);
         setLastUserSelectedTheme(design.theme);
       }
 
@@ -1127,46 +1144,53 @@ cv:
     // 1. We're in form tab AND
     // 2. Form has been initialized from YAML (prevents initial overwrite) AND
     // 3. We're not already in the middle of a sync operation AND
-    // 4. Either the original YAML was simple OR user manually edited it (indicating they want form sync)
+    // 4. We're not skipping the initial sync after form initialization AND
+    // 5. Either the original YAML was simple OR user manually edited it (indicating they want form sync)
     const shouldSyncFormToYaml = activeTab === 'form' &&
-                                formDataInitialized &&
-                                !syncInProgress &&
-                                (!isYamlMoreComplexThanForm(originalYamlContent) || yamlWasManuallyEdited);
+                              formDataInitialized &&
+                              !syncInProgress &&
+                              !skipInitialFormSync &&
+                              !justInitializedForm &&
+                              true;
 
     if (shouldSyncFormToYaml) {
       const newYaml = convertFormToYaml();
       if (newYaml !== yamlContent) {
-        console.log('🔄 Syncing form data to YAML (simple content or manually edited)');
         setSyncInProgress(true);
         setYamlContent(newYaml);
         setTimeout(() => setSyncInProgress(false), 100);
       }
-    } else if (activeTab === 'form' && isYamlMoreComplexThanForm(originalYamlContent) && !yamlWasManuallyEdited) {
-      console.log('⚠️ Preserving complex YAML content, not syncing from form');
     }
-  }, [formData, activeTab, selectedTheme, formDataInitialized, syncInProgress, yamlContent, originalYamlContent, yamlWasManuallyEdited]);
+  }, [formData, activeTab, selectedTheme, formDataInitialized, syncInProgress, skipInitialFormSync, yamlContent, originalYamlContent, yamlWasManuallyEdited]);
 
   // Sync YAML to form data when YAML changes (but NOT when form fields are being edited)
   useEffect(() => {
     if (yamlContent && yamlContent.trim() && !syncInProgress && !isFormFieldActive) {
-      console.log('🔄 Syncing YAML to form data');
       setSyncInProgress(true);
       convertYamlToForm(yamlContent);
       setTimeout(() => setSyncInProgress(false), 100);
     }
   }, [yamlContent, syncInProgress, isFormFieldActive]);
 
+  // Initialize form data when switching to form tab
+  useEffect(() => {
+    if (activeTab === 'form' && yamlContent && yamlContent.trim() && !formDataInitialized && !syncInProgress) {
+      setSyncInProgress(true);
+      convertYamlToForm(yamlContent);
+      // Don't set formDataInitialized here - let convertYamlToForm do it
+      setTimeout(() => setSyncInProgress(false), 100);
+    }
+  }, [activeTab, yamlContent, formDataInitialized, syncInProgress]);
+
   // Handle tab switching with complex YAML preservation
   const handleTabSwitch = (tab: 'yaml' | 'form') => {
-    // When switching back to YAML from form, restore original complex content if it wasn't manually edited
-    if (tab === 'yaml' && activeTab === 'form' && isYamlMoreComplexThanForm(originalYamlContent) && !yamlWasManuallyEdited) {
-      console.log('🔄 Restoring original complex YAML content');
-      setYamlContent(originalYamlContent);
-    }
 
-    // Reset form initialization when switching to form tab to ensure clean sync
+    // Skip initial sync when switching to form tab
     if (tab === 'form' && activeTab === 'yaml') {
-      setFormDataInitialized(false);
+      setSkipInitialFormSync(true);
+      setTimeout(() => {
+        setSkipInitialFormSync(false);
+      }, 300);
     }
 
     setActiveTab(tab);
@@ -1330,7 +1354,7 @@ cv:
 
 
       {/* Main Editor Layout */}
-      <div className="flex h-[calc(100vh-145px)]">
+      <div className="flex h-[calc(100vh-169px)] mt-6">
         {/* Left Panel - Editor with Tabs */}
         <div className="w-1/2 border-r border-white/10 bg-gray-900/30">
           {/* Tab Headers */}
@@ -1360,7 +1384,7 @@ cv:
           </div>
 
           {/* Tab Content */}
-          <div className="h-[calc(100%-41px)]">
+          <div className="h-[calc(100vh-210px)]">
             {activeTab === 'yaml' ? (
               <div className="h-full p-4">
                 <div className="h-[calc(100%-2rem)] border border-white/10 rounded-lg overflow-hidden">
@@ -1390,20 +1414,6 @@ cv:
               </div>
             ) : (
               <div className="h-full flex">
-                {/* Complex YAML Warning */}
-                {isYamlMoreComplexThanForm(originalYamlContent) && !yamlWasManuallyEdited && (
-                  <div className="absolute top-16 left-4 right-4 z-10 bg-yellow-900/90 border border-yellow-500/50 rounded-lg p-3 backdrop-blur-sm">
-                    <div className="flex items-center space-x-2 text-yellow-200 text-sm">
-                      <svg className="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                      </svg>
-                      <span className="font-medium">Complex Resume Detected</span>
-                    </div>
-                    <p className="mt-1 text-yellow-200/80 text-xs">
-                      This resume contains detailed information that may not be fully editable in form mode. Your original YAML content is preserved and will be restored when you switch back to YAML editor.
-                    </p>
-                  </div>
-                )}
 
                 {/* Sidebar Navigation */}
                 <div className="w-80 bg-gray-900/50 border-r border-white/10 flex flex-col">
@@ -1582,6 +1592,24 @@ cv:
                             onBlur={handleFormFieldBlur}
                             className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             placeholder="New York, NY"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-white/70 mb-2">Phone</label>
+                          <input
+                            type="tel"
+                            value={formData.personalInfo.phone}
+                            onChange={(e) => {
+                              setFormData(prev => ({
+                                ...prev,
+                                personalInfo: { ...prev.personalInfo, phone: e.target.value }
+                              }));
+                              handleFormFieldChange();
+                            }}
+                            onFocus={handleFormFieldFocus}
+                            onBlur={handleFormFieldBlur}
+                            className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            placeholder="+1 (555) 123-4567"
                           />
                         </div>
                         <div>
@@ -2448,7 +2476,7 @@ cv:
           <div className="flex items-center justify-between border-b border-white/10 px-4 py-2">
             <span className="text-sm font-medium text-white/80">PDF Preview</span>
           </div>
-          <div className="h-full p-4 flex items-center justify-center">
+          <div className="h-[calc(100vh-210px)] p-4 flex items-center justify-center">
             {isRendering ? (
               <div className="text-center">
                 <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>

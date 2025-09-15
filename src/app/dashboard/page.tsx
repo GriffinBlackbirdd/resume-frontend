@@ -49,7 +49,7 @@ interface DashboardData {
 }
 
 
-const StatCard = ({ title, value, change, trend, description, isNegative = false, actionButton = null }) => {
+const StatCard = ({ title, value, change, trend, description, isNegative = false, actionButton = null }: any) => {
   return (
     <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 hover:bg-zinc-800/50 transition-colors">
       <div className="flex items-start justify-between mb-4">
@@ -408,6 +408,7 @@ const DataTable = ({
   onPageChange,
   onShowGapAnalysis,
   onRunGapAnalysis,
+  onDownloadJobDescription,
   analyzingProjects
 }: {
   projects: ResumeProject[];
@@ -417,6 +418,7 @@ const DataTable = ({
   onPageChange: (page: number) => void;
   onShowGapAnalysis: (fileType: string) => void;
   onRunGapAnalysis: (projectId: string) => void;
+  onDownloadJobDescription: (projectId: string) => void;
   analyzingProjects: Set<string>;
 }) => {
   const router = useRouter();
@@ -514,7 +516,7 @@ const DataTable = ({
                   </button>
 
                   <button
-                    onClick={() => downloadJobDescription(project.id)}
+                    onClick={() => onDownloadJobDescription(project.id)}
                     className="bg-green-800 hover:bg-green-700 group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6 text-white inline-block transition-colors"
                     title="Download Job Description"
                   >
@@ -583,10 +585,6 @@ export default function DashboardPage() {
     isLoading: false,
   });
 
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-  };
-
   // Download job description for a project
   const downloadJobDescription = async (projectId: string) => {
     if (!token) {
@@ -628,6 +626,10 @@ export default function DashboardPage() {
     } catch (error) {
       console.error('Download error:', error);
     }
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
   };
 
   // Gap Analysis functions
@@ -885,7 +887,7 @@ export default function DashboardPage() {
             <div className="text-red-400 text-lg mb-2">Failed to load dashboard</div>
             <p className="text-zinc-400 mb-4">{dashboardError}</p>
             <button
-              onClick={fetchDashboardData}
+              onClick={() => fetchDashboardData()}
               className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
             >
               Retry
@@ -991,6 +993,7 @@ export default function DashboardPage() {
             onPageChange={handlePageChange}
             onShowGapAnalysis={showGapAnalysisContent}
             onRunGapAnalysis={runGapAnalysis}
+            onDownloadJobDescription={downloadJobDescription}
             analyzingProjects={analyzingProjects}
           />
         </div>

@@ -861,7 +861,7 @@ def revamp(resumePath, jobRole, jobDescriptionPath):
 
             "Final Output: resume.yaml fully ATS-optimized, no formatting violations, guaranteed 85+ ATS score."
         ],
-        add_datetime_to_instructions=True,
+        add_datetime_to_context=True,
     )
 
     response = ATSOptimizerAgent.run(
@@ -923,7 +923,7 @@ def review(resumePath, jobDescriptionPath):
             "The table should help the candidate clearly see which required JD skills are missing from their resume."
         ],
         model=Gemini(id="gemini-2.0-flash", api_key="AIzaSyBaLirmENGf4Z-oHlQ1ecLCJN8Hdznzwo4", temperature=0),
-        add_datetime_to_instructions=True,
+        add_datetime_to_context=True,
     )
 
     upskilling_planner = Agent(
@@ -941,7 +941,7 @@ def review(resumePath, jobDescriptionPath):
             "The final plan must be detailed, motivating, and immediately actionable."
         ],
         model=Gemini(id="gemini-2.0-flash", api_key="AIzaSyBaLirmENGf4Z-oHlQ1ecLCJN8Hdznzwo4", temperature=0),
-        add_datetime_to_instructions=True,
+        add_datetime_to_context=True,
     )
 
     project_finder = Agent(
@@ -961,7 +961,7 @@ def review(resumePath, jobDescriptionPath):
             "4. Prefer projects that have active communities, mentoring, or project showcase platforms where the candidate can engage or seek support."
         ],
         model=Gemini(id="gemini-2.0-flash", api_key="AIzaSyBaLirmENGf4Z-oHlQ1ecLCJN8Hdznzwo4", temperature=0),
-        add_datetime_to_instructions=True,
+        add_datetime_to_context=True,
         tools=[GoogleSearchTools()],
     )
 
@@ -977,7 +977,7 @@ def review(resumePath, jobDescriptionPath):
             "Collect all outputs and compile a user-friendly, actionable report with gap analysis, learning plan, and project ideas.",
             "Final report should be motivating, specific, and actionable.",
         ],
-        add_datetime_to_instructions=True,
+        add_datetime_to_context=True,
         add_member_tools_to_system_message=False,
         enable_agentic_context=True,
         share_member_interactions=True,

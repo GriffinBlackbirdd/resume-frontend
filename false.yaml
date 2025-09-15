@@ -1,13 +1,13 @@
 # RenderCV Resume Configuration
 cv:
   name: Garv Khurana
-  location: Delhi
+  location: Remote
   email: hamidarreyan@gmail.com
   website: https://linkedin.com/in/arreyanhamid
 
   sections:
     summary:
-      - Highly motivated AI Engineer with a strong foundation in machine learning, NLP, and reinforcement learning, adept at designing and deploying scalable AI models for product recommendation systems, marketplaces, and translation systems. Proficient in Python and leading ML libraries including TensorFlow, PyTorch, and Keras, with hands-on experience in data preprocessing, feature engineering, and model deployment on cloud platforms like AWS, Azure, and GCP. Skilled in developing AI agents and agentic systems/workflows, leveraging tools such as LangChain and Phidata. Possesses strong analytical and problem-solving skills, with keen attention to detail and a collaborative teamwork approach to drive operational efficiency and deliver impactful healthcare applications and clinical outcomes.
+      - Highly motivated AI Engineer with a BTech in Artificial Intelligence and Data Science, specializing in developing and deploying robust machine learning models. Proficient in Python, TensorFlow, Keras, and PyTorch, with hands-on experience in NLP, data preprocessing, and feature engineering. Skilled in building scalable AI agents and agentic systems using LangChain, CrewAI, and Phidata, with a strong understanding of cloud platforms like AWS, GCP, and Azure for production deployment. Proven ability to design and optimize algorithms for recommendation systems, marketplaces, and translation systems, ensuring model scalability and reliability. Adept at ETL, SQL, and data manipulation, with strong analytical, problem-solving, and teamwork skills, and keen attention to detail for delivering high-performance AI solutions.
 
     experience:
       - company: 
@@ -16,7 +16,7 @@ cv:
         start_date: 
         end_date: 
         highlights:
-          - 
+          - null
 
     education:
       - institution: 
@@ -28,6 +28,3 @@ cv:
     technologies:
       - label: 
         details: 
-
-design:
-  theme: engineeringClassic

@@ -128,12 +128,13 @@ const ATSAnalysisModal: React.FC<ATSAnalysisModalProps> = ({
       
       {/* Modal */}
       <div className="relative z-10 w-full max-w-2xl mx-4">
-        <ElectricBorder 
-          color="#3b82f6" 
-          speed={2} 
-          chaos={1.5} 
+        <ElectricBorder
+          color="#3b82f6"
+          speed={2}
+          chaos={1.5}
           thickness={3}
           className="rounded-2xl"
+          style={{}}
         >
           <div className="bg-zinc-900 rounded-2xl p-8 relative">
             {/* Close button */}
