@@ -24,14 +24,14 @@ export default function MarkdownRenderer({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-gray-900 rounded-xl border border-gray-700 shadow-2xl w-full max-w-7xl max-h-[95vh] flex flex-col">
+    <div className="fixed inset-0 bg-mine-shaft/90 backdrop-blur-sm z-[99999] flex items-center justify-center p-4">
+      <div className="bg-vista-white rounded-xl border border-mine-shaft/20 shadow-2xl w-full max-w-7xl max-h-[95vh] flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-700">
-          <h2 className="text-2xl font-bold text-white">{title}</h2>
+        <div className="flex items-center justify-between p-6 border-b border-mine-shaft/10">
+          <h2 className="text-2xl font-bebas tracking-tight text-mine-shaft">{title}</h2>
           <TextButton
             onClick={onClose}
-            className="p-2 text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg"
+            className="p-2 text-mine-shaft/50 hover:text-mine-shaft hover:bg-sunglow/10 rounded-lg"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -44,12 +44,12 @@ export default function MarkdownRenderer({
           {isLoading ? (
             <div className="flex items-center justify-center py-12">
               <div className="text-center">
-                <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-                <p className="text-gray-400">Loading {title.toLowerCase()}...</p>
+                <div className="w-8 h-8 border-2 border-sunglow border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                <p className="text-mine-shaft/60 font-editorial">Loading {title.toLowerCase()}...</p>
               </div>
             </div>
           ) : (
-            <div className="prose prose-invert prose-lg max-w-none">
+            <div className="prose prose-lg max-w-none">
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 rehypePlugins={[]}
@@ -57,47 +57,47 @@ export default function MarkdownRenderer({
                 components={{
                   // Custom styling for markdown elements
                   h1: ({ children }) => (
-                    <h1 className="text-3xl font-bold text-white mb-6 pb-2 border-b border-gray-700">
+                    <h1 className="text-3xl font-bebas tracking-tight text-mine-shaft mb-6 pb-2 border-b border-mine-shaft/10">
                       {children}
                     </h1>
                   ),
                   h2: ({ children }) => (
-                    <h2 className="text-2xl font-semibold text-white mb-4 mt-8">
+                    <h2 className="text-2xl font-bebas tracking-tight text-mine-shaft mb-4 mt-8">
                       {children}
                     </h2>
                   ),
                   h3: ({ children }) => (
-                    <h3 className="text-xl font-semibold text-gray-200 mb-3 mt-6">
+                    <h3 className="text-xl font-sf font-semibold text-mine-shaft mb-3 mt-6">
                       {children}
                     </h3>
                   ),
                   h4: ({ children }) => (
-                    <h4 className="text-lg font-semibold text-gray-300 mb-2 mt-4">
+                    <h4 className="text-lg font-sf font-semibold text-mine-shaft mb-2 mt-4">
                       {children}
                     </h4>
                   ),
                   p: ({ children }) => (
-                    <p className="text-gray-300 mb-4 leading-relaxed">
+                    <p className="text-mine-shaft/80 font-editorial mb-4 leading-relaxed">
                       {children}
                     </p>
                   ),
                   ul: ({ children }) => (
-                    <ul className="list-disc list-inside text-gray-300 mb-4 space-y-2">
+                    <ul className="list-disc list-inside text-mine-shaft/80 font-editorial mb-4 space-y-2">
                       {children}
                     </ul>
                   ),
                   ol: ({ children }) => (
-                    <ol className="list-decimal list-inside text-gray-300 mb-4 space-y-2">
+                    <ol className="list-decimal list-inside text-mine-shaft/80 font-editorial mb-4 space-y-2">
                       {children}
                     </ol>
                   ),
                   li: ({ children }) => (
-                    <li className="text-gray-300">
+                    <li className="text-mine-shaft/80 font-editorial">
                       {children}
                     </li>
                   ),
                   blockquote: ({ children }) => (
-                    <blockquote className="border-l-4 border-blue-500 bg-gray-800/50 p-4 my-6 italic text-gray-300">
+                    <blockquote className="border-l-4 border-sunglow bg-sunglow/5 p-4 my-6 italic text-mine-shaft/70 font-editorial">
                       {children}
                     </blockquote>
                   ),
@@ -105,51 +105,51 @@ export default function MarkdownRenderer({
                     const isBlock = className?.includes('language-');
                     if (isBlock) {
                       return (
-                        <pre className="bg-gray-800 rounded-lg p-4 overflow-x-auto mb-4">
-                          <code className="text-green-400 text-sm font-mono">
+                        <pre className="bg-mine-shaft/5 rounded-lg p-4 overflow-x-auto mb-4">
+                          <code className="text-db3b09 text-sm font-mono">
                             {children}
                           </code>
                         </pre>
                       );
                     }
                     return (
-                      <code className="bg-gray-800 text-green-400 px-2 py-1 rounded text-sm font-mono">
+                      <code className="bg-mine-shaft/5 text-db3b09 px-2 py-1 rounded text-sm font-mono">
                         {children}
                       </code>
                     );
                   },
                   strong: ({ children }) => (
-                    <strong className="text-white font-semibold">
+                    <strong className="text-mine-shaft font-sf font-semibold">
                       {children}
                     </strong>
                   ),
                   em: ({ children }) => (
-                    <em className="text-gray-200 italic">
+                    <em className="text-mine-shaft/70 font-editorial italic">
                       {children}
                     </em>
                   ),
                   hr: () => (
-                    <hr className="border-gray-600 my-8" />
+                    <hr className="border-mine-shaft/10 my-8" />
                   ),
                   a: ({ children, href }) => (
                     <a 
                       href={href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-blue-400 hover:text-blue-300 underline transition-colors duration-200"
+                      className="text-sunglow hover:text-db3b09 underline transition-colors duration-200"
                     >
                       {children}
                     </a>
                   ),
                   table: ({ children }) => (
                     <div className="overflow-x-auto mb-8">
-                      <table className="min-w-full border-collapse border border-gray-600 bg-gray-900/50 rounded-lg">
+                      <table className="min-w-full border-collapse border border-mine-shaft/10 bg-mine-shaft/5 rounded-lg">
                         {children}
                       </table>
                     </div>
                   ),
                   thead: ({ children }) => (
-                    <thead className="bg-gray-800">
+                    <thead className="bg-mine-shaft/10">
                       {children}
                     </thead>
                   ),
@@ -159,17 +159,17 @@ export default function MarkdownRenderer({
                     </tbody>
                   ),
                   tr: ({ children }) => (
-                    <tr className="border-b border-gray-600 hover:bg-gray-800/20 transition-colors">
+                    <tr className="border-b border-mine-shaft/10 hover:bg-sunglow/5 transition-colors">
                       {children}
                     </tr>
                   ),
                   th: ({ children }) => (
-                    <th className="border border-gray-600 px-3 py-2 text-left text-white font-semibold text-xs bg-gray-700">
+                    <th className="border border-mine-shaft/10 px-3 py-2 text-left text-mine-shaft font-sf font-semibold text-xs bg-mine-shaft/5">
                       {children}
                     </th>
                   ),
                   td: ({ children }) => (
-                    <td className="border border-gray-600 px-3 py-2 text-gray-300 text-xs align-top max-w-xs break-words overflow-hidden">
+                    <td className="border border-mine-shaft/10 px-3 py-2 text-mine-shaft/80 font-editorial text-xs align-top max-w-xs break-words overflow-hidden">
                       {children}
                     </td>
                   ),
@@ -182,10 +182,10 @@ export default function MarkdownRenderer({
         </div>
 
         {/* Footer */}
-        <div className="flex justify-end p-6 border-t border-gray-700">
+        <div className="flex justify-end p-6 border-t border-mine-shaft/10">
           <BrandButton
             onClick={onClose}
-            variant="secondary"
+            variant="primary"
             className="px-6 py-2"
           >
             Close

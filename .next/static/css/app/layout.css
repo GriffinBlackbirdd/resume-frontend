@@ -748,6 +748,9 @@ video {
 .z-\[999999\] {
   z-index: 999999;
 }
+.z-\[99999\] {
+  z-index: 99999;
+}
 .mx-2 {
   margin-left: 0.5rem;
   margin-right: 0.5rem;
@@ -1619,6 +1622,12 @@ video {
   --tw-border-opacity: 1;
   border-color: rgb(24 24 27 / var(--tw-border-opacity, 1));
 }
+.border-mine-shaft\/10 {
+  border-color: rgb(32 32 32 / 0.1);
+}
+.border-mine-shaft\/20 {
+  border-color: rgb(32 32 32 / 0.2);
+}
 .border-t-sunglow {
   --tw-border-opacity: 1;
   border-top-color: rgb(253 186 47 / var(--tw-border-opacity, 1));
@@ -1880,6 +1889,18 @@ video {
 }
 .bg-zinc-900\/90 {
   background-color: rgb(24 24 27 / 0.9);
+}
+.bg-mine-shaft\/90 {
+  background-color: rgb(32 32 32 / 0.9);
+}
+.bg-sunglow\/5 {
+  background-color: rgb(253 186 47 / 0.05);
+}
+.bg-mine-shaft\/10 {
+  background-color: rgb(32 32 32 / 0.1);
+}
+.bg-mine-shaft\/5 {
+  background-color: rgb(32 32 32 / 0.05);
 }
 .bg-opacity-50 {
   --tw-bg-opacity: 0.5;
@@ -3542,6 +3563,10 @@ input[type="month"]::-webkit-calendar-picker-indicator:hover {
   background-color: rgb(39 39 42 / 0.5);
 }
 
+.hover\:bg-sunglow\/5:hover {
+  background-color: rgb(253 186 47 / 0.05);
+}
+
 .hover\:from-white\/10:hover {
   --tw-gradient-from: rgb(255 255 255 / 0.1) var(--tw-gradient-from-position);
   --tw-gradient-to: rgb(255 255 255 / 0) var(--tw-gradient-to-position);
@@ -3627,6 +3652,16 @@ input[type="month"]::-webkit-calendar-picker-indicator:hover {
 .hover\:text-zinc-600:hover {
   --tw-text-opacity: 1;
   color: rgb(82 82 91 / var(--tw-text-opacity, 1));
+}
+
+.hover\:text-mine-shaft:hover {
+  --tw-text-opacity: 1;
+  color: rgb(32 32 32 / var(--tw-text-opacity, 1));
+}
+
+.hover\:text-db3b09:hover {
+  --tw-text-opacity: 1;
+  color: rgb(219 59 9 / var(--tw-text-opacity, 1));
 }
 
 .hover\:underline:hover {

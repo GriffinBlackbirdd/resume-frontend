@@ -10,7 +10,6 @@ import {
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { BrandButton } from "./ui/brand-button";
-import { CinematicButton } from "./ui/cinematic-button";
 import { Portal } from "./ui/portal";
 
 export function NewResumeModal() {
@@ -102,21 +101,21 @@ export function NewResumeModal() {
                   </div>
                 </BrandButton>
 
-                <CinematicButton
-                  variant="sunglow"
+                <BrandButton
+                  variant="outline"
                   onClick={handleStartFromScratch}
-                  className="flex flex-col items-center justify-center space-y-4 p-8 h-40 rounded-xl transition-all duration-200 group"
+                  className="flex flex-col items-center justify-center space-y-4 p-8 h-40 border-2 border-sunglow rounded-xl hover:bg-sunglow/10 transition-all duration-200 group"
                 >
                   <div className="w-12 h-12 bg-sunglow/20 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <svg className="w-6 h-6 text-mine-shaft" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-6 h-6 text-sunglow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                     </svg>
                   </div>
                   <div className="text-center">
-                    <h3 className="text-base font-semibold text-mine-shaft mb-2">Start from Scratch</h3>
-                    <p className="text-sm text-mine-shaft/70">Build a completely new resume</p>
+                    <h3 className="text-base font-sf font-semibold text-mine-shaft mb-2">Start from Scratch</h3>
+                    <p className="text-sm text-mine-shaft/60 font-editorial">Build a completely new resume</p>
                   </div>
-                </CinematicButton>
+                </BrandButton>
               </div>
             </ModalContent>
             <ModalFooter className="gap-4 justify-center bg-gray-50/50">
