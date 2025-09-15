@@ -157,16 +157,16 @@ export default function RevampPage() {
 
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
+    <div className="min-h-screen bg-vista-white texture-paper">
       <AnalysisLoadingScreen isVisible={isAnalyzing} />
 
       {/* Header */}
-      <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700">
+      <div className="bg-vista-white/95 backdrop-blur-sm border-b border-gray-200">
         <div className="max-w-6xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             <button
               onClick={() => router.back()}
-              className="flex items-center text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors group"
+              className="flex items-center text-gray-600 hover:text-gray-900 transition-colors group"
             >
               <svg className="w-5 h-5 mr-2 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -174,8 +174,8 @@ export default function RevampPage() {
               Back
             </button>
             <div className="text-center">
-              <h1 className="text-xl font-bold text-gray-900 dark:text-white">Resume Revamp</h1>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Optimize your resume for your dream job</p>
+              <h1 className="text-xl font-bold brand-heading text-mine-shaft">Resume Revamp</h1>
+              <p className="text-sm text-gray-600 brand-body">Optimize your resume for your dream job</p>
             </div>
             <div className="w-20"></div> {/* Spacer for centering */}
           </div>
@@ -215,8 +215,8 @@ export default function RevampPage() {
           <VerticalStep>
             <div className="space-y-6">
                 <div className="space-y-6">
-                  <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">Contact Information</h3>
+                  <div className="bg-vista-white rounded-xl p-6 shadow-sm border border-gray-200">
+                    <h3 className="text-lg font-semibold brand-heading text-mine-shaft mb-6">Contact Information</h3>
 
                       <div className="space-y-5">
                         {/* Location */}
@@ -236,7 +236,7 @@ export default function RevampPage() {
                               id="location"
                               value={formData.location}
                               onChange={(e) => handleInputChange("location", e.target.value)}
-                              className="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                              className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-mine-shaft placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sunglow focus:border-transparent transition-all"
                               placeholder="Enter your location"
                             />
                           </div>
@@ -258,7 +258,7 @@ export default function RevampPage() {
                               id="email"
                               value={formData.email}
                               onChange={(e) => handleInputChange("email", e.target.value)}
-                              className="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                              className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-mine-shaft placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sunglow focus:border-transparent transition-all"
                               placeholder="john.doe@example.com"
                               required
                             />
@@ -267,7 +267,7 @@ export default function RevampPage() {
 
                         {/* Phone */}
                         <div>
-                          <label htmlFor="phone" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
                             Phone Number <span className="text-red-500">*</span>
                           </label>
                           <div className="relative">
@@ -281,7 +281,7 @@ export default function RevampPage() {
                               id="phone"
                               value={formData.phone}
                               onChange={(e) => handleInputChange("phone", e.target.value)}
-                              className="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                              className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-mine-shaft placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sunglow focus:border-transparent transition-all"
                               placeholder="+1 (555) 123-4567"
                               required
                             />
@@ -290,7 +290,7 @@ export default function RevampPage() {
 
                         {/* LinkedIn */}
                         <div>
-                          <label htmlFor="linkedin" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          <label htmlFor="linkedin" className="block text-sm font-medium text-gray-700 mb-2">
                             LinkedIn Profile <span className="text-red-500">*</span>
                           </label>
                           <div className="relative">
@@ -304,7 +304,7 @@ export default function RevampPage() {
                               id="linkedin"
                               value={formData.linkedin}
                               onChange={(e) => handleInputChange("linkedin", e.target.value)}
-                              className="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                              className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-mine-shaft placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sunglow focus:border-transparent transition-all"
                               placeholder="https://linkedin.com/in/johndoe"
                               required
                             />
@@ -313,14 +313,14 @@ export default function RevampPage() {
                   </div>
                 </div>
 
-                <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                <div className="bg-vista-white rounded-xl p-6 shadow-sm border border-gray-200">
                   <div className="flex items-center justify-between mb-6">
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Professional Links</h3>
-                    <span className="text-xs text-gray-500 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded-full">Optional</span>
+                    <h3 className="text-lg font-semibold brand-heading text-mine-shaft">Professional Links</h3>
+                    <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">Optional</span>
                   </div>
 
                   <div>
-                    <label htmlFor="github" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label htmlFor="github" className="block text-sm font-medium text-gray-700 mb-2">
                       GitHub Profile
                     </label>
                     <div className="relative">
@@ -334,7 +334,7 @@ export default function RevampPage() {
                         id="github"
                         value={formData.github}
                         onChange={(e) => handleInputChange("github", e.target.value)}
-                        className="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                        className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-mine-shaft placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sunglow focus:border-transparent transition-all"
                         placeholder="https://github.com/johndoe"
                       />
                     </div>
@@ -349,11 +349,11 @@ export default function RevampPage() {
             <div className="space-y-6">
 
               <div className="space-y-6">
-                <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">Target Position</h3>
+                <div className="bg-vista-white rounded-xl p-6 shadow-sm border border-gray-200">
+                  <h3 className="text-lg font-semibold brand-heading text-mine-shaft mb-6">Target Position</h3>
                   <div className="space-y-5">
                     <div>
-                      <label htmlFor="jobRole" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      <label htmlFor="jobRole" className="block text-sm font-medium text-gray-700 mb-2">
                         Target Job Role <span className="text-red-500">*</span>
                       </label>
                       <input
@@ -361,15 +361,15 @@ export default function RevampPage() {
                         id="jobRole"
                         value={formData.jobRole}
                         onChange={(e) => handleInputChange("jobRole", e.target.value)}
-                        className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                        className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-mine-shaft placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sunglow focus:border-transparent transition-all"
                         placeholder="e.g., AI Engineer, Full Stack Developer, Product Manager"
                         required
                       />
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1.5">Enter the exact job title you're applying for</p>
+                      <p className="text-xs text-gray-500 mt-1.5">Enter the exact job title you're applying for</p>
                     </div>
 
                     <div>
-                      <label htmlFor="targetCompany" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      <label htmlFor="targetCompany" className="block text-sm font-medium text-gray-700 mb-2">
                         Target Company
                       </label>
                       <input
@@ -377,10 +377,10 @@ export default function RevampPage() {
                         id="targetCompany"
                         value={formData.targetCompany}
                         onChange={(e) => handleInputChange("targetCompany", e.target.value)}
-                        className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                        className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-mine-shaft placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sunglow focus:border-transparent transition-all"
                         placeholder="e.g., Google, Microsoft, OpenAI, Tesla"
                       />
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1.5">Company name you're targeting for this role</p>
+                      <p className="text-xs text-gray-500 mt-1.5">Company name you're targeting for this role</p>
                     </div>
                   </div>
                 </div>
@@ -391,11 +391,11 @@ export default function RevampPage() {
           {/* Step 3: Resume & Job Description */}
           <VerticalStep>
             <div className="space-y-6">
-              <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">Upload Documents</h3>
+              <div className="bg-vista-white rounded-xl p-6 shadow-sm border border-gray-200">
+                <h3 className="text-lg font-semibold brand-heading text-mine-shaft mb-6">Upload Documents</h3>
                 <div className="space-y-5">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
                       Current Resume <span className="text-red-500">*</span>
                     </label>
                     <div className="relative">
@@ -414,8 +414,8 @@ export default function RevampPage() {
                         className={cn(
                           "flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer transition-all",
                           formData.resumeFile
-                            ? "border-green-500 bg-green-50 dark:bg-green-900/20"
-                            : "border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 bg-gray-50 dark:bg-gray-700/50 hover:bg-gray-100 dark:hover:bg-gray-700"
+                            ? "border-green-500 bg-green-50"
+                            : "border-gray-300 hover:border-gray-400 bg-gray-50 hover:bg-gray-100"
                         )}
                       >
                         <div className="flex flex-col items-center justify-center pt-5 pb-6">
@@ -424,16 +424,16 @@ export default function RevampPage() {
                               <svg className="w-8 h-8 mb-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                               </svg>
-                              <p className="text-sm text-green-600 dark:text-green-400 font-medium">{formData.resumeFile.name}</p>
-                              <p className="text-xs text-gray-500 dark:text-gray-400">Click to change</p>
+                              <p className="text-sm text-green-600 font-medium">{formData.resumeFile.name}</p>
+                              <p className="text-xs text-gray-500">Click to change</p>
                             </>
                           ) : (
                             <>
                               <svg className="w-8 h-8 mb-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                               </svg>
-                              <p className="text-sm text-gray-600 dark:text-gray-300 font-medium">Upload your resume</p>
-                              <p className="text-xs text-gray-500 dark:text-gray-400">PDF only, up to 10MB</p>
+                              <p className="text-sm text-gray-600 font-medium">Upload your resume</p>
+                              <p className="text-xs text-gray-500">PDF only, up to 10MB</p>
                             </>
                           )}
                         </div>
@@ -442,7 +442,7 @@ export default function RevampPage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
                       Job Description <span className="text-red-500">*</span>
                     </label>
 
@@ -459,9 +459,9 @@ export default function RevampPage() {
                               handleInputChange("jobDescriptionText", "");
                             }
                           }}
-                          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
                         />
-                        <span className="text-sm text-gray-700 dark:text-gray-300">Paste job description as text</span>
+                        <span className="text-sm text-gray-700">Paste job description as text</span>
                       </label>
                     </div>
 
@@ -471,7 +471,7 @@ export default function RevampPage() {
                         onChange={(e) => handleInputChange("jobDescriptionText", e.target.value)}
                         placeholder="Paste the job description here..."
                         rows={8}
-                        className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-vertical"
+                        className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-mine-shaft placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sunglow focus:border-transparent transition-all resize-vertical"
                       />
                     ) : (
                       <div className="relative">
@@ -490,8 +490,8 @@ export default function RevampPage() {
                           className={cn(
                             "flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer transition-all",
                             formData.jobDescriptionFile
-                              ? "border-green-500 bg-green-50 dark:bg-green-900/20"
-                              : "border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 bg-gray-50 dark:bg-gray-700/50 hover:bg-gray-100 dark:hover:bg-gray-700"
+                              ? "border-green-500 bg-green-50"
+                              : "border-gray-300 hover:border-gray-400 bg-gray-50 hover:bg-gray-100"
                           )}
                         >
                           <div className="flex flex-col items-center justify-center pt-5 pb-6">
@@ -500,16 +500,16 @@ export default function RevampPage() {
                                 <svg className="w-8 h-8 mb-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
-                                <p className="text-sm text-green-600 dark:text-green-400 font-medium">{formData.jobDescriptionFile.name}</p>
-                                <p className="text-xs text-gray-500 dark:text-gray-400">Click to change</p>
+                                <p className="text-sm text-green-600 font-medium">{formData.jobDescriptionFile.name}</p>
+                                <p className="text-xs text-gray-500">Click to change</p>
                               </>
                             ) : (
                               <>
                                 <svg className="w-8 h-8 mb-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                 </svg>
-                                <p className="text-sm text-gray-600 dark:text-gray-300 font-medium">Upload job description</p>
-                                <p className="text-xs text-gray-500 dark:text-gray-400">PDF, DOCX, or TXT up to 10MB</p>
+                                <p className="text-sm text-gray-600 font-medium">Upload job description</p>
+                                <p className="text-xs text-gray-500">PDF, DOCX, or TXT up to 10MB</p>
                               </>
                             )}
                           </div>
@@ -527,12 +527,12 @@ export default function RevampPage() {
             <div className="space-y-6">
 
               <div className="space-y-6">
-                <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">Review Your Information</h3>
+                <div className="bg-vista-white rounded-xl p-6 shadow-sm border border-gray-200">
+                  <h3 className="text-lg font-semibold brand-heading text-mine-shaft mb-6">Review Your Information</h3>
                   <div className="space-y-6">
                     {/* Personal Info Summary */}
-                    <div className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-4">
-                      <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 flex items-center">
+                    <div className="bg-gray-50 rounded-lg p-4">
+                      <h4 className="text-sm font-semibold text-gray-700 mb-3 flex items-center">
                         <svg className="w-4 h-4 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>
@@ -541,25 +541,25 @@ export default function RevampPage() {
                       <div className="space-y-2">
                         {formData.location && (
                           <div className="flex justify-between text-sm">
-                            <span className="text-gray-600 dark:text-gray-400">Location:</span>
-                            <span className="text-gray-900 dark:text-gray-100 font-medium">{formData.location}</span>
+                            <span className="text-gray-600">Location:</span>
+                            <span className="text-gray-900 font-medium">{formData.location}</span>
                           </div>
                         )}
                         <div className="flex justify-between text-sm">
-                          <span className="text-gray-600 dark:text-gray-400">Email:</span>
-                          <span className="text-gray-900 dark:text-gray-100 font-medium">{formData.email}</span>
+                          <span className="text-gray-600">Email:</span>
+                          <span className="text-gray-900 font-medium">{formData.email}</span>
                         </div>
                         <div className="flex justify-between text-sm">
-                          <span className="text-gray-600 dark:text-gray-400">Phone:</span>
-                          <span className="text-gray-900 dark:text-gray-100 font-medium">{formData.phone}</span>
+                          <span className="text-gray-600">Phone:</span>
+                          <span className="text-gray-900 font-medium">{formData.phone}</span>
                         </div>
                         <div className="flex justify-between text-sm">
-                          <span className="text-gray-600 dark:text-gray-400">LinkedIn:</span>
+                          <span className="text-gray-600">LinkedIn:</span>
                           <span className="text-gray-900 dark:text-gray-100 font-medium text-sm truncate max-w-xs">{formData.linkedin}</span>
                         </div>
                         {formData.github && (
                           <div className="flex justify-between text-sm">
-                            <span className="text-gray-600 dark:text-gray-400">GitHub:</span>
+                            <span className="text-gray-600">GitHub:</span>
                             <span className="text-gray-900 dark:text-gray-100 font-medium text-sm truncate max-w-xs">{formData.github}</span>
                           </div>
                         )}
@@ -567,8 +567,8 @@ export default function RevampPage() {
                     </div>
 
                     {/* Job Details Summary */}
-                    <div className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-4">
-                      <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 flex items-center">
+                    <div className="bg-gray-50 rounded-lg p-4">
+                      <h4 className="text-sm font-semibold text-gray-700 mb-3 flex items-center">
                         <svg className="w-4 h-4 mr-2 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 012 2v6a2 2 0 01-2 2H8a2 2 0 01-2-2V8a2 2 0 012-2V6" />
                         </svg>
@@ -576,21 +576,21 @@ export default function RevampPage() {
                       </h4>
                       <div className="space-y-2">
                         <div className="flex justify-between text-sm">
-                          <span className="text-gray-600 dark:text-gray-400">Target Role:</span>
-                          <span className="text-gray-900 dark:text-gray-100 font-medium">{formData.jobRole}</span>
+                          <span className="text-gray-600">Target Role:</span>
+                          <span className="text-gray-900 font-medium">{formData.jobRole}</span>
                         </div>
                         {formData.targetCompany && (
                           <div className="flex justify-between text-sm">
-                            <span className="text-gray-600 dark:text-gray-400">Target Company:</span>
-                            <span className="text-gray-900 dark:text-gray-100 font-medium">{formData.targetCompany}</span>
+                            <span className="text-gray-600">Target Company:</span>
+                            <span className="text-gray-900 font-medium">{formData.targetCompany}</span>
                           </div>
                         )}
                       </div>
                     </div>
 
                     {/* Files Summary */}
-                    <div className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-4">
-                      <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 flex items-center">
+                    <div className="bg-gray-50 rounded-lg p-4">
+                      <h4 className="text-sm font-semibold text-gray-700 mb-3 flex items-center">
                         <svg className="w-4 h-4 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                         </svg>
@@ -598,8 +598,8 @@ export default function RevampPage() {
                       </h4>
                       <div className="space-y-2">
                         <div className="flex justify-between items-center text-sm">
-                          <span className="text-gray-600 dark:text-gray-400">Resume:</span>
-                          <span className="text-green-600 dark:text-green-400 flex items-center">
+                          <span className="text-gray-600">Resume:</span>
+                          <span className="text-green-600 flex items-center">
                             <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                             </svg>
@@ -607,8 +607,8 @@ export default function RevampPage() {
                           </span>
                         </div>
                         <div className="flex justify-between items-center text-sm">
-                          <span className="text-gray-600 dark:text-gray-400">Job Description:</span>
-                          <span className="text-green-600 dark:text-green-400 flex items-center">
+                          <span className="text-gray-600">Job Description:</span>
+                          <span className="text-green-600 flex items-center">
                             <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                             </svg>
@@ -622,8 +622,8 @@ export default function RevampPage() {
                     </div>
                   </div>
 
-                  <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
-                    <p className="text-blue-700 dark:text-blue-300 text-sm text-center">
+                  <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                    <p className="text-blue-700 text-sm text-center">
                       🚀 Your resume will be analyzed and optimized to match the job requirements perfectly!
                     </p>
                   </div>

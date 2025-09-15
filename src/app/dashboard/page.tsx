@@ -51,21 +51,21 @@ interface DashboardData {
 
 const StatCard = ({ title, value, change, trend, description, isNegative = false, actionButton = null }: any) => {
   return (
-    <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 hover:bg-zinc-800/50 transition-colors">
+    <div className="bg-white border border-gray-200 rounded-xl p-6 hover:bg-gray-50/50 transition-colors shadow-sm">
       <div className="flex items-start justify-between mb-4">
         <div>
-          <div className="text-zinc-400 text-sm font-medium mb-1">{title}</div>
-          <div className="text-white text-2xl font-bold">{value}</div>
+          <div className="text-gray-600 text-sm font-medium mb-1 brand-body">{title}</div>
+          <div className="text-mine-shaft text-2xl font-bold brand-heading">{value}</div>
         </div>
         <div className={cn(
           "flex items-center space-x-1 text-sm font-medium",
-          isNegative ? "text-red-400" : "text-green-400"
+          isNegative ? "text-db3b09" : "text-green-600"
         )}>
           <span>{isNegative ? "📉" : "📈"}</span>
           <span>{change}</span>
         </div>
       </div>
-      <div className="text-zinc-500 text-sm">
+      <div className="text-gray-500 text-sm brand-body">
         <div className="font-medium mb-1">{trend}</div>
         <div className="flex items-center justify-between">
           <span>{description}</span>
@@ -95,19 +95,19 @@ const ATSChart = ({ data }: { data: ATSByJobRole[] }) => {
 
   if (data.length === 0) {
     return (
-      <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
-        <h3 className="text-white text-lg font-semibold mb-4">ATS Scores by Job Role</h3>
-        <p className="text-zinc-400 text-sm">No ATS scores available yet. Create and calculate scores for your resumes to see the chart.</p>
+      <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+        <h3 className="text-mine-shaft text-lg font-semibold mb-4 brand-heading">ATS Scores by Job Role</h3>
+        <p className="text-gray-600 text-sm brand-body">No ATS scores available yet. Create and calculate scores for your resumes to see the chart.</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
+    <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h3 className="text-white text-lg font-semibold">ATS Scores by Role & Company</h3>
-          <p className="text-zinc-400 text-sm">Performance comparison across different roles and companies</p>
+          <h3 className="text-mine-shaft text-lg font-semibold brand-heading">ATS Scores by Role & Company</h3>
+          <p className="text-gray-600 text-sm brand-body">Performance comparison across different roles and companies</p>
         </div>
       </div>
 
@@ -115,19 +115,19 @@ const ATSChart = ({ data }: { data: ATSByJobRole[] }) => {
         {data.map((item, index) => (
           <div key={index} className="flex items-center space-x-4">
             <div className="w-40 text-right">
-              <span className="text-white text-sm font-medium truncate block" title={`${item.job_role}${item.target_company ? ` / ${item.target_company}` : ''}`}>
-                {item.job_role}{item.target_company ? ` / ${item.target_company}` : ''}
+              <span className="text-mine-shaft text-sm font-medium truncate block brand-body" title={`${item.job_role}${item.target_company ? ` / ${item.target_company}` : ''}`}>
+                {item.job_role}{item.target_company ? ` / ${item.targetCompany}` : ''}
               </span>
             </div>
 
             <div className="flex-1 relative">
-              <div className="w-full bg-zinc-800 rounded-full h-6 relative overflow-hidden">
+              <div className="w-full bg-gray-200 rounded-full h-6 relative overflow-hidden">
                 <div
                   className={cn("h-full rounded-full transition-all duration-500", getScoreColor(item.ats_score))}
                   style={{ width: `${Math.max(item.ats_score, 5)}%` }}
                 />
                 <div className="absolute inset-0 flex items-center justify-between px-3">
-                  <span className="text-white text-xs font-medium">
+                  <span className="text-mine-shaft text-xs font-medium brand-body-strong">
                     {item.ats_score.toFixed(1)}%
                   </span>
                 </div>
@@ -137,12 +137,12 @@ const ATSChart = ({ data }: { data: ATSByJobRole[] }) => {
             <div className="w-20 flex justify-end">
               <button
                 onClick={() => router.push(`/editor?project_id=${item.project_id}`)}
-                className="bg-slate-800 no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6 text-white inline-block"
+                className="bg-sunglow no-underline group cursor-pointer relative shadow-2xl shadow-gray-300 rounded-full p-px text-xs font-semibold leading-6 text-mine-shaft inline-block"
               >
                 <span className="absolute inset-0 overflow-hidden rounded-full">
-                  <span className="absolute inset-0 rounded-full bg-[image:radial-gradient(75%_100%_at_50%_0%,rgba(56,189,248,0.6)_0%,rgba(56,189,248,0)_75%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                  <span className="absolute inset-0 rounded-full bg-[image:radial-gradient(75%_100%_at_50%_0%,rgba(255,220,0,0.6)_0%,rgba(255,220,0,0)_75%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
                 </span>
-                <div className="relative flex space-x-2 items-center z-10 rounded-full bg-zinc-950 py-0.5 px-4 ring-1 ring-white/10">
+                <div className="relative flex space-x-2 items-center z-10 rounded-full bg-white py-0.5 px-4 ring-1 ring-sunglow/20">
                   <span>Edit</span>
                   <svg
                     fill="none"
@@ -160,30 +160,30 @@ const ATSChart = ({ data }: { data: ATSByJobRole[] }) => {
                     />
                   </svg>
                 </div>
-                <span className="absolute -bottom-0 left-[1.125rem] h-px w-[calc(100%-2.25rem)] bg-gradient-to-r from-emerald-400/0 via-emerald-400/90 to-emerald-400/0 transition-opacity duration-500 group-hover:opacity-40" />
+                <span className="absolute -bottom-0 left-[1.125rem] h-px w-[calc(100%-2.25rem)] bg-gradient-to-r from-sunglow/0 via-sunglow/90 to-sunglow/0 transition-opacity duration-500 group-hover:opacity-40" />
               </button>
             </div>
           </div>
         ))}
       </div>
 
-      <div className="mt-6 pt-4 border-t border-zinc-800">
+      <div className="mt-6 pt-4 border-t border-gray-200">
         <div className="flex items-center justify-center space-x-6 text-xs">
           <div className="flex items-center space-x-2">
             <div className="w-3 h-3 bg-green-500 rounded"></div>
-            <span className="text-zinc-400">90%+ Excellent</span>
+            <span className="text-gray-600 brand-body">90%+ Excellent</span>
           </div>
           <div className="flex items-center space-x-2">
             <div className="w-3 h-3 bg-yellow-500 rounded"></div>
-            <span className="text-zinc-400">80-89% Good</span>
+            <span className="text-gray-600 brand-body">80-89% Good</span>
           </div>
           <div className="flex items-center space-x-2">
             <div className="w-3 h-3 bg-orange-500 rounded"></div>
-            <span className="text-zinc-400">70-79% Fair</span>
+            <span className="text-gray-600 brand-body">70-79% Fair</span>
           </div>
           <div className="flex items-center space-x-2">
             <div className="w-3 h-3 bg-red-500 rounded"></div>
-            <span className="text-zinc-400">&lt;70% Needs Work</span>
+            <span className="text-gray-600 brand-body">&lt;70% Needs Work</span>
           </div>
         </div>
       </div>
@@ -213,8 +213,8 @@ const GapAnalysisColumn = ({
   if (isAnalyzing) {
     return (
       <div className="flex items-center space-x-2">
-        <div className="w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-        <span className="text-blue-400 text-sm">Analyzing...</span>
+        <div className="w-4 h-4 border-2 border-sunglow border-t-transparent rounded-full animate-spin"></div>
+        <span className="text-sunglow text-sm">Analyzing...</span>
       </div>
     );
   }
@@ -223,10 +223,10 @@ const GapAnalysisColumn = ({
     return (
       <button
         onClick={() => onRunGapAnalysis(projectId)}
-        className="relative inline-flex h-12 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50"
+        className="relative inline-flex h-12 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-sunglow focus:ring-offset-2 focus:ring-offset-white"
       >
-        <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
-        <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-3 py-1 text-sm font-medium text-white backdrop-blur-3xl">
+        <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#FFDC00_0%,#FFA500_50%,#FFDC00_100%)]" />
+        <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-white px-3 py-1 text-sm font-medium text-mine-shaft backdrop-blur-3xl">
           Run Review
         </span>
       </button>
@@ -237,28 +237,28 @@ const GapAnalysisColumn = ({
     <div className="flex flex-wrap gap-2">
       <button
         onClick={() => onShowContent('gap-analysis', projectId)}
-        className="relative inline-flex h-8 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50"
+        className="relative inline-flex h-8 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-sunglow focus:ring-offset-2 focus:ring-offset-white"
       >
-        <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
-        <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-2 py-1 text-xs font-medium text-white backdrop-blur-3xl">
+        <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#FFDC00_0%,#FFA500_50%,#FFDC00_100%)]" />
+        <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-white px-2 py-1 text-xs font-medium text-mine-shaft backdrop-blur-3xl">
           Gap Analysis
         </span>
       </button>
       <button
         onClick={() => onShowContent('upskill', projectId)}
-        className="relative inline-flex h-8 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50"
+        className="relative inline-flex h-8 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-sunglow focus:ring-offset-2 focus:ring-offset-white"
       >
-        <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
-        <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-2 py-1 text-xs font-medium text-white backdrop-blur-3xl">
+        <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#FFDC00_0%,#FFA500_50%,#FFDC00_100%)]" />
+        <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-white px-2 py-1 text-xs font-medium text-mine-shaft backdrop-blur-3xl">
           Upskill
         </span>
       </button>
       <button
         onClick={() => onShowContent('project-recommendations', projectId)}
-        className="relative inline-flex h-8 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50"
+        className="relative inline-flex h-8 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-sunglow focus:ring-offset-2 focus:ring-offset-white"
       >
-        <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
-        <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-2 py-1 text-xs font-medium text-white backdrop-blur-3xl">
+        <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#FFDC00_0%,#FFA500_50%,#FFDC00_100%)]" />
+        <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-white px-2 py-1 text-xs font-medium text-mine-shaft backdrop-blur-3xl">
           Projects
         </span>
       </button>
@@ -286,9 +286,9 @@ const GapAnalysisButton = ({
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Main Button */}
-      <button className="relative inline-flex h-8 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
-        <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#A7F3D0_0%,#059669_50%,#A7F3D0_100%)]" />
-        <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-3 py-1 text-xs font-medium text-white backdrop-blur-3xl">
+      <button className="relative inline-flex h-8 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-sunglow focus:ring-offset-2 focus:ring-offset-white">
+        <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#FFDC00_0%,#FFA500_50%,#FFDC00_100%)]" />
+        <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-white px-3 py-1 text-xs font-medium text-mine-shaft backdrop-blur-3xl">
           Gap Analysis
         </span>
       </button>
@@ -300,23 +300,23 @@ const GapAnalysisButton = ({
           ? "opacity-100 visible translate-y-0"
           : "opacity-0 invisible translate-y-2"
       )}>
-        <div className="bg-gray-900 border border-gray-700 rounded-lg shadow-2xl overflow-hidden min-w-48">
+        <div className="bg-white border border-gray-200 rounded-lg shadow-2xl overflow-hidden min-w-48">
           <div className="py-1">
             {!hasGapAnalysis && (
               <button
                 onClick={() => onRunGapAnalysis(projectId)}
-                className="w-full text-left px-4 py-2 text-sm text-white hover:bg-gray-800 transition-colors flex items-center space-x-2"
+                className="w-full text-left px-4 py-2 text-sm text-mine-shaft hover:bg-gray-100 transition-colors flex items-center space-x-2"
               >
-                <span className="text-yellow-400">🔄</span>
+                <span className="text-yellow-500">🔄</span>
                 <span>Run Gap Analysis</span>
               </button>
             )}
             {hasGapAnalysis && (
               <button
                 onClick={() => onShowContent('gap-analysis', projectId)}
-                className="w-full text-left px-4 py-2 text-sm text-white hover:bg-gray-800 transition-colors flex items-center space-x-2"
+                className="w-full text-left px-4 py-2 text-sm text-mine-shaft hover:bg-gray-100 transition-colors flex items-center space-x-2"
               >
-                <span className="text-blue-400">📊</span>
+                <span className="text-sunglow">📊</span>
                 <span>Gap Analysis</span>
               </button>
             )}
@@ -324,16 +324,16 @@ const GapAnalysisButton = ({
               <>
                 <button
                   onClick={() => onShowContent('upskill', projectId)}
-                  className="w-full text-left px-4 py-2 text-sm text-white hover:bg-gray-800 transition-colors flex items-center space-x-2"
+                  className="w-full text-left px-4 py-2 text-sm text-mine-shaft hover:bg-gray-100 transition-colors flex items-center space-x-2"
                 >
-                  <span className="text-green-400">📚</span>
+                  <span className="text-sunglow">📚</span>
                   <span>Upskill Plan</span>
                 </button>
                 <button
                   onClick={() => onShowContent('project-recommendations', projectId)}
-                  className="w-full text-left px-4 py-2 text-sm text-white hover:bg-gray-800 transition-colors flex items-center space-x-2"
+                  className="w-full text-left px-4 py-2 text-sm text-mine-shaft hover:bg-gray-100 transition-colors flex items-center space-x-2"
                 >
-                  <span className="text-purple-400">🎯</span>
+                  <span className="text-sunglow">🎯</span>
                   <span>Project Recommendations</span>
                 </button>
               </>
@@ -362,15 +362,15 @@ const Pagination = ({
   }
 
   return (
-    <div className="flex items-center justify-between px-6 py-4 bg-zinc-800/30 border-t border-zinc-800">
-      <div className="text-zinc-400 text-sm">
+    <div className="flex items-center justify-between px-6 py-4 bg-gray-100 border-t border-gray-200">
+      <div className="text-gray-600 text-sm brand-body">
         Page {currentPage} of {totalPages}
       </div>
       <div className="flex space-x-2">
         <button
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className="px-3 py-1.5 text-sm bg-zinc-700 hover:bg-zinc-600 disabled:bg-zinc-800 disabled:text-zinc-600 text-white rounded transition-colors"
+          className="px-3 py-1.5 text-sm bg-gray-200 hover:bg-gray-300 disabled:bg-gray-100 disabled:text-gray-400 text-mine-shaft rounded transition-colors"
         >
           Previous
         </button>
@@ -381,8 +381,8 @@ const Pagination = ({
             className={cn(
               "px-3 py-1.5 text-sm rounded transition-colors",
               page === currentPage
-                ? "bg-blue-600 text-white"
-                : "bg-zinc-700 hover:bg-zinc-600 text-white"
+                ? "bg-sunglow text-white"
+                : "bg-gray-200 hover:bg-gray-300 text-mine-shaft"
             )}
           >
             {page}
@@ -391,7 +391,7 @@ const Pagination = ({
         <button
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className="px-3 py-1.5 text-sm bg-zinc-700 hover:bg-zinc-600 disabled:bg-zinc-800 disabled:text-zinc-600 text-white rounded transition-colors"
+          className="px-3 py-1.5 text-sm bg-gray-200 hover:bg-gray-300 disabled:bg-gray-100 disabled:text-gray-400 text-mine-shaft rounded transition-colors"
         >
           Next
         </button>
@@ -424,16 +424,16 @@ const DataTable = ({
   const router = useRouter();
 
   return (
-    <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
+    <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
       {/* Header */}
-      <div className="px-6 py-4 border-b border-zinc-800">
-        <h3 className="text-white text-lg font-semibold">Your Resumes</h3>
-        <p className="text-zinc-400 text-sm">Manage and track your resume portfolio</p>
+      <div className="px-6 py-4 border-b border-gray-200">
+        <h3 className="text-mine-shaft text-lg font-semibold brand-heading">Your Resumes</h3>
+        <p className="text-gray-600 text-sm brand-body">Manage and track your resume portfolio</p>
       </div>
 
       {/* Table Header */}
-      <div className="px-6 py-3 bg-zinc-800/50 border-b border-zinc-800">
-        <div className="grid grid-cols-5 gap-4 text-xs font-medium text-zinc-400 uppercase tracking-wider">
+      <div className="px-6 py-3 bg-gray-50 border-b border-gray-200">
+        <div className="grid grid-cols-5 gap-4 text-xs font-medium text-gray-600 uppercase tracking-wider brand-body">
           <div>Job Role</div>
           <div>Target Company</div>
           <div>ATS Score</div>
@@ -443,22 +443,22 @@ const DataTable = ({
       </div>
 
       {/* Table Rows */}
-      <div className="divide-y divide-zinc-800">
+      <div className="divide-y divide-gray-200">
         {loading ? (
           <div className="px-6 py-8 text-center">
-            <div className="w-6 h-6 border-2 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
-            <p className="text-zinc-400 text-sm">Loading your resumes...</p>
+            <div className="w-6 h-6 border-2 border-sunglow border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
+            <p className="text-gray-600 text-sm brand-body">Loading your resumes...</p>
           </div>
         ) : projects.length === 0 ? (
           <div className="px-6 py-8 text-center">
-            <p className="text-zinc-400 text-sm">No resumes created yet. Click "New Resume" to get started!</p>
+            <p className="text-gray-600 text-sm brand-body">No resumes created yet. Click "New Resume" to get started!</p>
           </div>
         ) : (
           projects.map((project) => (
-            <div key={project.id} className="px-6 py-4 hover:bg-zinc-800/30 transition-colors">
+            <div key={project.id} className="px-6 py-4 hover:bg-gray-50/50 transition-colors">
               <div className="grid grid-cols-5 gap-4 items-center">
-                <div className="text-white text-sm font-medium">{project.job_role}</div>
-                <div className="text-zinc-400 text-sm">{project.target_company || 'Not specified'}</div>
+                <div className="text-mine-shaft text-sm font-medium brand-body">{project.job_role}</div>
+                <div className="text-gray-600 text-sm brand-body">{project.target_company || 'Not specified'}</div>
                 <div className="flex items-center space-x-2">
                   {project.ats_score ? (
                     <>
@@ -489,12 +489,12 @@ const DataTable = ({
                 <div className="flex space-x-2 items-center">
                   <button
                     onClick={() => router.push(`/editor?project_id=${project.id}`)}
-                    className="bg-slate-800 no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6 text-white inline-block"
+                    className="bg-sunglow no-underline group cursor-pointer relative shadow-2xl shadow-gray-300 rounded-full p-px text-xs font-semibold leading-6 text-mine-shaft inline-block"
                   >
                     <span className="absolute inset-0 overflow-hidden rounded-full">
-                      <span className="absolute inset-0 rounded-full bg-[image:radial-gradient(75%_100%_at_50%_0%,rgba(56,189,248,0.6)_0%,rgba(56,189,248,0)_75%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                      <span className="absolute inset-0 rounded-full bg-[image:radial-gradient(75%_100%_at_50%_0%,rgba(255,220,0,0.6)_0%,rgba(255,220,0,0)_75%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
                     </span>
-                    <div className="relative flex space-x-2 items-center z-10 rounded-full bg-zinc-950 py-0.5 px-4 ring-1 ring-white/10">
+                    <div className="relative flex space-x-2 items-center z-10 rounded-full bg-white py-0.5 px-4 ring-1 ring-sunglow/20">
                       <span>Go to Resume</span>
                       <svg
                         fill="none"
@@ -512,18 +512,18 @@ const DataTable = ({
                         />
                       </svg>
                     </div>
-                    <span className="absolute -bottom-0 left-[1.125rem] h-px w-[calc(100%-2.25rem)] bg-gradient-to-r from-emerald-400/0 via-emerald-400/90 to-emerald-400/0 transition-opacity duration-500 group-hover:opacity-40" />
+                    <span className="absolute -bottom-0 left-[1.125rem] h-px w-[calc(100%-2.25rem)] bg-gradient-to-r from-sunglow/0 via-sunglow/90 to-sunglow/0 transition-opacity duration-500 group-hover:opacity-40" />
                   </button>
 
                   <button
                     onClick={() => onDownloadJobDescription(project.id)}
-                    className="bg-green-800 hover:bg-green-700 group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6 text-white inline-block transition-colors"
+                    className="bg-sunglow hover:bg-yellow-500 group cursor-pointer relative shadow-2xl shadow-gray-300 rounded-full p-px text-xs font-semibold leading-6 text-mine-shaft inline-block transition-colors"
                     title="Download Job Description"
                   >
                     <span className="absolute inset-0 overflow-hidden rounded-full">
-                      <span className="absolute inset-0 rounded-full bg-[image:radial-gradient(75%_100%_at_50%_0%,rgba(34,197,94,0.6)_0%,rgba(34,197,94,0)_75%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                      <span className="absolute inset-0 rounded-full bg-[image:radial-gradient(75%_100%_at_50%_0%,rgba(255,220,0,0.6)_0%,rgba(255,220,0,0)_75%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
                     </span>
-                    <div className="relative flex space-x-2 items-center z-10 rounded-full bg-zinc-950 py-0.5 px-4 ring-1 ring-white/10">
+                    <div className="relative flex space-x-2 items-center z-10 rounded-full bg-white py-0.5 px-4 ring-1 ring-sunglow/20">
                       <span>Download JD</span>
                       <svg
                         fill="none"
@@ -541,7 +541,7 @@ const DataTable = ({
                         />
                       </svg>
                     </div>
-                    <span className="absolute -bottom-0 left-[1.125rem] h-px w-[calc(100%-2.25rem)] bg-gradient-to-r from-green-400/0 via-green-400/90 to-green-400/0 transition-opacity duration-500 group-hover:opacity-40" />
+                    <span className="absolute -bottom-0 left-[1.125rem] h-px w-[calc(100%-2.25rem)] bg-gradient-to-r from-sunglow/0 via-sunglow/90 to-sunglow/0 transition-opacity duration-500 group-hover:opacity-40" />
                   </button>
                 </div>
               </div>
@@ -841,10 +841,10 @@ export default function DashboardPage() {
 
   if (loading || dashboardLoading) {
     return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center">
+      <div className="min-h-screen bg-vista-white texture-paper text-mine-shaft flex items-center justify-center">
         <div className="text-center">
-          <div className="w-8 h-8 border-2 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-zinc-400">Loading dashboard...</p>
+          <div className="w-8 h-8 border-2 border-sunglow border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600 brand-body">Loading dashboard...</p>
         </div>
       </div>
     );
@@ -858,20 +858,20 @@ export default function DashboardPage() {
   // Show error state if dashboard data failed to load
   if (dashboardError) {
     return (
-      <div className="min-h-screen bg-black text-white">
+      <div className="min-h-screen bg-vista-white texture-paper text-mine-shaft">
         {/* Header */}
-        <div className="h-16 bg-zinc-900 border-b border-zinc-800 flex items-center justify-between px-6">
+        <div className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6">
           <div className="flex items-center space-x-6">
             {/* Logo/Brand */}
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                <span className="text-black font-bold text-sm">A</span>
+              <div className="w-8 h-8 bg-sunglow rounded-full flex items-center justify-center">
+                <span className="text-mine-shaft font-bold text-sm brand-heading">A</span>
               </div>
-              <span className="text-white font-semibold">Resume Builder</span>
+              <span className="text-mine-shaft font-semibold brand-heading">Resume Builder</span>
             </div>
 
             {/* Welcome message */}
-            <span className="text-white text-lg">
+            <span className="text-mine-shaft text-lg brand-body">
               Welcome, {user?.full_name || user?.email?.split('@')[0]}
             </span>
           </div>
@@ -884,11 +884,11 @@ export default function DashboardPage() {
 
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center">
-            <div className="text-red-400 text-lg mb-2">Failed to load dashboard</div>
-            <p className="text-zinc-400 mb-4">{dashboardError}</p>
+            <div className="text-db3b09 text-lg mb-2 brand-subheading">Failed to load dashboard</div>
+            <p className="text-gray-600 mb-4 brand-body">{dashboardError}</p>
             <button
               onClick={() => fetchDashboardData()}
-              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+              className="px-4 py-2 bg-sunglow hover:bg-yellow-500 text-mine-shaft rounded-lg transition-colors font-medium"
             >
               Retry
             </button>
@@ -903,20 +903,20 @@ export default function DashboardPage() {
   const atsByJobRole = dashboardData?.ats_by_job_role || [];
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-vista-white texture-paper text-mine-shaft">
       {/* Header */}
-      <div className="h-16 bg-zinc-900 border-b border-zinc-800 flex items-center justify-between px-6">
+      <div className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6">
         <div className="flex items-center space-x-6">
           {/* Logo/Brand */}
           <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-              <span className="text-black font-bold text-sm">A</span>
+            <div className="w-8 h-8 bg-sunglow rounded-full flex items-center justify-center">
+              <span className="text-mine-shaft font-bold text-sm brand-heading">A</span>
             </div>
-            <span className="text-white font-semibold">Resume Builder</span>
+            <span className="text-mine-shaft font-semibold brand-heading">Resume Builder</span>
           </div>
 
           {/* Welcome message */}
-          <span className="text-white text-lg">
+          <span className="text-mine-shaft text-lg brand-body">
             Welcome, {user?.full_name || user?.email?.split('@')[0]}
           </span>
         </div>
@@ -928,10 +928,10 @@ export default function DashboardPage() {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col bg-vista-white">
 
         {/* Content */}
-        <div className="flex-1 p-6 space-y-6">
+        <div className="flex-1 p-6 space-y-6 bg-vista-white">
           {/* KPIs */}
           {stats && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -944,12 +944,12 @@ export default function DashboardPage() {
                 actionButton={stats.highest_project_id && (
                   <button
                     onClick={() => router.push(`/editor?project_id=${stats.highest_project_id}`)}
-                    className="bg-slate-800 no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6 text-white inline-block"
+                    className="bg-sunglow no-underline group cursor-pointer relative shadow-2xl shadow-gray-300 rounded-full p-px text-xs font-semibold leading-6 text-mine-shaft inline-block"
                   >
                     <span className="absolute inset-0 overflow-hidden rounded-full">
-                      <span className="absolute inset-0 rounded-full bg-[image:radial-gradient(75%_100%_at_50%_0%,rgba(56,189,248,0.6)_0%,rgba(56,189,248,0)_75%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                      <span className="absolute inset-0 rounded-full bg-[image:radial-gradient(75%_100%_at_50%_0%,rgba(255,220,0,0.6)_0%,rgba(255,220,0,0)_75%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
                     </span>
-                    <div className="relative flex space-x-2 items-center z-10 rounded-full bg-zinc-950 py-0.5 px-4 ring-1 ring-white/10">
+                    <div className="relative flex space-x-2 items-center z-10 rounded-full bg-white py-0.5 px-4 ring-1 ring-sunglow/20">
                       <span>Open Resume</span>
                       <svg
                         fill="none"
@@ -967,7 +967,7 @@ export default function DashboardPage() {
                         />
                       </svg>
                     </div>
-                    <span className="absolute -bottom-0 left-[1.125rem] h-px w-[calc(100%-2.25rem)] bg-gradient-to-r from-emerald-400/0 via-emerald-400/90 to-emerald-400/0 transition-opacity duration-500 group-hover:opacity-40" />
+                    <span className="absolute -bottom-0 left-[1.125rem] h-px w-[calc(100%-2.25rem)] bg-gradient-to-r from-sunglow/0 via-sunglow/90 to-sunglow/0 transition-opacity duration-500 group-hover:opacity-40" />
                   </button>
                 )}
               />

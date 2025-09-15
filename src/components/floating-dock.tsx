@@ -21,21 +21,21 @@ export const FloatingDock = ({ className }: FloatingDockProps) => {
       className
     )}>
       <div className="flex items-center">
-        <div className="text-white font-bold text-lg tracking-wider">
+        <div className="text-white font-bold text-lg tracking-wider brand-heading">
           Alpha
         </div>
       </div>
       
       <button className={cn(
         "px-4 py-1.5 rounded-full",
-        "bg-gradient-to-r from-purple-500/20 to-blue-500/20",
-        "backdrop-blur-sm border border-white/20",
-        "text-white text-sm font-semibold tracking-wide",
-        "hover:from-purple-500/30 hover:to-blue-500/30",
-        "hover:border-white/30 hover:scale-105",
+        "bg-gradient-to-r from-sunglow/20 to-yellow-500/20",
+        "backdrop-blur-sm border border-sunglow/20",
+        "text-sunglow text-sm font-semibold tracking-wide",
+        "hover:from-sunglow/30 hover:to-yellow-500/30",
+        "hover:border-sunglow/30 hover:scale-105",
         "transition-all duration-200",
         "shadow-lg hover:shadow-xl",
-        "group-hover:shadow-purple-500/20"
+        "group-hover:shadow-sunglow/20"
       )}>
         Sign In
       </button>

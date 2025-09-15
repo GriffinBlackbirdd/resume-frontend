@@ -4,26 +4,39 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
-    --primary: 0 0% 9%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
-    --accent: 0 0% 96.1%;
-    --accent-foreground: 0 0% 9%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 0 0% 3.9%;
+    /* Brand Colors */
+    --vista-white: #FFFDFA;
+    --mine-shaft: #202020;
+    --sunglow: #FDBA2F;
+    --db3b09: #DB3B09;
+    --gradient-start: #FFD200;
+    --gradient-end: #7A0EEF;
+
+    /* CSS Variables */
+    --background: 255 253 250; /* Vista White */
+    --foreground: 32 32 32; /* Mine Shaft */
+    --card: 255 253 250; /* Vista White */
+    --card-foreground: 32 32 32; /* Mine Shaft */
+    --popover: 255 253 250; /* Vista White */
+    --popover-foreground: 32 32 32; /* Mine Shaft */
+    --primary: 253 186 47; /* Sunglow */
+    --primary-foreground: 32 32 32; /* Mine Shaft */
+    --secondary: 32 32 32; /* Mine Shaft */
+    --secondary-foreground: 255 253 250; /* Vista White */
+    --muted: 245 245 244; /* Light gray variant */
+    --muted-foreground: 128 128 128; /* Medium gray */
+    --accent: 253 186 47; /* Sunglow */
+    --accent-foreground: 32 32 32; /* Mine Shaft */
+    --destructive: 219 59 9; /* DB3B09 */
+    --destructive-foreground: 255 253 250; /* Vista White */
+    --border: 224 224 223; /* Light border */
+    --input: 255 253 250; /* Vista White */
+    --ring: 253 186 47; /* Sunglow */
     --radius: 0.5rem;
+
+    /* Custom Brand Variables */
+    --brand-gradient: linear-gradient(-45deg, var(--gradient-start), var(--gradient-end));
+    --text-gradient: linear-gradient(135deg, var(--mine-shaft), var(--sunglow));
   }
 
   .dark {
@@ -59,7 +72,83 @@
 }
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'SF Pro Display', 'PP Editorial New', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 300;
+  color: rgb(var(--foreground));
+  background-color: rgb(var(--background));
+}
+
+/* Typography Classes */
+.brand-heading {
+  font-family: 'Bebas Neue Pro', 'SF Pro Display', sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.brand-subheading {
+  font-family: 'SF Pro Display', sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.brand-body {
+  font-family: 'PP Editorial New', 'SF Pro Display', sans-serif;
+  font-weight: 300;
+  line-height: 1.6;
+}
+
+.brand-body-strong {
+  font-family: 'SF Pro Display', sans-serif;
+  font-weight: 400;
+}
+
+/* Brand Color Utilities */
+.bg-vista-white {
+  background-color: var(--vista-white);
+}
+
+.bg-mine-shaft {
+  background-color: var(--mine-shaft);
+}
+
+.bg-sunglow {
+  background-color: var(--sunglow);
+}
+
+.text-vista-white {
+  color: var(--vista-white);
+}
+
+.text-mine-shaft {
+  color: var(--mine-shaft);
+}
+
+.text-sunglow {
+  color: var(--sunglow);
+}
+
+.border-vista-white {
+  border-color: var(--vista-white);
+}
+
+.border-mine-shaft {
+  border-color: var(--mine-shaft);
+}
+
+.border-sunglow {
+  border-color: var(--sunglow);
+}
+
+/* Brand Gradient Utilities */
+.bg-brand-gradient {
+  background: var(--brand-gradient);
+}
+
+.text-brand-gradient {
+  background: var(--text-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 /* Import Hyperspeed styles */
@@ -123,16 +212,16 @@ html {
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(32, 32, 32, 0.1);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(139, 92, 246, 0.3);
+  background: rgba(253, 186, 47, 0.3);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(139, 92, 246, 0.5);
+  background: rgba(253, 186, 47, 0.5);
 }
 
 /* Glass morphism utility classes */
@@ -188,17 +277,17 @@ input[type="month"]::-webkit-calendar-picker-indicator:hover {
 }
 
 .form-scroll::-webkit-scrollbar-track {
-  background: rgba(75, 85, 99, 0.3);
+  background: rgba(32, 32, 32, 0.1);
   border-radius: 3px;
 }
 
 .form-scroll::-webkit-scrollbar-thumb {
-  background: rgba(168, 85, 247, 0.5);
+  background: rgba(253, 186, 47, 0.5);
   border-radius: 3px;
 }
 
 .form-scroll::-webkit-scrollbar-thumb:hover {
-  background: rgba(168, 85, 247, 0.7);
+  background: rgba(253, 186, 47, 0.7);
 }
 
 /* Enhanced checkbox styling for form editor */
@@ -217,8 +306,8 @@ input[type="month"]::-webkit-calendar-picker-indicator:hover {
 }
 
 .form-checkbox:checked {
-  background-color: rgb(168, 85, 247);
-  border-color: rgb(168, 85, 247);
+  background-color: var(--sunglow);
+  border-color: var(--sunglow);
   transform: scale(1.05);
 }
 
@@ -228,7 +317,7 @@ input[type="month"]::-webkit-calendar-picker-indicator:hover {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: white;
+  color: var(--mine-shaft);
   font-size: 0.75rem;
   font-weight: bold;
   line-height: 1;
@@ -236,10 +325,65 @@ input[type="month"]::-webkit-calendar-picker-indicator:hover {
 
 .form-checkbox:focus {
   outline: none;
-  box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.5);
+  box-shadow: 0 0 0 2px rgba(253, 186, 47, 0.5);
 }
 
 .form-checkbox:hover {
-  border-color: rgb(168, 85, 247);
-  background-color: rgb(75, 85, 99);
+  border-color: var(--sunglow);
+  background-color: rgba(32, 32, 32, 0.05);
+}
+
+/* Brand Textures */
+.texture-grid {
+  background-image:
+    linear-gradient(rgba(32, 32, 32, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(32, 32, 32, 0.03) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.texture-paper {
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 10px,
+      rgba(32, 32, 32, 0.02) 10px,
+      rgba(32, 32, 32, 0.02) 20px
+    );
+}
+
+.texture-dots {
+  background-image: radial-gradient(circle, rgba(32, 32, 32, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* Brand Animation Enhancements */
+@keyframes sunglow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(253, 186, 47, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(253, 186, 47, 0.6);
+  }
+}
+
+@keyframes gradient-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-sunglow-pulse {
+  animation: sunglow-pulse 3s ease-in-out infinite;
+}
+
+.animate-gradient-flow {
+  background-size: 200% 200%;
+  animation: gradient-flow 8s ease infinite;
 }

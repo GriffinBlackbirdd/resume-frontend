@@ -83,7 +83,7 @@ export default function VerticalStepper({
 
   return (
     <motion.div
-      className={cn("min-h-screen bg-gradient-to-br from-slate-50 to-gray-100 dark:from-gray-900 dark:to-gray-800", className)}
+      className={cn("min-h-screen bg-vista-white texture-paper", className)}
       {...rest}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -91,7 +91,7 @@ export default function VerticalStepper({
     >
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
         <motion.div
-          className="overflow-hidden rounded-2xl bg-white dark:bg-gray-800 shadow-xl"
+          className="overflow-hidden rounded-2xl bg-vista-white shadow-xl border border-gray-200"
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.1 }}
@@ -100,8 +100,8 @@ export default function VerticalStepper({
             {/* Vertical Stepper Sidebar */}
             <div className="w-full lg:w-80 bg-gray-50 dark:bg-gray-900/50 p-6 lg:p-8">
               <div className="mb-8">
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Revamp Your Resume</h1>
-                <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                <h1 className="text-3xl font-bold brand-heading text-mine-shaft">Revamp Your Resume</h1>
+                <p className="mt-2 text-sm text-gray-600 brand-body">
                   Complete all steps to optimize your resume
                 </p>
               </div>
@@ -125,7 +125,7 @@ export default function VerticalStepper({
                         className={cn(
                           "group relative w-full rounded-lg p-3 lg:p-4 text-left transition-all duration-200",
                           status === 'active'
-                            ? "bg-blue-50 dark:bg-blue-900/20 border-2 border-blue-500 dark:border-blue-400"
+                            ? "bg-yellow-50 dark:bg-yellow-900/20 border-2 border-sunglow dark:border-yellow-400"
                             : status === 'complete'
                             ? "bg-green-50 dark:bg-green-900/20 border-2 border-green-500 dark:border-green-400"
                             : "bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600",
@@ -144,8 +144,8 @@ export default function VerticalStepper({
                             {status === 'complete' ? (
                               <CheckCircle className="h-6 w-6 text-green-500 dark:text-green-400" />
                             ) : status === 'active' ? (
-                              <div className="h-6 w-6 rounded-full bg-blue-500 flex items-center justify-center">
-                                <span className="text-xs font-bold text-white">{stepNumber}</span>
+                              <div className="h-6 w-6 rounded-full bg-sunglow flex items-center justify-center">
+                                <span className="text-xs font-bold text-mine-shaft">{stepNumber}</span>
                               </div>
                             ) : (
                               <Circle className="h-6 w-6 text-gray-400 dark:text-gray-500" />
@@ -187,7 +187,7 @@ export default function VerticalStepper({
                               animate={{ x: [0, 4, 0] }}
                               transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
                             >
-                              <ChevronRight className="h-5 w-5 text-blue-500" />
+                              <ChevronRight className="h-5 w-5 text-sunglow" />
                             </motion.div>
                           )}
                         </div>
@@ -219,7 +219,7 @@ export default function VerticalStepper({
                 </div>
                 <div className="mt-2 h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
                   <motion.div
-                    className="h-full bg-gradient-to-r from-blue-500 to-blue-600"
+                    className="h-full bg-gradient-to-r from-sunglow to-yellow-500"
                     initial={{ width: 0 }}
                     animate={{ width: `${((currentStep - 1) / totalSteps) * 100}%` }}
                     transition={{ duration: 0.5, ease: "easeOut" }}
@@ -248,7 +248,7 @@ export default function VerticalStepper({
                         className={cn(
                           "inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200",
                           "text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700",
-                          "hover:bg-gray-200 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          "hover:bg-gray-200 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-sunglow"
                         )}
                         {...backButtonProps}
                       >
@@ -260,9 +260,9 @@ export default function VerticalStepper({
                       disabled={!validateStep(currentStep)}
                       className={cn(
                         "inline-flex items-center px-6 py-2 text-sm font-medium rounded-lg transition-all duration-200",
-                        "focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500",
+                        "focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sunglow",
                         validateStep(currentStep)
-                          ? "bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800 shadow-lg hover:shadow-xl"
+                          ? "bg-sunglow text-mine-shaft hover:bg-yellow-500 active:bg-yellow-600 shadow-lg hover:shadow-xl"
                           : "bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed"
                       )}
                       {...nextButtonProps}
