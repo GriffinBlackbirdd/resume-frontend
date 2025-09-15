@@ -4,6 +4,7 @@ import React, { useState, Children, useRef, useLayoutEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { CheckCircle, Circle, ChevronRight } from 'lucide-react';
+import { BrandButton } from './brand-button';
 
 export default function VerticalStepper({
   children,
@@ -243,35 +244,25 @@ export default function VerticalStepper({
                 <div className={cn("mt-8 pt-6 border-t border-gray-200 dark:border-gray-700", footerClassName)}>
                   <div className={cn("flex", currentStep !== 1 ? 'justify-between' : 'justify-end')}>
                     {currentStep !== 1 && (
-                      <button
+                      <BrandButton
+                        variant="secondary"
                         onClick={handleBack}
-                        className={cn(
-                          "inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200",
-                          "text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700",
-                          "hover:bg-gray-200 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-sunglow"
-                        )}
                         {...backButtonProps}
                       >
                         {backButtonText}
-                      </button>
+                      </BrandButton>
                     )}
-                    <button
+                    <BrandButton
+                      variant="primary"
                       onClick={isLastStep ? handleComplete : handleNext}
                       disabled={!validateStep(currentStep)}
-                      className={cn(
-                        "inline-flex items-center px-6 py-2 text-sm font-medium rounded-lg transition-all duration-200",
-                        "focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sunglow",
-                        validateStep(currentStep)
-                          ? "bg-sunglow text-mine-shaft hover:bg-yellow-500 active:bg-yellow-600 shadow-lg hover:shadow-xl"
-                          : "bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed"
-                      )}
                       {...nextButtonProps}
                     >
                       {isLastStep ? 'Complete' : nextButtonText}
                       {!isLastStep && (
                         <ChevronRight className="ml-2 h-4 w-4" />
                       )}
-                    </button>
+                    </BrandButton>
                   </div>
                 </div>
               )}

@@ -3,6 +3,9 @@
 import React, { useState, useEffect } from "react";
 import { X, CheckCircle, AlertCircle, TrendingUp } from "lucide-react";
 import ElectricBorder from "./ElectricBorder";
+import { BrandButton } from "./ui/brand-button";
+import { CinematicButton } from "./ui/cinematic-button";
+import { TextButton } from "./ui/text-button";
 
 interface ATSAnalysisModalProps {
   isOpen: boolean;
@@ -138,12 +141,12 @@ const ATSAnalysisModal: React.FC<ATSAnalysisModalProps> = ({
         >
           <div className="bg-zinc-900 rounded-2xl p-8 relative">
             {/* Close button */}
-            <button
+            <TextButton
               onClick={onClose}
-              className="absolute top-4 right-4 text-zinc-400 hover:text-white transition-colors"
+              className="absolute top-4 right-4 text-zinc-400 hover:text-white"
             >
               <X className="w-6 h-6" />
-            </button>
+            </TextButton>
 
             {/* Content */}
             <div className="space-y-8">
@@ -212,15 +215,16 @@ const ATSAnalysisModal: React.FC<ATSAnalysisModalProps> = ({
 
                   {/* Action Buttons */}
                   <div className="flex justify-center space-x-4">
-                    <button 
+                    <BrandButton
                       onClick={onClose}
-                      className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
+                      variant="secondary"
+                      className="px-6 py-2"
                     >
                       Close
-                    </button>
-                    <button className="px-6 py-2 bg-zinc-700 hover:bg-zinc-600 text-white font-medium rounded-lg transition-colors">
+                    </BrandButton>
+                    <CinematicButton variant="sunglow" className="px-6 py-2">
                       Download Report
-                    </button>
+                    </CinematicButton>
                   </div>
                 </div>
               )}

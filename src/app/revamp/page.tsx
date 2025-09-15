@@ -6,6 +6,9 @@ import { cn } from "@/lib/utils";
 import VerticalStepper, { VerticalStep } from "@/components/ui/vertical-stepper";
 import AnalysisLoadingScreen from "@/components/AnalysisLoadingScreen";
 import { useAuth } from "@/contexts/AuthContext";
+import { BrandButton } from "@/components/ui/brand-button";
+import { CinematicButton } from "@/components/ui/cinematic-button";
+import { TextButton } from "@/components/ui/text-button";
 
 interface FormData {
   location: string;
@@ -164,15 +167,15 @@ export default function RevampPage() {
       <div className="bg-vista-white/95 backdrop-blur-sm border-b border-gray-200">
         <div className="max-w-6xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
-            <button
+            <TextButton
               onClick={() => router.back()}
-              className="flex items-center text-gray-600 hover:text-gray-900 transition-colors group"
+              className="flex items-center text-gray-600 hover:text-gray-900 group"
             >
               <svg className="w-5 h-5 mr-2 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
               Back
-            </button>
+            </TextButton>
             <div className="text-center">
               <h1 className="text-xl font-bold brand-heading text-mine-shaft">Resume Revamp</h1>
               <p className="text-sm text-gray-600 brand-body">Optimize your resume for your dream job</p>

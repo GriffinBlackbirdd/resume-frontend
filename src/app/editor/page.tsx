@@ -8,6 +8,9 @@ import { useAuth } from "@/contexts/AuthContext";
 import MarkdownRenderer from "@/components/MarkdownRenderer";
 import * as yaml from 'js-yaml';
 import { User, Link, FileText, Briefcase, Rocket, GraduationCap, Zap, Award, Star, Settings, Eye, Download, BarChart3, RefreshCw, Palette, Play, Pause } from 'lucide-react';
+import { BrandButton } from "@/components/ui/brand-button";
+import { CinematicButton } from "@/components/ui/cinematic-button";
+import { TextButton } from "@/components/ui/text-button";
 
 export default function ResumeEditor() {
   const searchParams = useSearchParams();
@@ -1315,12 +1318,13 @@ cv:
           {/* Right Section - Controls */}
           <div className="flex items-center space-x-3">
             {/* Auto-Render Toggle */}
-            <button
+            <BrandButton
               onClick={toggleAutoRender}
+              variant={autoRenderEnabled ? "primary" : "secondary"}
               className={cn(
                 "flex items-center space-x-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 border",
                 autoRenderEnabled
-                  ? "bg-green-600/20 text-green-400 border-green-500/30 hover:bg-green-600/30"
+                  ? "bg-sunglow/20 text-sunglow border-sunglow/30 hover:bg-sunglow/30"
                   : "bg-gray-700/50 text-gray-300 border-gray-600/50 hover:bg-gray-600/60"
               )}
             >
@@ -1328,13 +1332,14 @@ cv:
               <span className="hidden sm:inline">
                 {autoRenderEnabled ? "Auto: ON" : "Auto: OFF"}
               </span>
-            </button>
+            </BrandButton>
 
             {/* Render Now Button */}
-            <button
+            <BrandButton
               onClick={() => renderResume()}
               disabled={isRendering}
-              className="flex items-center space-x-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 disabled:bg-gray-800 disabled:opacity-50 text-white rounded-xl text-sm font-medium transition-all duration-200 border border-gray-600 hover:border-gray-500 shadow-lg"
+              variant="primary"
+              className="flex items-center space-x-2 px-4 py-2 text-sm font-medium shadow-lg"
             >
               {isRendering ? (
                 <RefreshCw className="w-4 h-4 animate-spin" />
@@ -1342,12 +1347,12 @@ cv:
                 <Eye className="w-4 h-4" />
               )}
               <span>{isRendering ? "Rendering..." : "Preview"}</span>
-            </button>
+            </BrandButton>
 
             {/* Settings Menu (Mobile) */}
-            <button className="lg:hidden p-2 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 transition-all duration-200">
+            <TextButton className="lg:hidden p-2 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 transition-all duration-200">
               <Settings className="w-4 h-4 text-white" />
-            </button>
+            </TextButton>
           </div>
         </div>
       </header>
@@ -1359,28 +1364,30 @@ cv:
         <div className="w-1/2 border-r border-white/10 bg-gray-900/30">
           {/* Tab Headers */}
           <div className="flex border-b border-white/10">
-            <button
+            <BrandButton
+              variant={activeTab === 'yaml' ? 'primary' : 'ghost'}
               onClick={() => handleTabSwitch('yaml')}
               className={cn(
-                "flex-1 px-4 py-2 text-sm font-medium border-b-2 transition-colors",
+                "flex-1 px-4 py-2 text-sm font-medium",
                 activeTab === 'yaml'
-                  ? "text-white border-blue-500 bg-gray-800/50"
-                  : "text-white/60 border-transparent hover:text-white/80 hover:bg-gray-800/30"
+                  ? "bg-sunglow text-mine-shaft"
+                  : "text-white/60 hover:text-white/80 hover:bg-gray-800/30"
               )}
             >
               YAML Editor
-            </button>
-            <button
+            </BrandButton>
+            <BrandButton
+              variant={activeTab === 'form' ? 'primary' : 'ghost'}
               onClick={() => handleTabSwitch('form')}
               className={cn(
-                "flex-1 px-4 py-2 text-sm font-medium border-b-2 transition-colors",
+                "flex-1 px-4 py-2 text-sm font-medium",
                 activeTab === 'form'
-                  ? "text-white border-blue-500 bg-gray-800/50"
-                  : "text-white/60 border-transparent hover:text-white/80 hover:bg-gray-800/30"
+                  ? "bg-sunglow text-mine-shaft"
+                  : "text-white/60 hover:text-white/80 hover:bg-gray-800/30"
               )}
             >
               Form Editor
-            </button>
+            </BrandButton>
           </div>
 
           {/* Tab Content */}

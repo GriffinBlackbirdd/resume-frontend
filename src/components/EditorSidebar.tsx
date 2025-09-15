@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { ChevronLeft, ChevronRight, FileText, Palette, Settings, Download, Save } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { BrandButton } from '@/components/ui/brand-button';
+import { TextButton } from '@/components/ui/text-button';
 
 interface SidebarProps {
   activeTab: 'yaml' | 'form';
@@ -31,41 +33,43 @@ export default function Sidebar({
       {/* Header */}
       <div className="p-4 border-b border-gray-800 flex items-center justify-between">
         {!isCollapsed && <h2 className="text-lg font-semibold text-white">Editor</h2>}
-        <button
+        <TextButton
           onClick={onToggle}
-          className="p-2 rounded-lg hover:bg-gray-800 text-gray-400 hover:text-white transition-colors"
+          className="p-2 rounded-lg hover:bg-gray-800 text-gray-400 hover:text-white"
         >
           {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
-        </button>
+        </TextButton>
       </div>
 
       {/* Navigation Tabs */}
       <div className="p-2 space-y-1">
-        <button
+        <BrandButton
+          variant={activeTab === 'yaml' ? 'primary' : 'ghost'}
           onClick={() => onTabChange('yaml')}
           className={cn(
-            "w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all",
+            "w-full flex items-center justify-start space-x-3 px-3 py-2.5 text-sm font-medium",
             activeTab === 'yaml'
-              ? "bg-blue-600 text-white shadow-lg"
+              ? "bg-sunglow text-mine-shaft shadow-lg"
               : "text-gray-400 hover:bg-gray-800 hover:text-white"
           )}
         >
           <FileText className="w-4 h-4 flex-shrink-0" />
           {!isCollapsed && <span>YAML Editor</span>}
-        </button>
+        </BrandButton>
 
-        <button
+        <BrandButton
+          variant={activeTab === 'form' ? 'primary' : 'ghost'}
           onClick={() => onTabChange('form')}
           className={cn(
-            "w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all",
+            "w-full flex items-center justify-start space-x-3 px-3 py-2.5 text-sm font-medium",
             activeTab === 'form'
-              ? "bg-blue-600 text-white shadow-lg"
+              ? "bg-sunglow text-mine-shaft shadow-lg"
               : "text-gray-400 hover:bg-gray-800 hover:text-white"
           )}
         >
           <Settings className="w-4 h-4 flex-shrink-0" />
           {!isCollapsed && <span>Form Builder</span>}
-        </button>
+        </BrandButton>
       </div>
 
       {/* Divider */}
@@ -73,29 +77,32 @@ export default function Sidebar({
 
       {/* Actions */}
       <div className="p-2 space-y-1">
-        <button
+        <BrandButton
+          variant="ghost"
           onClick={onThemeClick}
-          className="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white transition-all"
+          className="w-full flex items-center justify-start space-x-3 px-3 py-2.5 text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white"
         >
           <Palette className="w-4 h-4 flex-shrink-0" />
           {!isCollapsed && <span>Themes</span>}
-        </button>
+        </BrandButton>
 
-        <button
+        <BrandButton
+          variant="ghost"
           onClick={onSaveProject}
-          className="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white transition-all"
+          className="w-full flex items-center justify-start space-x-3 px-3 py-2.5 text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white"
         >
           <Save className="w-4 h-4 flex-shrink-0" />
           {!isCollapsed && <span>Save Project</span>}
-        </button>
+        </BrandButton>
 
-        <button
+        <BrandButton
+          variant="ghost"
           onClick={onDownloadPDF}
-          className="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white transition-all"
+          className="w-full flex items-center justify-start space-x-3 px-3 py-2.5 text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white"
         >
           <Download className="w-4 h-4 flex-shrink-0" />
           {!isCollapsed && <span>Download PDF</span>}
-        </button>
+        </BrandButton>
       </div>
 
       {/* Spacer */}

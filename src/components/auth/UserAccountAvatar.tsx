@@ -3,6 +3,8 @@
 import React, { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { User, Settings, LogOut, Briefcase } from 'lucide-react';
+import { TextButton } from '@/components/ui/text-button';
+import { BrandButton } from '@/components/ui/brand-button';
 
 interface UserAccountAvatarProps {
   className?: string;
@@ -32,7 +34,7 @@ export const UserAccountAvatar: React.FC<UserAccountAvatarProps> = ({ className 
   return (
     <div className={`relative ${className}`}>
       {/* Avatar Button */}
-      <button
+      <TextButton
         onClick={() => setIsOpen(!isOpen)}
         className="relative p-1 rounded-lg hover:bg-zinc-800/50 transition-colors"
       >
@@ -44,7 +46,7 @@ export const UserAccountAvatar: React.FC<UserAccountAvatarProps> = ({ className 
           {/* Online indicator */}
           <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 rounded-full border-2 border-zinc-900"></div>
         </div>
-      </button>
+      </TextButton>
 
       {/* Dropdown Menu */}
       {isOpen && (
@@ -72,60 +74,64 @@ export const UserAccountAvatar: React.FC<UserAccountAvatarProps> = ({ className 
 
             {/* Menu Items */}
             <div className="py-2">
-              <button
+              <BrandButton
+                variant="ghost"
                 onClick={() => {
                   // Handle profile settings
                   setIsOpen(false);
                 }}
-                className="w-full flex items-center space-x-3 px-4 py-3 text-zinc-300 hover:bg-zinc-800 hover:text-white transition-colors"
+                className="w-full flex items-center justify-start space-x-3 text-zinc-300 hover:bg-zinc-800 hover:text-white"
               >
                 <User className="w-4 h-4" />
                 <div className="text-left">
                   <div className="text-sm font-medium">Profile Settings</div>
                   <div className="text-xs text-zinc-500">Manage your account</div>
                 </div>
-              </button>
+              </BrandButton>
 
-              <button
+              <BrandButton
+                variant="ghost"
                 onClick={() => {
                   // Handle resume management
                   setIsOpen(false);
                 }}
-                className="w-full flex items-center space-x-3 px-4 py-3 text-zinc-300 hover:bg-zinc-800 hover:text-white transition-colors"
+                className="w-full flex items-center justify-start space-x-3 text-zinc-300 hover:bg-zinc-800 hover:text-white"
               >
                 <Briefcase className="w-4 h-4" />
                 <div className="text-left">
                   <div className="text-sm font-medium">My Resumes</div>
                   <div className="text-xs text-zinc-500">View all resumes</div>
                 </div>
-              </button>
+              </BrandButton>
 
-              <button
+              <BrandButton
+                variant="ghost"
                 onClick={() => {
                   // Handle settings
                   setIsOpen(false);
                 }}
-                className="w-full flex items-center space-x-3 px-4 py-3 text-zinc-300 hover:bg-zinc-800 hover:text-white transition-colors"
+                className="w-full flex items-center justify-start space-x-3 text-zinc-300 hover:bg-zinc-800 hover:text-white"
               >
                 <Settings className="w-4 h-4" />
                 <div className="text-left">
                   <div className="text-sm font-medium">Settings</div>
                   <div className="text-xs text-zinc-500">Preferences & privacy</div>
                 </div>
-              </button>
+              </BrandButton>
 
               <hr className="my-2 border-zinc-800" />
 
-              <button
+              <BrandButton
+                variant="ghost"
                 onClick={handleLogout}
-                className="w-full flex items-center space-x-3 px-4 py-3 text-red-400 hover:bg-zinc-800 hover:text-red-300 transition-colors"
+                className="w-full flex items-center justify-start space-x-3 text-red-400 hover:bg-zinc-800 hover:text-red-300"
               >
                 <LogOut className="w-4 h-4" />
                 <div className="text-left">
                   <div className="text-sm font-medium">Sign Out</div>
                   <div className="text-xs text-red-500/70">End your session</div>
                 </div>
-              </button>
+              </BrandButton>
             </div>
           </div>
         </>

@@ -6,6 +6,9 @@ import { cn } from "@/lib/utils";
 import FileUpload from "@/components/ui/file-upload";
 import ATSAnalysisModal from "@/components/ATSAnalysisModal";
 import { Target, TrendingUp, FileText, Briefcase, Clock, Award } from "lucide-react";
+import { BrandButton } from "@/components/ui/brand-button";
+import { CinematicButton } from "@/components/ui/cinematic-button";
+import { TextButton } from "@/components/ui/text-button";
 
 const Sidebar = () => {
   const router = useRouter();
@@ -32,27 +35,33 @@ const Sidebar = () => {
       <div className="flex-1 overflow-y-auto">
         <div className="p-4">
           {menuItems.map((item, index) => (
-            <div
+            <BrandButton
               key={index}
               onClick={() => router.push(item.href)}
+              variant={item.active ? "primary" : "ghost"}
               className={cn(
-                "flex items-center space-x-3 px-3 py-2 rounded-lg cursor-pointer transition-colors",
-                item.active ? "bg-zinc-800 text-white" : "text-zinc-400 hover:text-white hover:bg-zinc-800/50"
+                "flex items-center justify-start space-x-3 px-3 py-2",
+                item.active
+                  ? "bg-sunglow text-mine-shaft"
+                  : "text-zinc-400 hover:text-white hover:bg-zinc-800/50"
               )}
             >
               <span className="text-lg">{item.icon}</span>
               <span className="text-sm font-medium">{item.label}</span>
-            </div>
+            </BrandButton>
           ))}
         </div>
       </div>
 
       {/* Settings */}
       <div className="p-4 border-t border-zinc-800">
-        <div className="flex items-center space-x-3 px-3 py-2 rounded-lg cursor-pointer text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition-colors">
+        <BrandButton
+          variant="ghost"
+          className="flex items-center justify-start space-x-3 px-3 py-2 text-zinc-400 hover:text-white hover:bg-zinc-800/50"
+        >
           <span className="text-lg">⚙️</span>
           <span className="text-sm font-medium">Settings</span>
-        </div>
+        </BrandButton>
       </div>
     </div>
   );
@@ -191,24 +200,23 @@ export default function ATSScorePage() {
 
           {/* Action Button */}
           <div className="flex justify-center">
-            <button
+            <CinematicButton
               onClick={handleAnalyze}
+              variant="sunglow"
               disabled={!resumeFile || !jobDescriptionFile}
               className={cn(
-                "px-8 py-3 font-medium rounded-lg transition-colors flex items-center space-x-3",
-                resumeFile && jobDescriptionFile
-                  ? "bg-blue-600 hover:bg-blue-700 text-white"
-                  : "bg-zinc-700 cursor-not-allowed text-zinc-400"
+                "px-8 py-3 font-medium flex items-center space-x-3",
+                !resumeFile || !jobDescriptionFile ? "opacity-50 cursor-not-allowed" : ""
               )}
             >
               <Target className="w-5 h-5" />
               <span>
-                {resumeFile && jobDescriptionFile 
-                  ? "Analyze My Resume" 
+                {resumeFile && jobDescriptionFile
+                  ? "Analyze My Resume"
                   : "Upload both files to analyze"
                 }
               </span>
-            </button>
+            </CinematicButton>
           </div>
 
 

@@ -7,6 +7,7 @@ import { NewResumeModal } from "@/components/NewResumeModal";
 import { useAuth } from "@/contexts/AuthContext";
 import { UserAccountAvatar } from "@/components/auth/UserAccountAvatar";
 import MarkdownRenderer from "@/components/MarkdownRenderer";
+import { ActionButton } from "@/components/ui/action-button";
 
 // Types for dashboard data
 interface DashboardStats {
@@ -51,25 +52,32 @@ interface DashboardData {
 
 const StatCard = ({ title, value, change, trend, description, isNegative = false, actionButton = null }: any) => {
   return (
-    <div className="bg-white border border-gray-200 rounded-xl p-6 hover:bg-gray-50/50 transition-colors shadow-sm">
-      <div className="flex items-start justify-between mb-4">
-        <div>
-          <div className="text-gray-600 text-sm font-medium mb-1 brand-body">{title}</div>
-          <div className="text-mine-shaft text-2xl font-bold brand-heading">{value}</div>
+    <div className="bg-vista-white border border-gray-100 rounded-2xl p-8 hover:shadow-lg transition-all duration-300 shadow-sm relative overflow-hidden">
+      {/* Subtle gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-sunglow/5 to-transparent opacity-50"></div>
+
+      <div className="relative z-10">
+        <div className="flex items-start justify-between mb-6">
+          <div>
+            <div className="text-mine-shaft/70 text-sm font-medium mb-2 font-sf uppercase tracking-wider">{title}</div>
+            <div className="text-mine-shaft text-4xl font-bebas tracking-tight">{value}</div>
+          </div>
+          <div className={cn(
+            "flex items-center space-x-2 text-sm font-sf font-semibold px-3 py-1 rounded-full",
+            isNegative
+              ? "text-db3b09 bg-red-50"
+              : "text-emerald-600 bg-emerald-50"
+          )}>
+            <span className="text-base">{isNegative ? "📉" : "📈"}</span>
+            <span>{change}</span>
+          </div>
         </div>
-        <div className={cn(
-          "flex items-center space-x-1 text-sm font-medium",
-          isNegative ? "text-db3b09" : "text-green-600"
-        )}>
-          <span>{isNegative ? "📉" : "📈"}</span>
-          <span>{change}</span>
-        </div>
-      </div>
-      <div className="text-gray-500 text-sm brand-body">
-        <div className="font-medium mb-1">{trend}</div>
-        <div className="flex items-center justify-between">
-          <span>{description}</span>
-          {actionButton}
+        <div className="text-mine-shaft/60 text-sm font-editorial">
+          <div className="font-sf font-medium mb-2 text-mine-shaft/80">{trend}</div>
+          <div className="flex items-center justify-between">
+            <span>{description}</span>
+            {actionButton}
+          </div>
         </div>
       </div>
     </div>
@@ -80,54 +88,60 @@ const ATSChart = ({ data }: { data: ATSByJobRole[] }) => {
   const router = useRouter();
 
   const getScoreColor = (score: number) => {
-    if (score >= 90) return "bg-green-500";
-    if (score >= 80) return "bg-yellow-500";
+    if (score >= 90) return "bg-emerald-500";
+    if (score >= 80) return "bg-sunglow";
     if (score >= 70) return "bg-orange-500";
     return "bg-red-500";
   };
 
   const getScoreTextColor = (score: number) => {
-    if (score >= 90) return "text-green-400";
-    if (score >= 80) return "text-yellow-400";
-    if (score >= 70) return "text-orange-400";
-    return "text-red-400";
+    if (score >= 90) return "text-emerald-500";
+    if (score >= 80) return "text-sunglow";
+    if (score >= 70) return "text-orange-500";
+    return "text-red-500";
   };
 
   if (data.length === 0) {
     return (
-      <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-        <h3 className="text-mine-shaft text-lg font-semibold mb-4 brand-heading">ATS Scores by Job Role</h3>
-        <p className="text-gray-600 text-sm brand-body">No ATS scores available yet. Create and calculate scores for your resumes to see the chart.</p>
+      <div className="bg-vista-white border border-gray-100 rounded-2xl p-8 shadow-lg relative overflow-hidden">
+        {/* Gradient accent */}
+        <div className="absolute top-0 left-0 right-0 h-1 bg-brand-gradient"></div>
+
+        <h3 className="text-mine-shaft text-2xl font-bebas tracking-tight mb-4">ATS Scores by Job Role</h3>
+        <p className="text-mine-shaft/60 text-sm font-editorial">No ATS scores available yet. Create and calculate scores for your resumes to see the chart.</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-      <div className="flex items-center justify-between mb-6">
+    <div className="bg-vista-white border border-gray-100 rounded-2xl p-8 shadow-lg relative overflow-hidden">
+      {/* Gradient accent */}
+      <div className="absolute top-0 left-0 right-0 h-1 bg-brand-gradient"></div>
+
+      <div className="flex items-center justify-between mb-8">
         <div>
-          <h3 className="text-mine-shaft text-lg font-semibold brand-heading">ATS Scores by Role & Company</h3>
-          <p className="text-gray-600 text-sm brand-body">Performance comparison across different roles and companies</p>
+          <h3 className="text-mine-shaft text-2xl font-bebas tracking-tight mb-2">ATS Scores by Role & Company</h3>
+          <p className="text-mine-shaft/60 text-sm font-editorial">Performance comparison across different roles and companies</p>
         </div>
       </div>
 
       <div className="space-y-4">
         {data.map((item, index) => (
           <div key={index} className="flex items-center space-x-4">
-            <div className="w-40 text-right">
-              <span className="text-mine-shaft text-sm font-medium truncate block brand-body" title={`${item.job_role}${item.target_company ? ` / ${item.target_company}` : ''}`}>
-                {item.job_role}{item.target_company ? ` / ${item.targetCompany}` : ''}
+            <div className="w-44 text-right">
+              <span className="text-mine-shaft text-sm font-sf font-medium truncate block" title={`${item.job_role}${item.target_company ? ` / ${item.target_company}` : ''}`}>
+                {item.job_role}{item.target_company ? ` / ${item.target_company}` : ''}
               </span>
             </div>
 
             <div className="flex-1 relative">
-              <div className="w-full bg-gray-200 rounded-full h-6 relative overflow-hidden">
+              <div className="w-full bg-gray-100 rounded-full h-7 relative overflow-hidden shadow-inner">
                 <div
-                  className={cn("h-full rounded-full transition-all duration-500", getScoreColor(item.ats_score))}
+                  className={cn("h-full rounded-full transition-all duration-700 ease-out", getScoreColor(item.ats_score))}
                   style={{ width: `${Math.max(item.ats_score, 5)}%` }}
                 />
-                <div className="absolute inset-0 flex items-center justify-between px-3">
-                  <span className="text-mine-shaft text-xs font-medium brand-body-strong">
+                <div className="absolute inset-0 flex items-center justify-between px-4">
+                  <span className="text-mine-shaft text-xs font-sf font-semibold">
                     {item.ats_score.toFixed(1)}%
                   </span>
                 </div>
@@ -135,20 +149,16 @@ const ATSChart = ({ data }: { data: ATSByJobRole[] }) => {
             </div>
 
             <div className="w-20 flex justify-end">
-              <button
+              <ActionButton
+                size="sm"
+                variant="primary"
                 onClick={() => router.push(`/editor?project_id=${item.project_id}`)}
-                className="bg-sunglow no-underline group cursor-pointer relative shadow-2xl shadow-gray-300 rounded-full p-px text-xs font-semibold leading-6 text-mine-shaft inline-block"
-              >
-                <span className="absolute inset-0 overflow-hidden rounded-full">
-                  <span className="absolute inset-0 rounded-full bg-[image:radial-gradient(75%_100%_at_50%_0%,rgba(255,220,0,0.6)_0%,rgba(255,220,0,0)_75%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-                </span>
-                <div className="relative flex space-x-2 items-center z-10 rounded-full bg-white py-0.5 px-4 ring-1 ring-sunglow/20">
-                  <span>Edit</span>
+                icon={
                   <svg
                     fill="none"
-                    height="16"
+                    height="14"
                     viewBox="0 0 24 24"
-                    width="16"
+                    width="14"
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
@@ -159,31 +169,32 @@ const ATSChart = ({ data }: { data: ATSByJobRole[] }) => {
                       strokeWidth="1.5"
                     />
                   </svg>
-                </div>
-                <span className="absolute -bottom-0 left-[1.125rem] h-px w-[calc(100%-2.25rem)] bg-gradient-to-r from-sunglow/0 via-sunglow/90 to-sunglow/0 transition-opacity duration-500 group-hover:opacity-40" />
-              </button>
+                }
+              >
+                Edit
+              </ActionButton>
             </div>
           </div>
         ))}
       </div>
 
-      <div className="mt-6 pt-4 border-t border-gray-200">
-        <div className="flex items-center justify-center space-x-6 text-xs">
-          <div className="flex items-center space-x-2">
-            <div className="w-3 h-3 bg-green-500 rounded"></div>
-            <span className="text-gray-600 brand-body">90%+ Excellent</span>
+      <div className="mt-8 pt-6 border-t border-gray-100">
+        <div className="flex items-center justify-center space-x-8 text-xs">
+          <div className="flex items-center space-x-3">
+            <div className="w-4 h-4 bg-emerald-500 rounded-full shadow-sm"></div>
+            <span className="text-mine-shaft/70 font-sf font-medium">90%+ Excellent</span>
           </div>
-          <div className="flex items-center space-x-2">
-            <div className="w-3 h-3 bg-yellow-500 rounded"></div>
-            <span className="text-gray-600 brand-body">80-89% Good</span>
+          <div className="flex items-center space-x-3">
+            <div className="w-4 h-4 bg-sunglow rounded-full shadow-sm"></div>
+            <span className="text-mine-shaft/70 font-sf font-medium">80-89% Good</span>
           </div>
-          <div className="flex items-center space-x-2">
-            <div className="w-3 h-3 bg-orange-500 rounded"></div>
-            <span className="text-gray-600 brand-body">70-79% Fair</span>
+          <div className="flex items-center space-x-3">
+            <div className="w-4 h-4 bg-orange-500 rounded-full shadow-sm"></div>
+            <span className="text-mine-shaft/70 font-sf font-medium">70-79% Fair</span>
           </div>
-          <div className="flex items-center space-x-2">
-            <div className="w-3 h-3 bg-red-500 rounded"></div>
-            <span className="text-gray-600 brand-body">&lt;70% Needs Work</span>
+          <div className="flex items-center space-x-3">
+            <div className="w-4 h-4 bg-red-500 rounded-full shadow-sm"></div>
+            <span className="text-mine-shaft/70 font-sf font-medium">&lt;70% Needs Work</span>
           </div>
         </div>
       </div>
@@ -221,47 +232,39 @@ const GapAnalysisColumn = ({
 
   if (!hasGapAnalysis) {
     return (
-      <button
+      <ActionButton
+        size="md"
+        variant="primary"
         onClick={() => onRunGapAnalysis(projectId)}
-        className="relative inline-flex h-12 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-sunglow focus:ring-offset-2 focus:ring-offset-white"
       >
-        <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#FFDC00_0%,#FFA500_50%,#FFDC00_100%)]" />
-        <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-white px-3 py-1 text-sm font-medium text-mine-shaft backdrop-blur-3xl">
-          Run Review
-        </span>
-      </button>
+        Run Review
+      </ActionButton>
     );
   }
 
   return (
     <div className="flex flex-wrap gap-2">
-      <button
+      <ActionButton
+        size="sm"
+        variant="outline"
         onClick={() => onShowContent('gap-analysis', projectId)}
-        className="relative inline-flex h-8 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-sunglow focus:ring-offset-2 focus:ring-offset-white"
       >
-        <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#FFDC00_0%,#FFA500_50%,#FFDC00_100%)]" />
-        <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-white px-2 py-1 text-xs font-medium text-mine-shaft backdrop-blur-3xl">
-          Gap Analysis
-        </span>
-      </button>
-      <button
+        Gap Analysis
+      </ActionButton>
+      <ActionButton
+        size="sm"
+        variant="outline"
         onClick={() => onShowContent('upskill', projectId)}
-        className="relative inline-flex h-8 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-sunglow focus:ring-offset-2 focus:ring-offset-white"
       >
-        <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#FFDC00_0%,#FFA500_50%,#FFDC00_100%)]" />
-        <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-white px-2 py-1 text-xs font-medium text-mine-shaft backdrop-blur-3xl">
-          Upskill
-        </span>
-      </button>
-      <button
+        Upskill
+      </ActionButton>
+      <ActionButton
+        size="sm"
+        variant="outline"
         onClick={() => onShowContent('project-recommendations', projectId)}
-        className="relative inline-flex h-8 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-sunglow focus:ring-offset-2 focus:ring-offset-white"
       >
-        <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#FFDC00_0%,#FFA500_50%,#FFDC00_100%)]" />
-        <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-white px-2 py-1 text-xs font-medium text-mine-shaft backdrop-blur-3xl">
-          Projects
-        </span>
-      </button>
+        Projects
+      </ActionButton>
     </div>
   );
 };
@@ -286,12 +289,12 @@ const GapAnalysisButton = ({
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Main Button */}
-      <button className="relative inline-flex h-8 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-sunglow focus:ring-offset-2 focus:ring-offset-white">
-        <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#FFDC00_0%,#FFA500_50%,#FFDC00_100%)]" />
-        <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-white px-3 py-1 text-xs font-medium text-mine-shaft backdrop-blur-3xl">
-          Gap Analysis
-        </span>
-      </button>
+      <ActionButton
+        size="sm"
+        variant="outline"
+      >
+        Gap Analysis
+      </ActionButton>
 
       {/* Animated Popup */}
       <div className={cn(
@@ -362,15 +365,15 @@ const Pagination = ({
   }
 
   return (
-    <div className="flex items-center justify-between px-6 py-4 bg-gray-100 border-t border-gray-200">
-      <div className="text-gray-600 text-sm brand-body">
+    <div className="flex items-center justify-between px-8 py-6 bg-gray-50/30 border-t border-gray-100">
+      <div className="text-mine-shaft/60 text-sm font-sf">
         Page {currentPage} of {totalPages}
       </div>
       <div className="flex space-x-2">
         <button
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className="px-3 py-1.5 text-sm bg-gray-200 hover:bg-gray-300 disabled:bg-gray-100 disabled:text-gray-400 text-mine-shaft rounded transition-colors"
+          className="px-4 py-2 text-sm bg-white hover:bg-gray-50 disabled:bg-gray-100 disabled:text-gray-400 text-mine-shaft rounded-lg transition-all duration-200 border border-gray-200 font-sf"
         >
           Previous
         </button>
@@ -379,10 +382,10 @@ const Pagination = ({
             key={page}
             onClick={() => onPageChange(page)}
             className={cn(
-              "px-3 py-1.5 text-sm rounded transition-colors",
+              "px-4 py-2 text-sm rounded-lg transition-all duration-200 font-sf font-medium",
               page === currentPage
-                ? "bg-sunglow text-white"
-                : "bg-gray-200 hover:bg-gray-300 text-mine-shaft"
+                ? "bg-sunglow text-mine-shaft shadow-sm"
+                : "bg-white hover:bg-gray-50 text-mine-shaft border border-gray-200"
             )}
           >
             {page}
@@ -391,7 +394,7 @@ const Pagination = ({
         <button
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className="px-3 py-1.5 text-sm bg-gray-200 hover:bg-gray-300 disabled:bg-gray-100 disabled:text-gray-400 text-mine-shaft rounded transition-colors"
+          className="px-4 py-2 text-sm bg-white hover:bg-gray-50 disabled:bg-gray-100 disabled:text-gray-400 text-mine-shaft rounded-lg transition-all duration-200 border border-gray-200 font-sf"
         >
           Next
         </button>
@@ -424,16 +427,19 @@ const DataTable = ({
   const router = useRouter();
 
   return (
-    <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+    <div className="bg-vista-white border border-gray-100 rounded-2xl overflow-hidden shadow-lg relative">
+      {/* Gradient accent */}
+      <div className="absolute top-0 left-0 right-0 h-1 bg-brand-gradient"></div>
+
       {/* Header */}
-      <div className="px-6 py-4 border-b border-gray-200">
-        <h3 className="text-mine-shaft text-lg font-semibold brand-heading">Your Resumes</h3>
-        <p className="text-gray-600 text-sm brand-body">Manage and track your resume portfolio</p>
+      <div className="px-8 py-6 border-b border-gray-100">
+        <h3 className="text-mine-shaft text-2xl font-bebas tracking-tight mb-2">Your Resumes</h3>
+        <p className="text-mine-shaft/60 text-sm font-editorial">Manage and track your resume portfolio</p>
       </div>
 
       {/* Table Header */}
-      <div className="px-6 py-3 bg-gray-50 border-b border-gray-200">
-        <div className="grid grid-cols-5 gap-4 text-xs font-medium text-gray-600 uppercase tracking-wider brand-body">
+      <div className="px-8 py-4 bg-gray-50/50 border-b border-gray-100">
+        <div className="grid grid-cols-5 gap-4 text-xs font-sf font-semibold text-mine-shaft/70 uppercase tracking-wider">
           <div>Job Role</div>
           <div>Target Company</div>
           <div>ATS Score</div>
@@ -445,36 +451,41 @@ const DataTable = ({
       {/* Table Rows */}
       <div className="divide-y divide-gray-200">
         {loading ? (
-          <div className="px-6 py-8 text-center">
-            <div className="w-6 h-6 border-2 border-sunglow border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
-            <p className="text-gray-600 text-sm brand-body">Loading your resumes...</p>
+          <div className="px-8 py-12 text-center">
+            <div className="w-8 h-8 border-2 border-sunglow border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <p className="text-mine-shaft/60 text-sm font-editorial">Loading your resumes...</p>
           </div>
         ) : projects.length === 0 ? (
-          <div className="px-6 py-8 text-center">
-            <p className="text-gray-600 text-sm brand-body">No resumes created yet. Click "New Resume" to get started!</p>
+          <div className="px-8 py-12 text-center">
+            <div className="mb-4">
+              <div className="w-16 h-16 bg-gradient-to-br from-sunglow/20 to-sunglow/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-sunglow text-2xl">📄</span>
+              </div>
+            </div>
+            <p className="text-mine-shaft/60 text-sm font-editorial">No resumes created yet. Click "New Resume" to get started!</p>
           </div>
         ) : (
           projects.map((project) => (
-            <div key={project.id} className="px-6 py-4 hover:bg-gray-50/50 transition-colors">
+            <div key={project.id} className="px-8 py-6 hover:bg-gray-50/30 transition-all duration-200 border-l-4 border-transparent hover:border-sunglow/30">
               <div className="grid grid-cols-5 gap-4 items-center">
-                <div className="text-mine-shaft text-sm font-medium brand-body">{project.job_role}</div>
-                <div className="text-gray-600 text-sm brand-body">{project.target_company || 'Not specified'}</div>
-                <div className="flex items-center space-x-2">
+                <div className="text-mine-shaft text-sm font-sf font-medium">{project.job_role}</div>
+                <div className="text-mine-shaft/60 text-sm font-editorial">{project.target_company || 'Not specified'}</div>
+                <div className="flex items-center space-x-3">
                   {project.ats_score ? (
                     <>
                       <span className={cn(
-                        "text-sm font-medium",
-                        project.ats_score >= 90 ? "text-green-400" : project.ats_score >= 80 ? "text-yellow-400" : "text-red-400"
+                        "text-sm font-sf font-semibold",
+                        project.ats_score >= 90 ? "text-emerald-500" : project.ats_score >= 80 ? "text-sunglow" : project.ats_score >= 70 ? "text-orange-500" : "text-red-500"
                       )}>
                         {project.ats_score}%
                       </span>
                       <div className={cn(
-                        "w-2 h-2 rounded-full",
-                        project.ats_score >= 90 ? "bg-green-400" : project.ats_score >= 80 ? "bg-yellow-400" : "bg-red-400"
+                        "w-3 h-3 rounded-full shadow-sm",
+                        project.ats_score >= 90 ? "bg-emerald-500" : project.ats_score >= 80 ? "bg-sunglow" : project.ats_score >= 70 ? "bg-orange-500" : "bg-red-500"
                       )}></div>
                     </>
                   ) : (
-                    <span className="text-zinc-500 text-sm">Pending</span>
+                    <span className="text-mine-shaft/40 text-sm font-sf">Pending</span>
                   )}
                 </div>
                 <div>
@@ -487,20 +498,16 @@ const DataTable = ({
                   />
                 </div>
                 <div className="flex space-x-2 items-center">
-                  <button
+                  <ActionButton
+                    size="sm"
+                    variant="primary"
                     onClick={() => router.push(`/editor?project_id=${project.id}`)}
-                    className="bg-sunglow no-underline group cursor-pointer relative shadow-2xl shadow-gray-300 rounded-full p-px text-xs font-semibold leading-6 text-mine-shaft inline-block"
-                  >
-                    <span className="absolute inset-0 overflow-hidden rounded-full">
-                      <span className="absolute inset-0 rounded-full bg-[image:radial-gradient(75%_100%_at_50%_0%,rgba(255,220,0,0.6)_0%,rgba(255,220,0,0)_75%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-                    </span>
-                    <div className="relative flex space-x-2 items-center z-10 rounded-full bg-white py-0.5 px-4 ring-1 ring-sunglow/20">
-                      <span>Go to Resume</span>
+                    icon={
                       <svg
                         fill="none"
-                        height="16"
+                        height="14"
                         viewBox="0 0 24 24"
-                        width="16"
+                        width="14"
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
@@ -511,25 +518,22 @@ const DataTable = ({
                           strokeWidth="1.5"
                         />
                       </svg>
-                    </div>
-                    <span className="absolute -bottom-0 left-[1.125rem] h-px w-[calc(100%-2.25rem)] bg-gradient-to-r from-sunglow/0 via-sunglow/90 to-sunglow/0 transition-opacity duration-500 group-hover:opacity-40" />
-                  </button>
-
-                  <button
-                    onClick={() => onDownloadJobDescription(project.id)}
-                    className="bg-sunglow hover:bg-yellow-500 group cursor-pointer relative shadow-2xl shadow-gray-300 rounded-full p-px text-xs font-semibold leading-6 text-mine-shaft inline-block transition-colors"
-                    title="Download Job Description"
+                    }
                   >
-                    <span className="absolute inset-0 overflow-hidden rounded-full">
-                      <span className="absolute inset-0 rounded-full bg-[image:radial-gradient(75%_100%_at_50%_0%,rgba(255,220,0,0.6)_0%,rgba(255,220,0,0)_75%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-                    </span>
-                    <div className="relative flex space-x-2 items-center z-10 rounded-full bg-white py-0.5 px-4 ring-1 ring-sunglow/20">
-                      <span>Download JD</span>
+                    Open Resume
+                  </ActionButton>
+
+                  <ActionButton
+                    size="sm"
+                    variant="secondary"
+                    onClick={() => onDownloadJobDescription(project.id)}
+                    title="Download Job Description"
+                    icon={
                       <svg
                         fill="none"
-                        height="16"
+                        height="14"
                         viewBox="0 0 24 24"
-                        width="16"
+                        width="14"
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
@@ -540,9 +544,10 @@ const DataTable = ({
                           strokeWidth="1.5"
                         />
                       </svg>
-                    </div>
-                    <span className="absolute -bottom-0 left-[1.125rem] h-px w-[calc(100%-2.25rem)] bg-gradient-to-r from-sunglow/0 via-sunglow/90 to-sunglow/0 transition-opacity duration-500 group-hover:opacity-40" />
-                  </button>
+                    }
+                  >
+                    Download JD
+                  </ActionButton>
                 </div>
               </div>
             </div>
@@ -843,8 +848,9 @@ export default function DashboardPage() {
     return (
       <div className="min-h-screen bg-vista-white texture-paper text-mine-shaft flex items-center justify-center">
         <div className="text-center">
-          <div className="w-8 h-8 border-2 border-sunglow border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600 brand-body">Loading dashboard...</p>
+          <div className="w-12 h-12 border-3 border-sunglow/30 border-t-sunglow rounded-full animate-spin mx-auto mb-6"></div>
+          <p className="text-mine-shaft/60 font-editorial text-lg">Loading dashboard...</p>
+          <p className="text-mine-shaft/40 font-sf text-sm mt-2">Preparing your resume insights</p>
         </div>
       </div>
     );
@@ -883,14 +889,17 @@ export default function DashboardPage() {
         </div>
 
         <div className="flex-1 flex items-center justify-center">
-          <div className="text-center">
-            <div className="text-db3b09 text-lg mb-2 brand-subheading">Failed to load dashboard</div>
-            <p className="text-gray-600 mb-4 brand-body">{dashboardError}</p>
+          <div className="text-center max-w-md mx-auto">
+            <div className="w-16 h-16 bg-gradient-to-br from-db3b09/20 to-db3b09/10 rounded-full flex items-center justify-center mx-auto mb-6">
+              <span className="text-db3b09 text-2xl">⚠️</span>
+            </div>
+            <div className="text-mine-shaft text-2xl font-bebas tracking-tight mb-3">Failed to load dashboard</div>
+            <p className="text-mine-shaft/60 mb-6 font-editorial">{dashboardError}</p>
             <button
               onClick={() => fetchDashboardData()}
-              className="px-4 py-2 bg-sunglow hover:bg-yellow-500 text-mine-shaft rounded-lg transition-colors font-medium"
+              className="px-6 py-3 bg-sunglow hover:bg-sunglow/90 text-mine-shaft rounded-xl transition-all duration-200 font-sf font-medium shadow-sm hover:shadow-md"
             >
-              Retry
+              Try Again
             </button>
           </div>
         </div>
@@ -905,20 +914,27 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-vista-white texture-paper text-mine-shaft">
       {/* Header */}
-      <div className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6">
-        <div className="flex items-center space-x-6">
+      <div className="h-20 bg-vista-white/95 backdrop-blur-sm border-b border-gray-100 flex items-center justify-between px-8 sticky top-0 z-40">
+        <div className="flex items-center space-x-8">
           {/* Logo/Brand */}
-          <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 bg-sunglow rounded-full flex items-center justify-center">
-              <span className="text-mine-shaft font-bold text-sm brand-heading">A</span>
+          <div className="flex items-center space-x-4">
+            <div className="w-10 h-10 rounded-xl overflow-hidden shadow-sm">
+              <img
+                src="/logo.jpeg"
+                alt="Resume Builder Logo"
+                className="w-full h-full object-cover"
+              />
             </div>
-            <span className="text-mine-shaft font-semibold brand-heading">Resume Builder</span>
+            <span className="text-mine-shaft font-bebas text-xl tracking-tight">Resume Builder</span>
           </div>
 
           {/* Welcome message */}
-          <span className="text-mine-shaft text-lg brand-body">
-            Welcome, {user?.full_name || user?.email?.split('@')[0]}
-          </span>
+          <div className="hidden md:block">
+            <span className="text-mine-shaft/60 text-sm font-sf">Welcome back,</span>
+            <span className="text-mine-shaft text-lg font-sf font-medium ml-2">
+              {user?.full_name || user?.email?.split('@')[0]}
+            </span>
+          </div>
         </div>
 
         <div className="flex items-center space-x-4">
@@ -931,10 +947,16 @@ export default function DashboardPage() {
       <div className="flex-1 flex flex-col bg-vista-white">
 
         {/* Content */}
-        <div className="flex-1 p-6 space-y-6 bg-vista-white">
+        <div className="flex-1 p-8 space-y-8 bg-vista-white">
+          {/* Page Title */}
+          <div className="mb-8">
+            <h1 className="text-mine-shaft text-4xl font-bebas tracking-tight mb-2">Dashboard</h1>
+            <p className="text-mine-shaft/60 text-lg font-editorial">Track your resume performance and progress</p>
+          </div>
+
           {/* KPIs */}
           {stats && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <StatCard
                 title="Highest ATS Score Achieved"
                 value={stats.highest_ats_score.toString()}
@@ -942,20 +964,16 @@ export default function DashboardPage() {
                 trend="From latest resume"
                 description="Track your best performance"
                 actionButton={stats.highest_project_id && (
-                  <button
+                  <ActionButton
+                    size="sm"
+                    variant="primary"
                     onClick={() => router.push(`/editor?project_id=${stats.highest_project_id}`)}
-                    className="bg-sunglow no-underline group cursor-pointer relative shadow-2xl shadow-gray-300 rounded-full p-px text-xs font-semibold leading-6 text-mine-shaft inline-block"
-                  >
-                    <span className="absolute inset-0 overflow-hidden rounded-full">
-                      <span className="absolute inset-0 rounded-full bg-[image:radial-gradient(75%_100%_at_50%_0%,rgba(255,220,0,0.6)_0%,rgba(255,220,0,0)_75%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-                    </span>
-                    <div className="relative flex space-x-2 items-center z-10 rounded-full bg-white py-0.5 px-4 ring-1 ring-sunglow/20">
-                      <span>Open Resume</span>
+                    icon={
                       <svg
                         fill="none"
-                        height="16"
+                        height="14"
                         viewBox="0 0 24 24"
-                        width="16"
+                        width="14"
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
@@ -966,9 +984,10 @@ export default function DashboardPage() {
                           strokeWidth="1.5"
                         />
                       </svg>
-                    </div>
-                    <span className="absolute -bottom-0 left-[1.125rem] h-px w-[calc(100%-2.25rem)] bg-gradient-to-r from-sunglow/0 via-sunglow/90 to-sunglow/0 transition-opacity duration-500 group-hover:opacity-40" />
-                  </button>
+                    }
+                  >
+                    Open Resume
+                  </ActionButton>
                 )}
               />
               <StatCard

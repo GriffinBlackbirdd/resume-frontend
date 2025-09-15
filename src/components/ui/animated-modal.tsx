@@ -51,7 +51,7 @@ export const ModalTrigger = ({
   return (
     <button
       className={cn(
-        "px-4 py-2 rounded-md text-black dark:text-white text-center relative overflow-hidden",
+        "text-center relative overflow-hidden",
         className
       )}
       onClick={() => setOpen(true)}
@@ -91,14 +91,14 @@ export const ModalBody = ({ children }: { children: ReactNode }) => {
             opacity: 0,
             backdropFilter: "blur(0px)",
           }}
-          className="fixed [perspective:800px] [transform-style:preserve-3d] inset-0 h-full w-full flex items-center justify-center z-50"
+          className="fixed [perspective:800px] [transform-style:preserve-3d] inset-0 h-full w-full flex items-center justify-center z-[999999] modal-container pointer-events-auto"
         >
           <Overlay />
 
           <motion.div
             ref={modalRef}
             className={cn(
-              "min-h-[50%] max-h-[90%] md:max-w-[40%] bg-white dark:bg-neutral-950 border border-transparent dark:border-neutral-800 md:rounded-2xl relative z-50 flex flex-col flex-1 overflow-hidden",
+              "min-h-[50%] max-h-[90%] md:max-w-[40%] bg-vista-white border border-gray-100 md:rounded-2xl relative z-[1000000] modal-content flex flex-col flex-1 overflow-hidden shadow-2xl",
             )}
             initial={{
               opacity: 0,
@@ -156,7 +156,7 @@ export const ModalFooter = ({
   return (
     <div
       className={cn(
-        "flex justify-end p-4 bg-gray-100 dark:bg-neutral-900",
+        "flex justify-end p-4 bg-gray-50/50",
         className
       )}
     >
@@ -179,7 +179,7 @@ const Overlay = ({ className }: { className?: string }) => {
         opacity: 0,
         backdropFilter: "blur(0px)",
       }}
-      className={`fixed inset-0 h-full w-full bg-black bg-opacity-50 z-50 ${className}`}
+      className={`fixed inset-0 h-full w-full bg-black bg-opacity-50 z-[999998] modal-overlay pointer-events-auto ${className}`}
     ></motion.div>
   );
 };
@@ -201,7 +201,7 @@ const CloseIcon = () => {
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
-        className="h-4 w-4 text-black dark:text-white group-hover:scale-125 group-hover:rotate-3 transition duration-200"
+        className="h-4 w-4 text-mine-shaft group-hover:scale-125 group-hover:rotate-3 transition duration-200"
       >
         <path d="m18 6-12 12" />
         <path d="m6 6 12 12" />

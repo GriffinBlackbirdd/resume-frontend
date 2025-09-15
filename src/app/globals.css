@@ -188,6 +188,26 @@ body {
   100% { background-position: 0% 50%; }
 }
 
+/* Button focus ring utilities */
+.focus-ring-sunglow {
+  @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
+  --tw-ring-color: #FDBA2F;
+}
+
+.focus-ring-transparent {
+  @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
+  --tw-ring-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Shadow utilities for brand buttons */
+.shadow-brand {
+  box-shadow: 0 4px 6px -1px rgba(253, 186, 47, 0.3), 0 2px 4px -1px rgba(253, 186, 47, 0.2);
+}
+
+.shadow-brand-hover {
+  box-shadow: 0 10px 15px -3px rgba(253, 186, 47, 0.4), 0 4px 6px -2px rgba(253, 186, 47, 0.3);
+}
+
 .animate-float {
   animation: float 6s ease-in-out infinite;
 }
@@ -386,4 +406,17 @@ input[type="month"]::-webkit-calendar-picker-indicator:hover {
 .animate-gradient-flow {
   background-size: 200% 200%;
   animation: gradient-flow 8s ease infinite;
+}
+
+/* Ensure modal appears above all elements */
+.modal-container {
+  z-index: 999999 !important;
+}
+
+.modal-content {
+  z-index: 1000000 !important;
+}
+
+.modal-overlay {
+  z-index: 999998 !important;
 }

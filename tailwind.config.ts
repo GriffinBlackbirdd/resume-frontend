@@ -9,6 +9,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // Shadcn/UI color system
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: "hsl(var(--card))",
@@ -29,6 +30,23 @@ const config: Config = {
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         radius: "var(--radius)",
+
+        // Brand color system from design.md
+        "vista-white": "#FFFDFA",
+        "mine-shaft": "#202020",
+        "sunglow": "#FDBA2F",
+        "db3b09": "#DB3B09",
+        "gradient-start": "#FFD200",
+        "gradient-end": "#7A0EEF",
+      },
+      fontFamily: {
+        "bebas": ["Bebas Neue Pro", "SF Pro Display", "sans-serif"],
+        "sf": ["SF Pro Display", "sans-serif"],
+        "editorial": ["PP Editorial New", "SF Pro Display", "sans-serif"],
+      },
+      backgroundImage: {
+        "brand-gradient": "linear-gradient(-45deg, #FFD200, #7A0EEF)",
+        "text-gradient": "linear-gradient(135deg, #202020, #FDBA2F)",
       },
     },
   },

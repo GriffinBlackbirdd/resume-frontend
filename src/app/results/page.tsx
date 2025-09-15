@@ -4,6 +4,9 @@ import React, { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ArrowLeft, Download, Share2, RefreshCw } from 'lucide-react';
+import { BrandButton } from '@/components/ui/brand-button';
+import { CinematicButton } from '@/components/ui/cinematic-button';
+import { TextButton } from '@/components/ui/text-button';
 
 export default function ResultsPage() {
   const [markdownContent, setMarkdownContent] = useState('');
@@ -98,12 +101,13 @@ export default function ResultsPage() {
           </div>
           <h2 className="text-xl font-semibold text-gray-900 mb-2">Analysis Not Found</h2>
           <p className="text-gray-600 mb-6">{error}</p>
-          <button
+          <BrandButton
             onClick={handleNewAnalysis}
-            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+            variant="primary"
+            className="px-6 py-2"
           >
             Start New Analysis
-          </button>
+          </BrandButton>
         </div>
       </div>
     );
@@ -116,39 +120,43 @@ export default function ResultsPage() {
         <div className="max-w-4xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <button
+              <TextButton
                 onClick={() => router.back()}
-                className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors"
+                color="mine-shaft"
+                className="flex items-center space-x-2"
               >
                 <ArrowLeft className="w-5 h-5" />
                 <span>Back</span>
-              </button>
+              </TextButton>
               <div>
                 <h1 className="text-2xl font-bold text-gray-900">Gap Analysis Results</h1>
                 <p className="text-gray-600">Your personalized career development roadmap</p>
               </div>
             </div>
             <div className="flex items-center space-x-3">
-              <button
+              <BrandButton
                 onClick={handleShare}
-                className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                variant="outline"
+                className="flex items-center space-x-2 px-4 py-2"
               >
                 <Share2 className="w-4 h-4" />
                 <span>Share</span>
-              </button>
-              <button
+              </BrandButton>
+              <BrandButton
                 onClick={handleDownload}
-                className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                variant="outline"
+                className="flex items-center space-x-2 px-4 py-2"
               >
                 <Download className="w-4 h-4" />
                 <span>Download</span>
-              </button>
-              <button
+              </BrandButton>
+              <CinematicButton
                 onClick={handleNewAnalysis}
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                variant="sunglow"
+                className="px-4 py-2"
               >
                 New Analysis
-              </button>
+              </CinematicButton>
             </div>
           </div>
         </div>

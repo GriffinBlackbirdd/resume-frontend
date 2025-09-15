@@ -2,6 +2,8 @@
 
 import React, { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import { BrandButton } from '@/components/ui/brand-button';
+import { TextButton } from '@/components/ui/text-button';
 
 export const UserMenu: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,9 +18,10 @@ export const UserMenu: React.FC = () => {
 
   return (
     <div className="relative">
-      <button
+      <BrandButton
+        variant="secondary"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center justify-between w-full px-3 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 transition-colors text-white"
+        className="flex items-center justify-between w-full px-3 py-2 bg-zinc-800 hover:bg-zinc-700 text-white"
       >
         <div className="flex items-center space-x-2">
           <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center text-xs font-semibold">
@@ -36,7 +39,7 @@ export const UserMenu: React.FC = () => {
         >
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
         </svg>
-      </button>
+      </BrandButton>
 
       {isOpen && (
         <>
@@ -54,25 +57,28 @@ export const UserMenu: React.FC = () => {
             </div>
             
             <div className="py-1">
-              <button
+              <BrandButton
+                variant="ghost"
                 onClick={() => setIsOpen(false)}
-                className="w-full text-left px-3 py-2 text-sm text-zinc-300 hover:bg-zinc-800 hover:text-white transition-colors"
+                className="w-full justify-start text-sm text-zinc-300 hover:bg-zinc-800 hover:text-white px-3 py-2"
               >
                 Profile Settings
-              </button>
-              <button
+              </BrandButton>
+              <BrandButton
+                variant="ghost"
                 onClick={() => setIsOpen(false)}
-                className="w-full text-left px-3 py-2 text-sm text-zinc-300 hover:bg-zinc-800 hover:text-white transition-colors"
+                className="w-full justify-start text-sm text-zinc-300 hover:bg-zinc-800 hover:text-white px-3 py-2"
               >
                 My Resumes
-              </button>
+              </BrandButton>
               <hr className="my-1 border-zinc-800" />
-              <button
+              <BrandButton
+                variant="ghost"
                 onClick={handleLogout}
-                className="w-full text-left px-3 py-2 text-sm text-red-400 hover:bg-zinc-800 hover:text-red-300 transition-colors"
+                className="w-full justify-start text-sm text-red-400 hover:bg-zinc-800 hover:text-red-300 px-3 py-2"
               >
                 Logout
-              </button>
+              </BrandButton>
             </div>
           </div>
         </>
