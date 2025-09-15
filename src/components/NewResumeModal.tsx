@@ -64,7 +64,7 @@ export function NewResumeModal() {
                       rotate: 0,
                       zIndex: 100,
                     }}
-                    className="rounded-xl -mr-4 mt-4 p-1 bg-vista-white border border-gray-100 shrink-0 overflow-hidden shadow-sm"
+                    className="rounded-xl -mr-4 mt-4 p-1 bg-vista-white border border-mine-shaft/10 shrink-0 overflow-hidden shadow-sm"
                   >
                     <img
                       src={image}
@@ -118,7 +118,7 @@ export function NewResumeModal() {
                 </BrandButton>
               </div>
             </ModalContent>
-            <ModalFooter className="gap-4 justify-center bg-gray-50/50">
+            <ModalFooter className="gap-4 justify-center bg-vista-white/50 border-t border-mine-shaft/10">
               <p className="text-xs text-mine-shaft/50 text-center font-sf">
                 Choose an option above to get started with your resume
               </p>

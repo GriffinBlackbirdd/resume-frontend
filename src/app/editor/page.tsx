@@ -1213,35 +1213,35 @@ cv:
   }, [hasJobDescription, originalResumePath, jobDescriptionPath, oldAtsScore, projectId]);
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-vista-white texture-paper text-mine-shaft">
       {/* Header */}
-      <header className="border-b border-white/10 bg-gradient-to-r from-gray-900 to-gray-800 backdrop-blur-sm shadow-lg">
+      <header className="border-b border-mine-shaft/10 bg-vista-white/95 backdrop-blur-sm shadow-sm">
         <div className="flex items-center justify-between px-6 py-4">
           {/* Left Section - Branding */}
           <div className="flex items-center space-x-6">
-            <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-gradient-to-br from-gray-600 to-gray-700 rounded-lg flex items-center justify-center">
-                <FileText className="w-4 h-4 text-white" />
+            <div className="flex items-center space-x-4">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm overflow-hidden">
+                <img src="/logo.jpeg" alt="Resume Editor Logo" className="w-full h-full object-cover" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-white">Resume Editor</h1>
-                <div className="text-xs text-white/50">Professional Resume Builder</div>
+                <h1 className="text-2xl font-bebas tracking-tight text-mine-shaft">Resume Editor</h1>
+                <div className="text-xs text-mine-shaft/60 font-editorial">Professional Resume Builder</div>
               </div>
             </div>
-            <div className="hidden md:flex items-center space-x-2 px-3 py-1 bg-white/5 rounded-full border border-white/10">
-              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-              <span className="text-xs text-white/70">resume.yaml</span>
+            <div className="hidden md:flex items-center space-x-2 px-3 py-1 bg-vista-white rounded-full border border-mine-shaft/10">
+              <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+              <span className="text-xs text-mine-shaft/70 font-sf">resume.yaml</span>
             </div>
           </div>
 
           {/* Center Section - Key Actions */}
           <div className="hidden lg:flex items-center space-x-4">
             {/* ATS Score */}
-            <div className="flex items-center space-x-3 px-4 py-2 bg-white/5 rounded-xl border border-white/10">
-              <BarChart3 className="w-4 h-4 text-blue-400" />
+            <div className="flex items-center space-x-3 px-4 py-2 bg-vista-white rounded-xl border border-mine-shaft/10">
+              <BarChart3 className="w-4 h-4 text-sunglow" />
               <div className="flex items-center space-x-3">
                 <div className="flex items-center space-x-2">
-                  <span className="text-xs text-white/60">ATS:</span>
+                  <span className="text-xs text-mine-shaft/60 font-sf">ATS:</span>
                   {atsScore !== null ? (
                     <div className={cn(
                       "flex items-center space-x-1 px-2 py-1 rounded-full text-xs font-medium",
@@ -1260,18 +1260,18 @@ cv:
                   ) : isLoadingAtsScore ? (
                     <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
                   ) : (
-                    <span className="text-xs text-white/40">--</span>
+                    <span className="text-xs text-mine-shaft/40 font-sf">--</span>
                   )}
                 </div>
                 {!projectId && oldAtsScore !== null && atsScore !== null && (
                   <div className="flex items-center space-x-1">
                     {atsScore > oldAtsScore ? (
-                      <div className="flex items-center space-x-1 text-xs text-green-400">
+                      <div className="flex items-center space-x-1 text-xs text-emerald-600 font-sf">
                         <span>↑</span>
                         <span>+{(atsScore - oldAtsScore).toFixed(1)}%</span>
                       </div>
                     ) : atsScore < oldAtsScore ? (
-                      <div className="flex items-center space-x-1 text-xs text-red-400">
+                      <div className="flex items-center space-x-1 text-xs text-red-600 font-sf">
                         <span>↓</span>
                         <span>{(atsScore - oldAtsScore).toFixed(1)}%</span>
                       </div>
@@ -1282,32 +1282,32 @@ cv:
             </div>
 
             {/* Auto-Render Status */}
-            <div className="flex items-center space-x-3 px-4 py-2 bg-white/5 rounded-xl border border-white/10">
+            <div className="flex items-center space-x-3 px-4 py-2 bg-vista-white rounded-xl border border-mine-shaft/10">
               <div className="flex items-center space-x-2">
                 {autoRenderEnabled ? (
-                  <><RefreshCw className="w-4 h-4 text-green-400" />
-                  <span className="text-sm text-green-400 font-medium">Auto-Render</span></>
+                  <><RefreshCw className="w-4 h-4 text-emerald-600" />
+                  <span className="text-sm text-emerald-600 font-sf font-medium">Auto-Render</span></>
                 ) : (
-                  <><Pause className="w-4 h-4 text-yellow-400" />
-                  <span className="text-sm text-yellow-400 font-medium">Manual Mode</span></>
+                  <><Pause className="w-4 h-4 text-yellow-600" />
+                  <span className="text-sm text-yellow-600 font-sf font-medium">Manual Mode</span></>
                 )}
               </div>
               <div className={cn(
                 "w-2 h-2 rounded-full transition-all duration-300",
-                autoRenderEnabled ? "bg-green-400 animate-pulse" : "bg-yellow-400"
+                autoRenderEnabled ? "bg-emerald-500 animate-pulse" : "bg-yellow-500"
               )}></div>
             </div>
 
             {/* Theme Selector */}
-            <div className="flex items-center space-x-2 px-4 py-2 bg-white/5 rounded-xl border border-white/10">
-              <Palette className="w-4 h-4 text-gray-400" />
+            <div className="flex items-center space-x-2 px-4 py-2 bg-vista-white rounded-xl border border-mine-shaft/10">
+              <Palette className="w-4 h-4 text-sunglow" />
               <select
                 value={selectedTheme}
                 onChange={(e) => handleThemeChange(e.target.value)}
-                className="bg-transparent border-none text-sm text-white focus:outline-none cursor-pointer"
+                className="bg-vista-white border-none text-sm text-mine-shaft font-sf focus:outline-none cursor-pointer"
               >
                 {themes.map((theme) => (
-                  <option key={theme.value} value={theme.value} className="bg-gray-800">
+                  <option key={theme.value} value={theme.value} className="bg-vista-white">
                     {theme.label}
                   </option>
                 ))}
@@ -1325,7 +1325,7 @@ cv:
                 "flex items-center space-x-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 border",
                 autoRenderEnabled
                   ? "bg-sunglow/20 text-sunglow border-sunglow/30 hover:bg-sunglow/30"
-                  : "bg-gray-700/50 text-gray-300 border-gray-600/50 hover:bg-gray-600/60"
+                  : "bg-vista-white text-mine-shaft/70 border-mine-shaft/20 hover:bg-mine-shaft/5"
               )}
             >
               {autoRenderEnabled ? <RefreshCw className="w-4 h-4" /> : <Play className="w-4 h-4" />}
@@ -1350,8 +1350,8 @@ cv:
             </BrandButton>
 
             {/* Settings Menu (Mobile) */}
-            <TextButton className="lg:hidden p-2 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 transition-all duration-200">
-              <Settings className="w-4 h-4 text-white" />
+            <TextButton className="lg:hidden p-2 bg-vista-white rounded-lg border border-mine-shaft/10 hover:bg-sunglow/5 transition-all duration-200">
+              <Settings className="w-4 h-4 text-mine-shaft" />
             </TextButton>
           </div>
         </div>
@@ -1359,34 +1359,34 @@ cv:
 
 
       {/* Main Editor Layout */}
-      <div className="flex h-[calc(100vh-169px)] mt-6">
+      <div className="flex flex-1 mt-6 min-h-0">
         {/* Left Panel - Editor with Tabs */}
-        <div className="w-1/2 border-r border-white/10 bg-gray-900/30">
+        <div className="w-1/2 border-r border-mine-shaft/10 bg-vista-white">
           {/* Tab Headers */}
-          <div className="flex border-b border-white/10">
+          <div className="flex border-b border-mine-shaft/10">
             <BrandButton
               variant={activeTab === 'yaml' ? 'primary' : 'ghost'}
               onClick={() => handleTabSwitch('yaml')}
               className={cn(
-                "flex-1 px-4 py-2 text-sm font-medium",
+                "flex-1 px-4 py-2 text-sm font-medium focus:ring-none focus:ring-offset-0 rounded-none border-none focus:border-none",
                 activeTab === 'yaml'
                   ? "bg-sunglow text-mine-shaft"
-                  : "text-white/60 hover:text-white/80 hover:bg-gray-800/30"
+                  : "text-mine-shaft/60 hover:text-mine-shaft hover:bg-mine-shaft/5"
               )}
             >
-              YAML Editor
+              <span className="font-sf font-medium">YAML Editor</span>
             </BrandButton>
             <BrandButton
               variant={activeTab === 'form' ? 'primary' : 'ghost'}
               onClick={() => handleTabSwitch('form')}
               className={cn(
-                "flex-1 px-4 py-2 text-sm font-medium",
+                "flex-1 px-4 py-2 text-sm font-medium focus:ring-none focus:ring-offset-0 rounded-none border-none focus:border-none",
                 activeTab === 'form'
                   ? "bg-sunglow text-mine-shaft"
-                  : "text-white/60 hover:text-white/80 hover:bg-gray-800/30"
+                  : "text-mine-shaft/60 hover:text-mine-shaft hover:bg-mine-shaft/5"
               )}
             >
-              Form Editor
+              <span className="font-sf font-medium">Form Editor</span>
             </BrandButton>
           </div>
 
@@ -1394,13 +1394,13 @@ cv:
           <div className="h-[calc(100vh-210px)]">
             {activeTab === 'yaml' ? (
               <div className="h-full p-4">
-                <div className="h-[calc(100%-2rem)] border border-white/10 rounded-lg overflow-hidden">
+                <div className="h-[calc(100%-2rem)] border border-mine-shaft/10 rounded-lg overflow-hidden">
                   <MonacoEditor
                     height="100%"
                     defaultLanguage="yaml"
                     value={yamlContent}
                     onChange={handleYamlChange}
-                    theme="vs-dark"
+                    theme="light"
                     options={{
                       minimap: { enabled: false },
                       fontSize: 14,
@@ -1423,21 +1423,21 @@ cv:
               <div className="h-full flex">
 
                 {/* Sidebar Navigation */}
-                <div className="w-80 bg-gray-900/50 border-r border-white/10 flex flex-col">
+                <div className="w-80 bg-vista-white border-r border-mine-shaft/10 flex flex-col">
                   {/* Breadcrumb Trail */}
-                  <div className="p-4 border-b border-white/10">
+                  <div className="p-4 border-b border-mine-shaft/10">
                     <div className="flex items-center space-x-2 text-sm">
-                      <span className="text-white/40">Resume Builder</span>
-                      <span className="text-white/40">/</span>
-                      <span className="text-blue-400 font-medium">{formSteps[currentStep].title}</span>
+                      <span className="text-mine-shaft/40 font-editorial">Resume Builder</span>
+                      <span className="text-mine-shaft/40">/</span>
+                      <span className="text-sunglow font-medium font-sf">{formSteps[currentStep].title}</span>
                     </div>
                   </div>
 
                   {/* Floating Progress Indicator */}
-                  <div className="p-4 border-b border-white/10">
+                  <div className="p-4 border-b border-mine-shaft/10">
                     <div className="flex items-center justify-between mb-3">
-                      <span className="text-white font-medium">Overall Progress</span>
-                      <span className="text-sm text-white/60">{Math.round(((Array.from(completedSteps).length) / formSteps.length) * 100)}%</span>
+                      <span className="text-mine-shaft font-medium font-sf">Overall Progress</span>
+                      <span className="text-sm text-mine-shaft/60 font-sf">{Math.round(((Array.from(completedSteps).length) / formSteps.length) * 100)}%</span>
                     </div>
                     <div className="relative">
                       <svg className="w-16 h-16 mx-auto transform -rotate-90" viewBox="0 0 64 64">
@@ -1446,7 +1446,7 @@ cv:
                           cy="32"
                           r="28"
                           fill="none"
-                          stroke="rgb(75 85 99)"
+                          stroke="rgb(229 231 235)"
                           strokeWidth="4"
                         />
                         <circle
@@ -1454,7 +1454,7 @@ cv:
                           cy="32"
                           r="28"
                           fill="none"
-                          stroke="rgb(147 51 234)"
+                          stroke="#FDBA2F"
                           strokeWidth="4"
                           strokeLinecap="round"
                           strokeDasharray={`${2 * Math.PI * 28}`}
@@ -1463,7 +1463,7 @@ cv:
                         />
                       </svg>
                       <div className="absolute inset-0 flex items-center justify-center">
-                        <span className="text-sm font-bold text-white">{Array.from(completedSteps).length}/{formSteps.length}</span>
+                        <span className="text-sm font-bold text-mine-shaft font-sf">{Array.from(completedSteps).length}/{formSteps.length}</span>
                       </div>
                     </div>
                   </div>
@@ -1477,38 +1477,38 @@ cv:
                         className={cn(
                           "w-full p-3 mb-2 rounded-lg text-left transition-all duration-200",
                           index === currentStep
-                            ? "bg-gray-700/50 border border-gray-600/50 text-white"
+                            ? "bg-vista-white border border-mine-shaft/20/50 text-mine-shaft"
                             : completedSteps.has(index)
                             ? "bg-green-600/10 border border-green-500/20 text-green-400 hover:bg-green-600/20 cursor-pointer"
                             : index < currentStep
-                            ? "bg-gray-700/30 border border-gray-600/30 text-gray-300 hover:bg-gray-700/50 cursor-pointer"
-                            : "bg-gray-800/30 border border-gray-700/30 text-gray-500 cursor-not-allowed opacity-60"
+                            ? "bg-mine-shaft/10 border border-mine-shaft/20 text-mine-shaft/60 hover:bg-sunglow/20/50 cursor-pointer"
+                            : "bg-vista-white border border-mine-shaft/20 text-mine-shaft/60 cursor-not-allowed opacity-60"
                         )}
                         disabled={index > currentStep && !completedSteps.has(index)}
                       >
                         <div className="flex items-center space-x-3">
                           <div className={cn(
-                            "w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium",
+                            "w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium font-sf",
                             index === currentStep
-                              ? "bg-gray-600 text-white"
+                              ? "bg-sunglow text-mine-shaft"
                               : completedSteps.has(index)
-                              ? "bg-green-500 text-white"
+                              ? "bg-emerald-500 text-mine-shaft"
                               : index < currentStep
-                              ? "bg-gray-600 text-gray-300"
-                              : "bg-gray-700 text-gray-500"
+                              ? "bg-sunglow/20 text-sunglow border border-sunglow/30"
+                              : "bg-sunglow/10 text-sunglow/50 border border-sunglow/20"
                           )}>
                             {completedSteps.has(index) ? "✓" : index + 1}
                           </div>
                           <div className="flex-1">
                             <div className="flex items-center space-x-2">
                               {getIcon(step.icon)}
-                              <span className="font-medium text-sm">{step.title}</span>
+                              <span className="font-medium text-sm font-sf">{step.title}</span>
                             </div>
                             {index === currentStep && (
-                              <div className="text-xs text-white/60 mt-1">Currently editing</div>
+                              <div className="text-xs text-mine-shaft/60 mt-1 font-editorial">Currently editing</div>
                             )}
                             {completedSteps.has(index) && index !== currentStep && (
-                              <div className="text-xs text-green-400/80 mt-1">Completed</div>
+                              <div className="text-xs text-emerald-600/80 mt-1 font-editorial">Completed</div>
                             )}
                           </div>
                         </div>
@@ -1519,24 +1519,24 @@ cv:
                 </div>
 
                 {/* Main Content Area */}
-                <div className="flex-1 flex flex-col">
+                <div className="flex-1 flex flex-col bg-vista-white">
                   {/* Header */}
-                  <div className="p-6 border-b border-white/10">
+                  <div className="p-6 border-b border-mine-shaft/10">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-4">
-                        <div className="w-12 h-12 bg-gray-700/30 rounded-xl flex items-center justify-center">
+                        <div className="w-12 h-12 bg-sunglow/20 rounded-xl flex items-center justify-center">
                           {getIcon(formSteps[currentStep].icon, "w-6 h-6")}
                         </div>
                         <div>
-                          <h2 className="text-2xl font-bold text-white">{formSteps[currentStep].title}</h2>
-                          <p className="text-white/60 text-sm">Step {currentStep + 1} of {formSteps.length}</p>
+                          <h2 className="text-2xl text-mine-shaft font-bebas tracking-tight">{formSteps[currentStep].title}</h2>
+                          <p className="text-mine-shaft/60 text-sm font-editorial">Step {currentStep + 1} of {formSteps.length}</p>
                         </div>
                       </div>
                       <div className="text-right">
-                        <div className="text-2xl font-bold text-blue-400">
+                        <div className="text-2xl font-bold text-sunglow font-sf">
                           {Math.round(((currentStep + 1) / formSteps.length) * 100)}%
                         </div>
-                        <div className="text-xs text-white/60">Complete</div>
+                        <div className="text-xs text-mine-shaft/60 font-editorial">Complete</div>
                       </div>
                     </div>
                   </div>
@@ -1545,10 +1545,10 @@ cv:
                 <div className="flex-1 overflow-y-auto p-6 form-scroll">
                   {currentStep === 0 && (
                     <div className="space-y-6">
-                      <h4 className="text-xl font-semibold text-white mb-4">Personal Information</h4>
+                      <h4 className="text-xl font-semibold text-mine-shaft font-bebas mb-4">Personal Information</h4>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                          <label className="block text-sm font-medium text-white/70 mb-2">Full Name *</label>
+                          <label className="block text-sm font-medium text-mine-shaft/70 font-sf mb-2">Full Name *</label>
                           <input
                             type="text"
                             value={formData.personalInfo.name}
@@ -1561,12 +1561,12 @@ cv:
                             }}
                             onFocus={handleFormFieldFocus}
                             onBlur={handleFormFieldBlur}
-                            className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="w-full px-3 py-2 bg-vista-white border border-mine-shaft/20 rounded-lg text-mine-shaft focus:outline-none focus:ring-2 focus:ring-sunglow focus:border-transparent"
                             placeholder="John Doe"
                           />
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-white/70 mb-2">Email *</label>
+                          <label className="block text-sm font-medium text-mine-shaft/70 font-sf mb-2">Email *</label>
                           <input
                             type="email"
                             value={formData.personalInfo.email}
@@ -1579,12 +1579,12 @@ cv:
                             }}
                             onFocus={handleFormFieldFocus}
                             onBlur={handleFormFieldBlur}
-                            className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="w-full px-3 py-2 bg-vista-white border border-mine-shaft/20 rounded-lg text-mine-shaft focus:outline-none focus:ring-2 focus:ring-sunglow focus:border-transparent"
                             placeholder="john@example.com"
                           />
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-white/70 mb-2">Location</label>
+                          <label className="block text-sm font-medium text-mine-shaft/70 font-sf mb-2">Location</label>
                           <input
                             type="text"
                             value={formData.personalInfo.location}
@@ -1597,12 +1597,12 @@ cv:
                             }}
                             onFocus={handleFormFieldFocus}
                             onBlur={handleFormFieldBlur}
-                            className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="w-full px-3 py-2 bg-vista-white border border-mine-shaft/20 rounded-lg text-mine-shaft focus:outline-none focus:ring-2 focus:ring-sunglow focus:border-transparent"
                             placeholder="New York, NY"
                           />
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-white/70 mb-2">Phone</label>
+                          <label className="block text-sm font-medium text-mine-shaft/70 font-sf mb-2">Phone</label>
                           <input
                             type="tel"
                             value={formData.personalInfo.phone}
@@ -1615,12 +1615,12 @@ cv:
                             }}
                             onFocus={handleFormFieldFocus}
                             onBlur={handleFormFieldBlur}
-                            className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="w-full px-3 py-2 bg-vista-white border border-mine-shaft/20 rounded-lg text-mine-shaft focus:outline-none focus:ring-2 focus:ring-sunglow focus:border-transparent"
                             placeholder="+1 (555) 123-4567"
                           />
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-white/70 mb-2">Website</label>
+                          <label className="block text-sm font-medium text-mine-shaft/70 font-sf mb-2">Website</label>
                           <input
                             type="url"
                             value={formData.personalInfo.website}
@@ -1633,7 +1633,7 @@ cv:
                             }}
                             onFocus={handleFormFieldFocus}
                             onBlur={handleFormFieldBlur}
-                            className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="w-full px-3 py-2 bg-vista-white border border-mine-shaft/20 rounded-lg text-mine-shaft focus:outline-none focus:ring-2 focus:ring-sunglow focus:border-transparent"
                             placeholder="https://yourwebsite.com"
                           />
                         </div>
@@ -1643,14 +1643,14 @@ cv:
 
                   {currentStep === 1 && (
                     <div className="space-y-6">
-                      <h4 className="text-xl font-semibold text-white mb-4">Social Networks</h4>
-                      <p className="text-white/60 mb-4">Add your professional social media profiles and online presence.</p>
+                      <h4 className="text-xl font-semibold text-mine-shaft font-bebas mb-4">Social Networks</h4>
+                      <p className="text-mine-shaft/60 font-editorial mb-4">Add your professional social media profiles and online presence.</p>
                       <div className="space-y-4">
                         {formData.socialNetworks.map((social, index) => (
-                          <div key={index} className="bg-gray-700/20 rounded-lg p-4 border border-gray-600/30">
+                          <div key={index} className="bg-vista-white rounded-lg p-4 border border-mine-shaft/10">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                               <div>
-                                <label className="block text-sm font-medium text-white/70 mb-2">Network</label>
+                                <label className="block text-sm font-medium text-mine-shaft/70 font-sf mb-2">Network</label>
                                 <select
                                   value={social.network}
                                   onChange={(e) => {
@@ -1661,7 +1661,7 @@ cv:
                                   }}
                                   onFocus={handleFormFieldFocus}
                                   onBlur={handleFormFieldBlur}
-                                  className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent [color-scheme:dark]"
+                                  className="w-full px-3 py-2 bg-vista-white border border-mine-shaft/20 rounded-lg text-mine-shaft focus:outline-none focus:ring-2 focus:ring-sunglow focus:border-transparent [color-scheme:dark]"
                                 >
                                   <option value="GitHub">GitHub</option>
                                   <option value="LinkedIn">LinkedIn</option>
@@ -1670,7 +1670,7 @@ cv:
                                 </select>
                               </div>
                               <div>
-                                <label className="block text-sm font-medium text-white/70 mb-2">Username</label>
+                                <label className="block text-sm font-medium text-mine-shaft/70 font-sf mb-2">Username</label>
                                 <input
                                   type="text"
                                   value={social.username}
@@ -1682,7 +1682,7 @@ cv:
                                   }}
                                   onFocus={handleFormFieldFocus}
                                   onBlur={handleFormFieldBlur}
-                                  className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent [color-scheme:dark]"
+                                  className="w-full px-3 py-2 bg-vista-white border border-mine-shaft/20 rounded-lg text-mine-shaft focus:outline-none focus:ring-2 focus:ring-sunglow focus:border-transparent [color-scheme:dark]"
                                   placeholder="your-username"
                                 />
                               </div>
@@ -1704,7 +1704,7 @@ cv:
                           onClick={() => setFormData(prev => ({ ...prev, socialNetworks: [...prev.socialNetworks, {
                             network: 'GitHub', username: ''
                           }] }))}
-                          className="px-4 py-2 bg-gray-700/30 text-gray-300 border border-gray-600/50 rounded-lg hover:bg-gray-600/50 transition-colors text-sm"
+                          className="px-4 py-2 bg-mine-shaft/10 text-mine-shaft/60 border border-mine-shaft/20 rounded-lg hover:bg-sunglow/20 transition-colors text-sm"
                         >
                           + Add Social Network
                         </button>
@@ -1714,7 +1714,7 @@ cv:
 
                   {currentStep === 2 && (
                     <div className="space-y-6">
-                      <h4 className="text-xl font-semibold text-white mb-4">Professional Summary</h4>
+                      <h4 className="text-xl font-semibold text-mine-shaft font-bebas mb-4">Professional Summary</h4>
                       {formData.summary.map((item, index) => (
                         <div key={index} className="mb-3 flex">
                           <textarea
@@ -1728,7 +1728,7 @@ cv:
                             onFocus={handleFormFieldFocus}
                             onBlur={handleFormFieldBlur}
                             rows={2}
-                            className="flex-1 px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                            className="flex-1 px-3 py-2 bg-vista-white border border-mine-shaft/20 rounded-lg text-mine-shaft focus:outline-none focus:ring-2 focus:ring-sunglow focus:border-transparent resize-none"
                             placeholder="Professional summary point..."
                           />
                           {formData.summary.length > 1 && (
@@ -1746,7 +1746,7 @@ cv:
                       ))}
                       <button
                         onClick={() => setFormData(prev => ({ ...prev, summary: [...prev.summary, ''] }))}
-                        className="px-4 py-2 bg-gray-700/30 text-gray-300 border border-gray-600/50 rounded-lg hover:bg-gray-600/50 transition-colors text-sm"
+                        className="px-4 py-2 bg-mine-shaft/10 text-mine-shaft/60 border border-mine-shaft/20 rounded-lg hover:bg-sunglow/20 transition-colors text-sm"
                       >
                         + Add Summary Point
                       </button>
@@ -1755,13 +1755,13 @@ cv:
 
                   {currentStep === 3 && (
                     <div className="space-y-6">
-                      <h4 className="text-xl font-semibold text-white mb-4">Work Experience</h4>
+                      <h4 className="text-xl font-semibold text-mine-shaft font-bebas mb-4">Work Experience</h4>
                       <div className="space-y-6">
                         {formData.experience.map((exp, index) => (
-                          <div key={index} className="bg-gray-700/20 rounded-lg p-4 border border-gray-600/30">
+                          <div key={index} className="bg-vista-white rounded-lg p-4 border border-mine-shaft/10">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                               <div>
-                                <label className="block text-sm font-medium text-white/70 mb-2">Company *</label>
+                                <label className="block text-sm font-medium text-mine-shaft/70 font-sf mb-2">Company *</label>
                                 <input
                                   type="text"
                                   value={exp.company}
@@ -1773,12 +1773,12 @@ cv:
                                   }}
                                   onFocus={handleFormFieldFocus}
                                   onBlur={handleFormFieldBlur}
-                                  className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent [color-scheme:dark]"
+                                  className="w-full px-3 py-2 bg-vista-white border border-mine-shaft/20 rounded-lg text-mine-shaft focus:outline-none focus:ring-2 focus:ring-sunglow focus:border-transparent [color-scheme:dark]"
                                   placeholder="Company Name"
                                 />
                               </div>
                               <div>
-                                <label className="block text-sm font-medium text-white/70 mb-2">Position *</label>
+                                <label className="block text-sm font-medium text-mine-shaft/70 font-sf mb-2">Position *</label>
                                 <input
                                   type="text"
                                   value={exp.position}
@@ -1790,12 +1790,12 @@ cv:
                                   }}
                                   onFocus={handleFormFieldFocus}
                                   onBlur={handleFormFieldBlur}
-                                  className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent [color-scheme:dark]"
+                                  className="w-full px-3 py-2 bg-vista-white border border-mine-shaft/20 rounded-lg text-mine-shaft focus:outline-none focus:ring-2 focus:ring-sunglow focus:border-transparent [color-scheme:dark]"
                                   placeholder="Job Title"
                                 />
                               </div>
                               <div>
-                                <label className="block text-sm font-medium text-white/70 mb-2">Location</label>
+                                <label className="block text-sm font-medium text-mine-shaft/70 font-sf mb-2">Location</label>
                                 <input
                                   type="text"
                                   value={exp.location}
@@ -1807,13 +1807,13 @@ cv:
                                   }}
                                   onFocus={handleFormFieldFocus}
                                   onBlur={handleFormFieldBlur}
-                                  className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent [color-scheme:dark]"
+                                  className="w-full px-3 py-2 bg-vista-white border border-mine-shaft/20 rounded-lg text-mine-shaft focus:outline-none focus:ring-2 focus:ring-sunglow focus:border-transparent [color-scheme:dark]"
                                   placeholder="City, State"
                                 />
                               </div>
                               <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                  <label className="block text-sm font-medium text-white/70 mb-2">Start Date</label>
+                                  <label className="block text-sm font-medium text-mine-shaft/70 font-sf mb-2">Start Date</label>
                                   <input
                                     type="month"
                                     value={exp.start_date}
@@ -1825,12 +1825,12 @@ cv:
                                     }}
                                     onFocus={handleFormFieldFocus}
                                     onBlur={handleFormFieldBlur}
-                                    className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent [color-scheme:dark]"
+                                    className="w-full px-3 py-2 bg-vista-white border border-mine-shaft/20 rounded-lg text-mine-shaft focus:outline-none focus:ring-2 focus:ring-sunglow focus:border-transparent [color-scheme:dark]"
                                     placeholder="2021-01"
                                   />
                                 </div>
                                 <div>
-                                  <label className="block text-sm font-medium text-white/70 mb-2">End Date</label>
+                                  <label className="block text-sm font-medium text-mine-shaft/70 font-sf mb-2">End Date</label>
                                   <div className="space-y-2">
                                     <input
                                       type="month"
@@ -1844,10 +1844,10 @@ cv:
                                       onFocus={handleFormFieldFocus}
                                       onBlur={handleFormFieldBlur}
                                       disabled={exp.end_date === 'present'}
-                                      className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed [color-scheme:dark]"
+                                      className="w-full px-3 py-2 bg-vista-white border border-mine-shaft/20 rounded-lg text-mine-shaft focus:outline-none focus:ring-2 focus:ring-sunglow focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed [color-scheme:dark]"
                                       placeholder="2023-12"
                                     />
-                                    <label className="flex items-center text-white/70 text-sm cursor-pointer select-none">
+                                    <label className="flex items-center text-mine-shaft/70 font-sf text-sm cursor-pointer select-none">
                                       <input
                                         type="checkbox"
                                         checked={exp.end_date === 'present'}
@@ -1868,7 +1868,7 @@ cv:
                               </div>
                             </div>
                             <div>
-                              <label className="block text-sm font-medium text-white/70 mb-2">Key Achievements</label>
+                              <label className="block text-sm font-medium text-mine-shaft/70 font-sf mb-2">Key Achievements</label>
                               {exp.highlights.map((highlight, hIndex) => (
                                 <div key={hIndex} className="mb-2 flex">
                                   <input
@@ -1882,7 +1882,7 @@ cv:
                                     }}
                                     onFocus={handleFormFieldFocus}
                                     onBlur={handleFormFieldBlur}
-                                    className="flex-1 px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    className="flex-1 px-3 py-2 bg-vista-white border border-mine-shaft/20 rounded-lg text-mine-shaft focus:outline-none focus:ring-2 focus:ring-sunglow focus:border-transparent"
                                     placeholder="Achievement or responsibility..."
                                   />
                                   {exp.highlights.length > 1 && (
@@ -1927,7 +1927,7 @@ cv:
                           onClick={() => setFormData(prev => ({ ...prev, experience: [...prev.experience, {
                             company: '', position: '', location: '', start_date: '', end_date: 'present', highlights: ['']
                           }] }))}
-                          className="px-4 py-2 bg-gray-700/30 text-gray-300 border border-gray-600/50 rounded-lg hover:bg-gray-600/50 transition-colors text-sm"
+                          className="px-4 py-2 bg-mine-shaft/10 text-mine-shaft/60 border border-mine-shaft/20 rounded-lg hover:bg-sunglow/20 transition-colors text-sm"
                         >
                           + Add Experience
                         </button>
@@ -1937,14 +1937,14 @@ cv:
 
                   {currentStep === 4 && (
                     <div className="space-y-6">
-                      <h4 className="text-xl font-semibold text-white mb-4">Projects</h4>
-                      <p className="text-white/60 mb-4">Add your notable projects, side projects, or portfolio items.</p>
+                      <h4 className="text-xl font-semibold text-mine-shaft font-bebas mb-4">Projects</h4>
+                      <p className="text-mine-shaft/60 font-editorial mb-4">Add your notable projects, side projects, or portfolio items.</p>
                       <div className="space-y-4">
                         {formData.projects.map((project, index) => (
-                          <div key={index} className="bg-gray-700/20 rounded-lg p-4 border border-gray-600/30">
+                          <div key={index} className="bg-vista-white rounded-lg p-4 border border-mine-shaft/10">
                             <div className="grid grid-cols-1 gap-4">
                               <div>
-                                <label className="block text-sm font-medium text-white/70 mb-2">Project Name</label>
+                                <label className="block text-sm font-medium text-mine-shaft/70 font-sf mb-2">Project Name</label>
                                 <input
                                   type="text"
                                   value={project.name}
@@ -1956,12 +1956,12 @@ cv:
                                   }}
                                   onFocus={handleFormFieldFocus}
                                   onBlur={handleFormFieldBlur}
-                                  className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent [color-scheme:dark]"
+                                  className="w-full px-3 py-2 bg-vista-white border border-mine-shaft/20 rounded-lg text-mine-shaft focus:outline-none focus:ring-2 focus:ring-sunglow focus:border-transparent [color-scheme:dark]"
                                   placeholder="My Awesome Project"
                                 />
                               </div>
                               <div>
-                                <label className="block text-sm font-medium text-white/70 mb-2">Description</label>
+                                <label className="block text-sm font-medium text-mine-shaft/70 font-sf mb-2">Description</label>
                                 <textarea
                                   value={project.summary}
                                   onChange={(e) => {
@@ -1973,12 +1973,12 @@ cv:
                                   onFocus={handleFormFieldFocus}
                                   onBlur={handleFormFieldBlur}
                                   rows={3}
-                                  className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                                  className="w-full px-3 py-2 bg-vista-white border border-mine-shaft/20 rounded-lg text-mine-shaft focus:outline-none focus:ring-2 focus:ring-sunglow focus:border-transparent resize-none"
                                   placeholder="Brief project description..."
                                 />
                               </div>
                               <div>
-                                <label className="block text-sm font-medium text-white/70 mb-2">Key Highlights</label>
+                                <label className="block text-sm font-medium text-mine-shaft/70 font-sf mb-2">Key Highlights</label>
                                 {project.highlights.map((highlight, hIndex) => (
                                   <div key={hIndex} className="mb-2 flex">
                                     <input
@@ -1992,7 +1992,7 @@ cv:
                                       }}
                                       onFocus={handleFormFieldFocus}
                                       onBlur={handleFormFieldBlur}
-                                      className="flex-1 px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                      className="flex-1 px-3 py-2 bg-vista-white border border-mine-shaft/20 rounded-lg text-mine-shaft focus:outline-none focus:ring-2 focus:ring-sunglow focus:border-transparent"
                                       placeholder="Key achievement or feature..."
                                     />
                                     {project.highlights.length > 1 && (
@@ -2036,7 +2036,7 @@ cv:
                         ))}
                         <button
                           onClick={() => setFormData(prev => ({ ...prev, projects: [...prev.projects, { name: '', summary: '', highlights: [''] }] }))}
-                          className="px-4 py-2 bg-gray-700/30 text-gray-300 border border-gray-600/50 rounded-lg hover:bg-gray-600/50 transition-colors text-sm"
+                          className="px-4 py-2 bg-mine-shaft/10 text-mine-shaft/60 border border-mine-shaft/20 rounded-lg hover:bg-sunglow/20 transition-colors text-sm"
                         >
                           + Add Project
                         </button>
@@ -2046,13 +2046,13 @@ cv:
 
                   {currentStep === 5 && (
                     <div className="space-y-6">
-                      <h4 className="text-xl font-semibold text-white mb-4">Education</h4>
+                      <h4 className="text-xl font-semibold text-mine-shaft font-bebas mb-4">Education</h4>
                       <div className="space-y-4">
                         {formData.education.map((edu, index) => (
-                          <div key={index} className="bg-gray-700/20 rounded-lg p-4 border border-gray-600/30">
+                          <div key={index} className="bg-vista-white rounded-lg p-4 border border-mine-shaft/10">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                               <div>
-                                <label className="block text-sm font-medium text-white/70 mb-2">Institution *</label>
+                                <label className="block text-sm font-medium text-mine-shaft/70 font-sf mb-2">Institution *</label>
                                 <input
                                   type="text"
                                   value={edu.institution}
@@ -2064,12 +2064,12 @@ cv:
                                   }}
                                   onFocus={handleFormFieldFocus}
                                   onBlur={handleFormFieldBlur}
-                                  className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent [color-scheme:dark]"
+                                  className="w-full px-3 py-2 bg-vista-white border border-mine-shaft/20 rounded-lg text-mine-shaft focus:outline-none focus:ring-2 focus:ring-sunglow focus:border-transparent [color-scheme:dark]"
                                   placeholder="University Name"
                                 />
                               </div>
                               <div>
-                                <label className="block text-sm font-medium text-white/70 mb-2">Degree</label>
+                                <label className="block text-sm font-medium text-mine-shaft/70 font-sf mb-2">Degree</label>
                                 <input
                                   type="text"
                                   value={edu.degree}
@@ -2081,12 +2081,12 @@ cv:
                                   }}
                                   onFocus={handleFormFieldFocus}
                                   onBlur={handleFormFieldBlur}
-                                  className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent [color-scheme:dark]"
+                                  className="w-full px-3 py-2 bg-vista-white border border-mine-shaft/20 rounded-lg text-mine-shaft focus:outline-none focus:ring-2 focus:ring-sunglow focus:border-transparent [color-scheme:dark]"
                                   placeholder="BTech"
                                 />
                               </div>
                               <div>
-                                <label className="block text-sm font-medium text-white/70 mb-2">Field of Study</label>
+                                <label className="block text-sm font-medium text-mine-shaft/70 font-sf mb-2">Field of Study</label>
                                 <input
                                   type="text"
                                   value={edu.area}
@@ -2098,12 +2098,12 @@ cv:
                                   }}
                                   onFocus={handleFormFieldFocus}
                                   onBlur={handleFormFieldBlur}
-                                  className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent [color-scheme:dark]"
+                                  className="w-full px-3 py-2 bg-vista-white border border-mine-shaft/20 rounded-lg text-mine-shaft focus:outline-none focus:ring-2 focus:ring-sunglow focus:border-transparent [color-scheme:dark]"
                                   placeholder="Computer Science"
                                 />
                               </div>
                               <div>
-                                <label className="block text-sm font-medium text-white/70 mb-2">CGPA/GPA</label>
+                                <label className="block text-sm font-medium text-mine-shaft/70 font-sf mb-2">CGPA/GPA</label>
                                 <input
                                   type="text"
                                   value={edu.gpa || ''}
@@ -2115,13 +2115,13 @@ cv:
                                   }}
                                   onFocus={handleFormFieldFocus}
                                   onBlur={handleFormFieldBlur}
-                                  className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent [color-scheme:dark]"
+                                  className="w-full px-3 py-2 bg-vista-white border border-mine-shaft/20 rounded-lg text-mine-shaft focus:outline-none focus:ring-2 focus:ring-sunglow focus:border-transparent [color-scheme:dark]"
                                   placeholder="8.0/10.0 or 3.8/4.0"
                                 />
                               </div>
                               <div className="grid grid-cols-2 gap-2">
                                 <div>
-                                  <label className="block text-sm font-medium text-white/70 mb-2">Start Date</label>
+                                  <label className="block text-sm font-medium text-mine-shaft/70 font-sf mb-2">Start Date</label>
                                   <input
                                     type="month"
                                     value={edu.start_date}
@@ -2133,12 +2133,12 @@ cv:
                                     }}
                                     onFocus={handleFormFieldFocus}
                                     onBlur={handleFormFieldBlur}
-                                    className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent [color-scheme:dark]"
+                                    className="w-full px-3 py-2 bg-vista-white border border-mine-shaft/20 rounded-lg text-mine-shaft focus:outline-none focus:ring-2 focus:ring-sunglow focus:border-transparent [color-scheme:dark]"
                                     placeholder="2015-09"
                                   />
                                 </div>
                                 <div>
-                                  <label className="block text-sm font-medium text-white/70 mb-2">End Date</label>
+                                  <label className="block text-sm font-medium text-mine-shaft/70 font-sf mb-2">End Date</label>
                                   <input
                                     type="month"
                                     value={edu.end_date}
@@ -2150,7 +2150,7 @@ cv:
                                     }}
                                     onFocus={handleFormFieldFocus}
                                     onBlur={handleFormFieldBlur}
-                                    className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent [color-scheme:dark]"
+                                    className="w-full px-3 py-2 bg-vista-white border border-mine-shaft/20 rounded-lg text-mine-shaft focus:outline-none focus:ring-2 focus:ring-sunglow focus:border-transparent [color-scheme:dark]"
                                     placeholder="2019-06"
                                   />
                                 </div>
@@ -2173,7 +2173,7 @@ cv:
                           onClick={() => setFormData(prev => ({ ...prev, education: [...prev.education, {
                             institution: '', area: '', degree: '', start_date: '', end_date: '', gpa: '', highlights: []
                           }] }))}
-                          className="px-4 py-2 bg-gray-700/30 text-gray-300 border border-gray-600/50 rounded-lg hover:bg-gray-600/50 transition-colors text-sm"
+                          className="px-4 py-2 bg-mine-shaft/10 text-mine-shaft/60 border border-mine-shaft/20 rounded-lg hover:bg-sunglow/20 transition-colors text-sm"
                         >
                           + Add Education
                         </button>
@@ -2183,12 +2183,12 @@ cv:
 
                   {currentStep === 6 && (
                     <div className="space-y-6">
-                      <h4 className="text-xl font-semibold text-white mb-4">Technologies</h4>
+                      <h4 className="text-xl font-semibold text-mine-shaft font-bebas mb-4">Technologies</h4>
                       <div className="space-y-4">
                         {formData.technologies.map((tech, index) => (
                           <div key={index} className="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div>
-                              <label className="block text-sm font-medium text-white/70 mb-2">Category</label>
+                              <label className="block text-sm font-medium text-mine-shaft/70 font-sf mb-2">Category</label>
                               <input
                                 type="text"
                                 value={tech.label}
@@ -2200,12 +2200,12 @@ cv:
                                 }}
                                 onFocus={handleFormFieldFocus}
                                 onBlur={handleFormFieldBlur}
-                                className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                className="w-full px-3 py-2 bg-vista-white border border-mine-shaft/20 rounded-lg text-mine-shaft focus:outline-none focus:ring-2 focus:ring-sunglow focus:border-transparent"
                                 placeholder="Languages"
                               />
                             </div>
                             <div className="md:col-span-2">
-                              <label className="block text-sm font-medium text-white/70 mb-2">Technologies</label>
+                              <label className="block text-sm font-medium text-mine-shaft/70 font-sf mb-2">Technologies</label>
                               <div className="flex">
                                 <input
                                   type="text"
@@ -2218,7 +2218,7 @@ cv:
                                   }}
                                   onFocus={handleFormFieldFocus}
                                   onBlur={handleFormFieldBlur}
-                                  className="flex-1 px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                  className="flex-1 px-3 py-2 bg-vista-white border border-mine-shaft/20 rounded-lg text-mine-shaft focus:outline-none focus:ring-2 focus:ring-sunglow focus:border-transparent"
                                   placeholder="JavaScript, TypeScript, Python"
                                 />
                                 {formData.technologies.length > 1 && (
@@ -2238,7 +2238,7 @@ cv:
                         ))}
                         <button
                           onClick={() => setFormData(prev => ({ ...prev, technologies: [...prev.technologies, { label: '', details: '' }] }))}
-                          className="px-4 py-2 bg-gray-700/30 text-gray-300 border border-gray-600/50 rounded-lg hover:bg-gray-600/50 transition-colors text-sm"
+                          className="px-4 py-2 bg-mine-shaft/10 text-mine-shaft/60 border border-mine-shaft/20 rounded-lg hover:bg-sunglow/20 transition-colors text-sm"
                         >
                           + Add Technology Category
                         </button>
@@ -2248,14 +2248,14 @@ cv:
 
                   {currentStep === 7 && (
                     <div className="space-y-6">
-                      <h4 className="text-xl font-semibold text-white mb-4">Certifications</h4>
-                      <p className="text-white/60 mb-4">Add your professional certifications, licenses, or credentials.</p>
+                      <h4 className="text-xl font-semibold text-mine-shaft font-bebas mb-4">Certifications</h4>
+                      <p className="text-mine-shaft/60 font-editorial mb-4">Add your professional certifications, licenses, or credentials.</p>
                       <div className="space-y-4">
                         {formData.certifications.map((cert, index) => (
-                          <div key={index} className="bg-gray-700/20 rounded-lg p-4 border border-gray-600/30">
+                          <div key={index} className="bg-vista-white rounded-lg p-4 border border-mine-shaft/10">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                               <div>
-                                <label className="block text-sm font-medium text-white/70 mb-2">Certification Name</label>
+                                <label className="block text-sm font-medium text-mine-shaft/70 font-sf mb-2">Certification Name</label>
                                 <input
                                   type="text"
                                   value={cert.name}
@@ -2267,12 +2267,12 @@ cv:
                                   }}
                                   onFocus={handleFormFieldFocus}
                                   onBlur={handleFormFieldBlur}
-                                  className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent [color-scheme:dark]"
+                                  className="w-full px-3 py-2 bg-vista-white border border-mine-shaft/20 rounded-lg text-mine-shaft focus:outline-none focus:ring-2 focus:ring-sunglow focus:border-transparent [color-scheme:dark]"
                                   placeholder="AWS Certified Solutions Architect"
                                 />
                               </div>
                               <div>
-                                <label className="block text-sm font-medium text-white/70 mb-2">Date Issued</label>
+                                <label className="block text-sm font-medium text-mine-shaft/70 font-sf mb-2">Date Issued</label>
                                 <input
                                   type="month"
                                   value={cert.date}
@@ -2284,7 +2284,7 @@ cv:
                                   }}
                                   onFocus={handleFormFieldFocus}
                                   onBlur={handleFormFieldBlur}
-                                  className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent [color-scheme:dark]"
+                                  className="w-full px-3 py-2 bg-vista-white border border-mine-shaft/20 rounded-lg text-mine-shaft focus:outline-none focus:ring-2 focus:ring-sunglow focus:border-transparent [color-scheme:dark]"
                                   placeholder="2021-05"
                                 />
                               </div>
@@ -2304,7 +2304,7 @@ cv:
                         ))}
                         <button
                           onClick={() => setFormData(prev => ({ ...prev, certifications: [...prev.certifications, { name: '', date: '' }] }))}
-                          className="px-4 py-2 bg-gray-700/30 text-gray-300 border border-gray-600/50 rounded-lg hover:bg-gray-600/50 transition-colors text-sm"
+                          className="px-4 py-2 bg-mine-shaft/10 text-mine-shaft/60 border border-mine-shaft/20 rounded-lg hover:bg-sunglow/20 transition-colors text-sm"
                         >
                           + Add Certification
                         </button>
@@ -2314,15 +2314,15 @@ cv:
 
                   {currentStep === 8 && (
                     <div className="space-y-6">
-                      <h4 className="text-xl font-semibold text-white mb-4">Achievements</h4>
-                      <p className="text-white/60 mb-4">Highlight your notable accomplishments, awards, or recognitions.</p>
+                      <h4 className="text-xl font-semibold text-mine-shaft font-bebas mb-4">Achievements</h4>
+                      <p className="text-mine-shaft/60 font-editorial mb-4">Highlight your notable accomplishments, awards, or recognitions.</p>
                       <div className="space-y-4">
                         {formData.achievements.map((achievement, index) => (
-                          <div key={index} className="bg-gray-700/20 rounded-lg p-4 border border-gray-600/30">
+                          <div key={index} className="bg-vista-white rounded-lg p-4 border border-mine-shaft/10">
                             <div className="grid grid-cols-1 gap-4">
                               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
-                                  <label className="block text-sm font-medium text-white/70 mb-2">Achievement Name</label>
+                                  <label className="block text-sm font-medium text-mine-shaft/70 font-sf mb-2">Achievement Name</label>
                                   <input
                                     type="text"
                                     value={achievement.name}
@@ -2334,12 +2334,12 @@ cv:
                                     }}
                                     onFocus={handleFormFieldFocus}
                                     onBlur={handleFormFieldBlur}
-                                    className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent [color-scheme:dark]"
+                                    className="w-full px-3 py-2 bg-vista-white border border-mine-shaft/20 rounded-lg text-mine-shaft focus:outline-none focus:ring-2 focus:ring-sunglow focus:border-transparent [color-scheme:dark]"
                                     placeholder="Some Project"
                                   />
                                 </div>
                                 <div>
-                                  <label className="block text-sm font-medium text-white/70 mb-2">Date</label>
+                                  <label className="block text-sm font-medium text-mine-shaft/70 font-sf mb-2">Date</label>
                                   <input
                                     type="month"
                                     value={achievement.date}
@@ -2351,13 +2351,13 @@ cv:
                                     }}
                                     onFocus={handleFormFieldFocus}
                                     onBlur={handleFormFieldBlur}
-                                    className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent [color-scheme:dark]"
+                                    className="w-full px-3 py-2 bg-vista-white border border-mine-shaft/20 rounded-lg text-mine-shaft focus:outline-none focus:ring-2 focus:ring-sunglow focus:border-transparent [color-scheme:dark]"
                                     placeholder="2021-09"
                                   />
                                 </div>
                               </div>
                               <div>
-                                <label className="block text-sm font-medium text-white/70 mb-2">Highlights</label>
+                                <label className="block text-sm font-medium text-mine-shaft/70 font-sf mb-2">Highlights</label>
                                 {achievement.highlights.map((highlight, hIndex) => (
                                   <div key={hIndex} className="mb-2 flex">
                                     <input
@@ -2371,7 +2371,7 @@ cv:
                                       }}
                                       onFocus={handleFormFieldFocus}
                                       onBlur={handleFormFieldBlur}
-                                      className="flex-1 px-3 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                      className="flex-1 px-3 py-2 bg-vista-white border border-mine-shaft/20 rounded-lg text-mine-shaft focus:outline-none focus:ring-2 focus:ring-sunglow focus:border-transparent"
                                       placeholder="Became employee of the year"
                                     />
                                     {achievement.highlights.length > 1 && (
@@ -2415,7 +2415,7 @@ cv:
                         ))}
                         <button
                           onClick={() => setFormData(prev => ({ ...prev, achievements: [...prev.achievements, { name: '', date: '', highlights: [''] }] }))}
-                          className="px-4 py-2 bg-gray-700/30 text-gray-300 border border-gray-600/50 rounded-lg hover:bg-gray-600/50 transition-colors text-sm"
+                          className="px-4 py-2 bg-mine-shaft/10 text-mine-shaft/60 border border-mine-shaft/20 rounded-lg hover:bg-sunglow/20 transition-colors text-sm"
                         >
                           + Add Achievement
                         </button>
@@ -2425,45 +2425,27 @@ cv:
                 </div>
 
                   {/* Enhanced Navigation Buttons */}
-                  <div className="border-t border-white/10 bg-gray-900/30 backdrop-blur-sm">
+                  <div className="border-t border-mine-shaft/10 bg-vista-white backdrop-blur-sm">
                     <div className="p-6 flex items-center justify-between">
                       <button
                         onClick={prevStep}
                         disabled={currentStep === 0}
                         className={cn(
-                          "flex items-center space-x-2 px-6 py-3 rounded-xl text-sm font-medium transition-all duration-200",
+                          "flex items-center space-x-2 px-6 py-3 rounded-xl text-sm font-medium transition-all duration-200 border",
                           currentStep === 0
-                            ? "bg-gray-800/50 text-gray-500 cursor-not-allowed border border-gray-700/50"
-                            : "bg-gray-700/50 text-white hover:bg-gray-600/60 border border-gray-600/50 hover:border-gray-500/50"
+                            ? "bg-vista-white text-mine-shaft/60 cursor-not-allowed border-mine-shaft/10"
+                            : "bg-vista-white text-mine-shaft border-mine-shaft/20 hover:bg-mine-shaft/5"
                         )}
                       >
                         <span>←</span>
                         <span>Previous</span>
                       </button>
 
-                      <div className="flex items-center space-x-4">
-                        <div className="flex items-center space-x-1">
-                          {formSteps.map((_, index) => (
-                            <div
-                              key={index}
-                              className={cn(
-                                "w-2 h-2 rounded-full transition-all duration-300",
-                                index === currentStep
-                                  ? "bg-blue-500 w-6"
-                                  : completedSteps.has(index)
-                                  ? "bg-green-500"
-                                  : index < currentStep
-                                  ? "bg-gray-500"
-                                  : "bg-gray-700"
-                              )}
-                            />
-                          ))}
-                        </div>
-
+                      <div className="flex items-center justify-end">
                         {currentStep < formSteps.length - 1 && (
                           <button
                             onClick={nextStep}
-                            className="flex items-center space-x-2 px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-xl text-sm font-medium transition-all duration-200 border border-gray-600 hover:border-gray-500 shadow-lg"
+                            className="flex items-center space-x-2 px-6 py-3 bg-sunglow hover:bg-sunglow/80 text-mine-shaft rounded-xl text-sm font-medium transition-all duration-200 shadow-lg"
                           >
                             <span>Next Step</span>
                             <span>→</span>
@@ -2479,16 +2461,16 @@ cv:
         </div>
 
         {/* Right Panel - PDF Preview */}
-        <div className="w-1/2 bg-gray-900/20">
-          <div className="flex items-center justify-between border-b border-white/10 px-4 py-2">
-            <span className="text-sm font-medium text-white/80">PDF Preview</span>
+        <div className="w-1/2 bg-vista-white flex flex-col">
+          <div className="flex items-center justify-between border-b border-mine-shaft/10 px-4 py-2">
+            <span className="text-sm font-medium text-mine-shaft font-sf">PDF Preview</span>
           </div>
-          <div className="h-[calc(100vh-210px)] p-4 flex items-center justify-center">
+          <div className="flex-1 p-4 flex items-center justify-center min-h-0">
             {isRendering ? (
               <div className="text-center">
-                <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-                <p className="text-white/60">Rendering your resume...</p>
-                <p className="text-white/40 text-xs mt-2">Using {themes.find(t => t.value === selectedTheme)?.label} design...</p>
+                <div className="w-8 h-8 border-2 border-sunglow border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                <p className="text-mine-shaft/60 font-editorial">Rendering your resume...</p>
+                <p className="text-mine-shaft/40 text-xs mt-2 font-editorial">Using {themes.find(t => t.value === selectedTheme)?.label} design...</p>
               </div>
             ) : error ? (
               <div className="text-center text-red-400">
@@ -2497,7 +2479,7 @@ cv:
                 </svg>
                 <p className="mb-2">Failed to render PDF</p>
                 <p className="text-sm text-red-300 mb-4">{error}</p>
-                <div className="text-xs text-white/40 space-y-1">
+                <div className="text-xs text-mine-shaft/40 space-y-1">
                   <p>Troubleshooting:</p>
                   <p>1. Verify FastAPI server is running on port 8000</p>
                   <p>2. Check that RenderCV is installed: pip install rendercv</p>
@@ -2506,13 +2488,13 @@ cv:
                 <div className="mt-4 flex space-x-2 justify-center">
                   <button
                     onClick={() => renderResume()}
-                    className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg text-sm"
+                    className="px-4 py-2 bg-sunglow/20 hover:bg-sunglow/30 text-mine-shaft rounded-lg text-sm"
                   >
                     Try Again
                   </button>
                   <button
                     onClick={toggleAutoRender}
-                    className="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg text-sm"
+                    className="px-4 py-2 bg-sunglow hover:bg-sunglow/80 text-mine-shaft rounded-lg text-sm font-sf"
                   >
                     {autoRenderEnabled ? "Disable Auto-Render" : "Enable Auto-Render"}
                   </button>
@@ -2522,15 +2504,15 @@ cv:
               <div className="w-full h-full relative">
                 {/* Loading Overlay */}
                 {showInitialLoadingOverlay && (
-                  <div className="absolute inset-0 bg-gray-900/90 backdrop-blur-sm rounded-lg flex items-center justify-center z-10">
+                  <div className="absolute inset-0 bg-vista-white/95 backdrop-blur-sm rounded-lg flex items-center justify-center z-10">
                     <div className="text-center">
-                      <div className="w-12 h-12 border-3 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-                      <p className="text-white/80 text-lg font-medium mb-2">Loading Resume Editor</p>
-                      <p className="text-white/60 text-sm">Preparing your resume template...</p>
+                      <div className="w-12 h-12 border-3 border-sunglow border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                      <p className="text-mine-shaft text-2xl font-bebas tracking-tight mb-2">Loading Resume Editor</p>
+                      <p className="text-mine-shaft/60 font-editorial text-base">Preparing your resume template...</p>
                       <div className="mt-4 flex justify-center space-x-1">
-                        <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-                        <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-                        <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                        <div className="w-2 h-2 bg-sunglow rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                        <div className="w-2 h-2 bg-sunglow rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                        <div className="w-2 h-2 bg-sunglow rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
                       </div>
                     </div>
                   </div>
@@ -2552,7 +2534,7 @@ cv:
                     />
                   </div>
                 ) : showInitialLoadingOverlay ? null : (
-                  <div className="text-center text-white/40">
+                  <div className="text-center text-mine-shaft/40">
                     <svg className="w-16 h-16 mx-auto mb-4 opacity-50" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
                     </svg>
@@ -2563,17 +2545,17 @@ cv:
                     <div className="mt-4 flex space-x-2 justify-center">
                       <button
                         onClick={() => renderResume()}
-                        className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg text-sm"
+                        className="px-4 py-2 bg-sunglow/20 hover:bg-sunglow/30 text-mine-shaft rounded-lg text-sm"
                       >
                         Render Now
                       </button>
                       <button
                         onClick={toggleAutoRender}
                         className={cn(
-                          "px-4 py-2 text-white rounded-lg text-sm",
+                          "px-4 py-2 text-mine-shaft rounded-lg text-sm",
                           autoRenderEnabled
                             ? "bg-green-600 hover:bg-green-700"
-                            : "bg-gray-600 hover:bg-gray-700"
+                            : "bg-mine-shaft/10 hover:bg-mine-shaft/20"
                         )}
                       >
                         {autoRenderEnabled ? "Disable Auto-Render" : "Enable Auto-Render"}

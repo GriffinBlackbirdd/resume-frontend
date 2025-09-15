@@ -420,6 +420,41 @@ input[type="month"]::-webkit-calendar-picker-indicator:hover {
   background-clip: text;
 }
 
+/* Ethereal glow animations for comparison slider */
+@keyframes ethereal-glow {
+  0%, 100% {
+    box-shadow:
+      0 0 20px rgba(253, 186, 47, 0.5),
+      0 0 40px rgba(253, 186, 47, 0.3),
+      0 0 60px rgba(253, 186, 47, 0.1);
+  }
+  50% {
+    box-shadow:
+      0 0 30px rgba(253, 186, 47, 0.8),
+      0 0 60px rgba(253, 186, 47, 0.5),
+      0 0 90px rgba(253, 186, 47, 0.2);
+  }
+}
+
+@keyframes sparkle {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.ethereal-glow {
+  animation: ethereal-glow 3s ease-in-out infinite;
+}
+
+.sparkle {
+  animation: sparkle 2s ease-in-out infinite;
+}
+
 /* Ensure modal appears above all elements */
 .modal-container {
   z-index: 999999 !important;

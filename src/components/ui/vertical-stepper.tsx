@@ -92,14 +92,14 @@ export default function VerticalStepper({
     >
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
         <motion.div
-          className="overflow-hidden rounded-2xl bg-vista-white shadow-xl border border-gray-200"
+          className="overflow-hidden rounded-2xl bg-vista-white shadow-xl border border-mine-shaft/10"
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.1 }}
         >
           <div className="flex flex-col lg:flex-row min-h-[600px]">
             {/* Vertical Stepper Sidebar */}
-            <div className="w-full lg:w-80 bg-vista-white border-r border-gray-200 p-6 lg:p-8">
+            <div className="w-full lg:w-80 bg-vista-white border-r border-mine-shaft/10 p-6 lg:p-8">
               <div className="mb-8">
                 <h1 className="text-3xl font-bebas tracking-tight text-mine-shaft">Revamp Your Resume</h1>
                 <p className="mt-2 text-sm text-mine-shaft/60 font-editorial">
@@ -129,7 +129,7 @@ export default function VerticalStepper({
                             ? "bg-sunglow/10 border-2 border-sunglow shadow-sm"
                             : status === 'complete'
                             ? "bg-emerald-50 border-2 border-emerald-300 shadow-sm"
-                            : "bg-vista-white border-2 border-gray-200 hover:border-sunglow/30 hover:bg-sunglow/5",
+                            : "bg-vista-white border-2 border-mine-shaft/10 hover:border-sunglow/30 hover:bg-sunglow/5",
                           status === 'inactive' && !validateStep(stepNumber - 1) && "opacity-50 cursor-not-allowed"
                         )}
                       >
@@ -196,7 +196,7 @@ export default function VerticalStepper({
 
                       {/* Connector Line */}
                       {index < stepsArray.length - 1 && (
-                        <div className="absolute left-8 top-12 h-6 w-0.5 bg-gray-200">
+                        <div className="absolute left-8 top-12 h-6 w-0.5 bg-mine-shaft/10">
                           <motion.div
                             className="h-full bg-emerald-400"
                             initial={{ height: 0 }}
@@ -211,14 +211,14 @@ export default function VerticalStepper({
               </div>
 
               {/* Progress Indicator */}
-              <div className="mt-8 pt-6 border-t border-gray-200">
+              <div className="mt-8 pt-6 border-t border-mine-shaft/10">
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-mine-shaft/60 font-editorial">Progress</span>
                   <span className="font-sf font-semibold text-mine-shaft">
                     {Math.round(((currentStep - 1) / totalSteps) * 100)}%
                   </span>
                 </div>
-                <div className="mt-2 h-3 bg-gray-200 rounded-full overflow-hidden">
+                <div className="mt-2 h-3 bg-mine-shaft/10 rounded-full overflow-hidden">
                   <motion.div
                     className="h-full bg-brand-gradient rounded-full"
                     initial={{ width: 0 }}
@@ -241,7 +241,7 @@ export default function VerticalStepper({
               </StepContentWrapper>
 
               {!isCompleted && (
-                <div className={cn("mt-8 pt-6 border-t border-gray-200", footerClassName)}>
+                <div className={cn("mt-8 pt-6 border-t border-mine-shaft/10", footerClassName)}>
                   <div className={cn("flex", currentStep !== 1 ? 'justify-between' : 'justify-end')}>
                     {currentStep !== 1 && (
                       <BrandButton

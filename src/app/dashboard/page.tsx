@@ -5,9 +5,9 @@ import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { NewResumeModal } from "@/components/NewResumeModal";
 import { useAuth } from "@/contexts/AuthContext";
-import { UserAccountAvatar } from "@/components/auth/UserAccountAvatar";
 import MarkdownRenderer from "@/components/MarkdownRenderer";
 import { ActionButton } from "@/components/ui/action-button";
+import { CompareDemo } from "@/components/ui/compare-demo";
 
 // Types for dashboard data
 interface DashboardStats {
@@ -116,20 +116,28 @@ const ATSChart = ({ data }: { data: ATSByJobRole[] }) => {
 
   if (data.length === 0) {
     return (
-      <div className="bg-vista-white border border-gray-100 rounded-2xl p-8 shadow-lg relative overflow-hidden">
+      <div className="bg-vista-white border border-gray-100 rounded-none p-8 shadow-lg relative overflow-hidden">
         {/* Gradient accent */}
-        <div className="absolute top-0 left-0 right-0 h-1 bg-brand-gradient"></div>
+        <div className="absolute top-0 left-0 right-0 h-1 bg-brand-gradient rounded-none"></div>
 
-        <h3 className="text-mine-shaft text-2xl font-bebas tracking-tight mb-4">ATS Scores by Job Role</h3>
-        <p className="text-mine-shaft/60 text-sm font-editorial">No ATS scores available yet. Create and calculate scores for your resumes to see the chart.</p>
+        {/* Empty State */}
+        <div className="text-center py-12">
+          <h3 className="text-mine-shaft text-2xl font-bebas tracking-tight mb-4">ATS Scores by Job Role</h3>
+          <div className="flex items-center justify-center space-x-2">
+            <svg className="w-5 h-5 text-sunglow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            </svg>
+            <p className="text-mine-shaft/60 text-sm font-editorial">No ATS scores available yet. Click "New Resume" to get started!</p>
+          </div>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="bg-vista-white border border-gray-100 rounded-2xl p-8 shadow-lg relative overflow-hidden">
+    <div className="bg-vista-white border border-gray-100 rounded-none p-8 shadow-lg relative overflow-hidden">
       {/* Gradient accent */}
-      <div className="absolute top-0 left-0 right-0 h-1 bg-brand-gradient"></div>
+      <div className="absolute top-0 left-0 right-0 h-1 bg-brand-gradient rounded-none"></div>
 
       <div className="flex items-center justify-between mb-8">
         <div>
@@ -440,9 +448,9 @@ const DataTable = ({
   const router = useRouter();
 
   return (
-    <div className="bg-vista-white border border-gray-100 rounded-2xl overflow-hidden shadow-lg relative">
+    <div className="bg-vista-white border border-gray-100 rounded-none overflow-hidden shadow-lg relative">
       {/* Gradient accent */}
-      <div className="absolute top-0 left-0 right-0 h-1 bg-brand-gradient"></div>
+      <div className="absolute top-0 left-0 right-0 h-1 bg-brand-gradient rounded-none"></div>
 
       {/* Header */}
       <div className="px-8 py-6 border-b border-gray-100">
@@ -472,7 +480,9 @@ const DataTable = ({
           <div className="px-8 py-12 text-center">
             <div className="mb-4">
               <div className="w-16 h-16 bg-gradient-to-br from-sunglow/20 to-sunglow/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-sunglow text-2xl">📄</span>
+                <svg className="w-8 h-8 text-sunglow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
               </div>
             </div>
             <p className="text-mine-shaft/60 text-sm font-editorial">No resumes created yet. Click "New Resume" to get started!</p>
@@ -895,10 +905,7 @@ export default function DashboardPage() {
             </span>
           </div>
 
-          <div className="flex items-center space-x-4">
-            <NewResumeModal />
-            <UserAccountAvatar />
-          </div>
+          <NewResumeModal />
         </div>
 
         <div className="flex-1 flex items-center justify-center">
@@ -940,20 +947,9 @@ export default function DashboardPage() {
             </div>
             <span className="text-mine-shaft font-bebas text-xl tracking-tight">Resume Builder</span>
           </div>
-
-          {/* Welcome message */}
-          <div className="hidden md:block">
-            <span className="text-mine-shaft/60 text-sm font-sf">Welcome back,</span>
-            <span className="text-mine-shaft text-lg font-sf font-medium ml-2">
-              {user?.full_name || user?.email?.split('@')[0]}
-            </span>
-          </div>
         </div>
 
-        <div className="flex items-center space-x-4">
-          <NewResumeModal />
-          <UserAccountAvatar />
-        </div>
+        <NewResumeModal />
       </div>
 
       {/* Main Content */}
@@ -961,6 +957,14 @@ export default function DashboardPage() {
 
         {/* Content */}
         <div className="flex-1 p-8 space-y-8 bg-vista-white">
+          {/* Welcome Message */}
+          <div className="hidden md:block mb-4">
+            <span className="text-mine-shaft/60 text-lg font-sf">Welcome back,</span>
+            <span className="text-mine-shaft text-2xl font-sf font-medium ml-2">
+              {user?.full_name || user?.email?.split('@')[0]}
+            </span>
+          </div>
+
           {/* Page Title */}
           <div className="mb-8">
             <h1 className="text-mine-shaft text-4xl font-bebas tracking-tight mb-2">Dashboard</h1>
@@ -1029,6 +1033,65 @@ export default function DashboardPage() {
             onDownloadJobDescription={downloadJobDescription}
             analyzingProjects={analyzingProjects}
           />
+
+          {/* ATS Optimization Comparison - Hidden for now */}
+          {/*
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mt-16 p-8 bg-vista-white rounded-3xl border border-mine-shaft/10">
+            Left side - Compare component
+            <div className="flex justify-center">
+              <CompareDemo userId={user?.id} />
+            </div>
+
+            Right side - Text content
+            <div className="text-center lg:text-left space-y-6">
+              <div className="inline-flex items-center justify-center w-20 h-20 bg-sunglow/20 rounded-full mb-6">
+                <svg className="w-12 h-12 text-sunglow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <h2 className="text-4xl md:text-5xl font-bebas tracking-tight text-mine-shaft">
+                ATS Optimized
+              </h2>
+              <p className="text-lg text-mine-shaft/70 font-editorial leading-relaxed">
+                Our advanced ATS optimization ensures your resume passes through automated screening systems with maximum score. Compare the difference between a standard resume and an ATS-optimized version.
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
+                <div className="flex items-center space-x-3">
+                  <div className="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center">
+                    <svg className="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <span className="text-mine-shaft/80 font-sf">Keyword Optimization</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <div className="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center">
+                    <svg className="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <span className="text-mine-shaft/80 font-sf">Format Compliance</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <div className="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center">
+                    <svg className="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <span className="text-mine-shaft/80 font-sf">Section Prioritization</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <div className="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center">
+                    <svg className="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <span className="text-mine-shaft/80 font-sf">Industry Standards</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          */}
         </div>
       </div>
 
