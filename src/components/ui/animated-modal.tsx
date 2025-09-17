@@ -98,7 +98,7 @@ export const ModalBody = ({ children }: { children: ReactNode }) => {
           <motion.div
             ref={modalRef}
             className={cn(
-              "min-h-[50%] max-h-[90%] md:max-w-[40%] bg-vista-white border border-mine-shaft/10 md:rounded-2xl relative z-[1000000] modal-content flex flex-col flex-1 overflow-hidden shadow-2xl",
+              "min-h-[50%] max-h-[90%] md:max-w-[40%] bg-vista-white dark:bg-onyx-gray border border-mine-shaft/10 dark:border-gray-700 md:rounded-2xl relative z-[1000000] modal-content flex flex-col flex-1 overflow-hidden shadow-2xl",
             )}
             initial={{
               opacity: 0,
@@ -156,7 +156,7 @@ export const ModalFooter = ({
   return (
     <div
       className={cn(
-        "flex justify-end p-4 bg-vista-white/50 border-t border-mine-shaft/10",
+        "flex justify-end p-4 bg-vista-white/50 dark:bg-onyx-gray/50 border-t border-mine-shaft/10 dark:border-gray-700",
         className
       )}
     >
@@ -201,7 +201,7 @@ const CloseIcon = () => {
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
-        className="h-4 w-4 text-mine-shaft group-hover:scale-125 group-hover:rotate-3 transition duration-200"
+        className="h-4 w-4 text-mine-shaft dark:text-platinum-gray group-hover:scale-125 group-hover:rotate-3 transition duration-200"
       >
         <path d="m18 6-12 12" />
         <path d="m6 6 12 12" />

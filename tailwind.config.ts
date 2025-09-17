@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
+  darkMode: "class",
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -38,6 +39,12 @@ const config: Config = {
         "db3b09": "#DB3B09",
         "gradient-start": "#FFD200",
         "gradient-end": "#7A0EEF",
+
+        // Dark mode colors from designDark.md
+        "charcoal-black": "#0D0D0D",
+        "onyx-gray": "#1C1C1C",
+        "platinum-gray": "#E0E0E0",
+        "electric-violet": "#8C3BFF",
       },
       fontFamily: {
         "bebas": ["Bebas Neue Pro", "SF Pro Display", "sans-serif"],

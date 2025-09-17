@@ -13,9 +13,9 @@ const ActionButton = React.forwardRef<HTMLButtonElement, ActionButtonProps>(
 
     const variants = {
       primary: "bg-sunglow text-mine-shaft hover:bg-sunglow/90 focus:ring-sunglow shadow-sm hover:shadow-md rounded-xl",
-      secondary: "bg-mine-shaft text-vista-white hover:bg-mine-shaft/90 focus:ring-mine-shaft shadow-sm hover:shadow-md rounded-xl",
-      outline: "border-2 border-sunglow text-sunglow bg-vista-white hover:bg-sunglow/10 focus:ring-sunglow rounded-xl",
-      ghost: "text-mine-shaft hover:bg-gray-100 focus:ring-gray-300 rounded-lg",
+      secondary: "bg-mine-shaft dark:bg-onyx-gray text-vista-white dark:text-platinum-gray hover:bg-mine-shaft/90 dark:hover:bg-onyx-gray/90 focus:ring-mine-shaft dark:focus:ring-gray-600 shadow-sm hover:shadow-md rounded-xl",
+      outline: "border-2 border-sunglow text-sunglow bg-vista-white dark:bg-onyx-gray hover:bg-sunglow/10 dark:hover:bg-sunglow/20 focus:ring-sunglow rounded-xl",
+      ghost: "text-mine-shaft dark:text-platinum-gray hover:bg-gray-100 dark:hover:bg-gray-800 focus:ring-gray-300 dark:focus:ring-gray-600 rounded-lg",
     };
 
     const sizes = {

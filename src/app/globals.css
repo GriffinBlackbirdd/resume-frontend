@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    /* Brand Colors */
+    /* Brand Colors - Light Mode */
     --vista-white: #FFFDFA;
     --mine-shaft: #202020;
     --sunglow: #FDBA2F;
@@ -12,7 +12,13 @@
     --gradient-start: #FFD200;
     --gradient-end: #7A0EEF;
 
-    /* CSS Variables */
+    /* Dark Mode Colors from designDark.md - Made Darker */
+    --charcoal-black: #050505;
+    --onyx-gray: #0F0F0F;
+    --platinum-gray: #E0E0E0;
+    --electric-violet: #8C3BFF;
+
+    /* CSS Variables - Light Mode */
     --background: 255 253 250; /* Vista White */
     --foreground: 32 32 32; /* Mine Shaft */
     --card: 255 253 250; /* Vista White */
@@ -34,31 +40,36 @@
     --ring: 253 186 47; /* Sunglow */
     --radius: 0.5rem;
 
-    /* Custom Brand Variables */
+    /* Custom Brand Variables - Light Mode */
     --brand-gradient: linear-gradient(-45deg, var(--gradient-start), var(--gradient-end));
     --text-gradient: linear-gradient(135deg, var(--mine-shaft), var(--sunglow));
   }
 
   .dark {
-    --background: 0 0% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 0 0% 83.1%;
+    /* Dark Mode CSS Variables - Darker Theme */
+    --background: 5 5 5; /* Much Darker Charcoal Black */
+    --foreground: 224 224 224; /* Platinum Gray */
+    --card: 15 15 15; /* Much Darker Onyx Gray */
+    --card-foreground: 224 224 224; /* Platinum Gray */
+    --popover: 15 15 15; /* Much Darker Onyx Gray */
+    --popover-foreground: 224 224 224; /* Platinum Gray */
+    --primary: 253 186 47; /* Sunglow - unchanged for energy */
+    --primary-foreground: 5 5 5; /* Much Darker Charcoal Black */
+    --secondary: 15 15 15; /* Much Darker Onyx Gray */
+    --secondary-foreground: 224 224 224; /* Platinum Gray */
+    --muted: 15 15 15; /* Much Darker Onyx Gray */
+    --muted-foreground: 160 160 160; /* Muted Platinum Gray */
+    --accent: 253 186 47; /* Sunglow */
+    --accent-foreground: 5 5 5; /* Much Darker Charcoal Black */
+    --destructive: 219 59 9; /* DB3B09 - unchanged */
+    --destructive-foreground: 224 224 224; /* Platinum Gray */
+    --border: 25 25 25; /* Darker border in dark mode */
+    --input: 15 15 15; /* Much Darker Onyx Gray */
+    --ring: 253 186 47; /* Sunglow */
+
+    /* Dark Mode Brand Variables */
+    --brand-gradient: linear-gradient(-45deg, #FDBA2F, #8C3BFF);
+    --text-gradient: linear-gradient(135deg, #E0E0E0, #FDBA2F);
   }
 }
 
@@ -115,6 +126,19 @@ body {
   background-color: var(--sunglow);
 }
 
+/* Dark Mode Specific Colors */
+.bg-charcoal-black {
+  background-color: var(--charcoal-black);
+}
+
+.bg-onyx-gray {
+  background-color: var(--onyx-gray);
+}
+
+.bg-platinum-gray {
+  background-color: var(--platinum-gray);
+}
+
 .text-vista-white {
   color: var(--vista-white);
 }
@@ -127,6 +151,18 @@ body {
   color: var(--sunglow);
 }
 
+.text-charcoal-black {
+  color: var(--charcoal-black);
+}
+
+.text-onyx-gray {
+  color: var(--onyx-gray);
+}
+
+.text-platinum-gray {
+  color: var(--platinum-gray);
+}
+
 .border-vista-white {
   border-color: var(--vista-white);
 }
@@ -137,6 +173,18 @@ body {
 
 .border-sunglow {
   border-color: var(--sunglow);
+}
+
+.border-charcoal-black {
+  border-color: var(--charcoal-black);
+}
+
+.border-onyx-gray {
+  border-color: var(--onyx-gray);
+}
+
+.border-platinum-gray {
+  border-color: var(--platinum-gray);
 }
 
 /* Brand Gradient Utilities */
@@ -359,6 +407,14 @@ input[type="month"]::-webkit-calendar-picker-indicator:hover {
     linear-gradient(rgba(32, 32, 32, 0.03) 1px, transparent 1px),
     linear-gradient(90deg, rgba(32, 32, 32, 0.03) 1px, transparent 1px);
   background-size: 20px 20px;
+}
+
+.texture-grid-dark {
+  background-image:
+    linear-gradient(rgba(65, 105, 225, 0.3) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(65, 105, 225, 0.3) 1px, transparent 1px);
+  background-size: 20px 20px;
+  background-color: #030303;
 }
 
 .texture-paper {

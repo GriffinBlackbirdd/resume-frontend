@@ -8,6 +8,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import MarkdownRenderer from "@/components/MarkdownRenderer";
 import { ActionButton } from "@/components/ui/action-button";
 import { CompareDemo } from "@/components/ui/compare-demo";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 // Types for dashboard data
 interface DashboardStats {
@@ -52,41 +53,32 @@ interface DashboardData {
 
 const StatCard = ({ title, value, change, trend, description, isNegative = false, actionButton = null, isHighestAts = false }: any) => {
   return (
-    <div className={cn(
-      "bg-vista-white border rounded-2xl p-8 hover:shadow-lg transition-all duration-300 shadow-sm relative overflow-hidden",
-      isHighestAts ? "border-transparent" : "border-gray-100"
-    )}>
-      {/* Dynamic gradient background for Highest ATS Score */}
-      {isHighestAts ? (
-        <div className="absolute inset-0 bg-brand-gradient opacity-10"></div>
-      ) : (
-        <div className="absolute inset-0 bg-gradient-to-br from-sunglow/5 to-transparent opacity-50"></div>
-      )}
+    <div className="bg-vista-white dark:bg-onyx-gray border-0 rounded-2xl p-8 hover:shadow-lg transition-all duration-300 shadow-sm relative overflow-hidden">
 
       <div className="relative z-10">
         <div className="flex items-start justify-between mb-6">
           <div>
             <div className={cn(
               "text-sm font-medium mb-2 font-sf uppercase tracking-wider",
-              isHighestAts ? "text-brand-gradient" : "text-mine-shaft/70"
+              isHighestAts ? "text-brand-gradient" : "text-mine-shaft/70 dark:text-platinum-gray/70"
             )}>{title}</div>
             <div className={cn(
               "text-4xl font-bebas tracking-tight",
-              isHighestAts ? "text-brand-gradient bg-[length:200%_200%] animate-gradient-flow" : "text-mine-shaft"
+              isHighestAts ? "text-brand-gradient bg-[length:200%_200%] animate-gradient-flow" : "text-mine-shaft dark:text-platinum-gray"
             )}>{value}</div>
           </div>
           <div className={cn(
             "flex items-center space-x-2 text-sm font-sf font-semibold px-3 py-1 rounded-full",
             isNegative
-              ? "text-db3b09 bg-red-50"
-              : "text-emerald-600 bg-emerald-50"
+              ? "text-db3b09 bg-red-50 dark:bg-red-900/20 dark:text-red-400"
+              : "text-emerald-600 bg-emerald-50 dark:bg-emerald-900/20 dark:text-emerald-400"
           )}>
             <span className="text-base">{isNegative ? "📉" : "📈"}</span>
             <span>{change}</span>
           </div>
         </div>
-        <div className="text-mine-shaft/60 text-sm font-editorial">
-          <div className="font-sf font-medium mb-2 text-mine-shaft/80">{trend}</div>
+        <div className="text-mine-shaft/60 dark:text-platinum-gray/60 text-sm font-editorial">
+          <div className="font-sf font-medium mb-2 text-mine-shaft/80 dark:text-platinum-gray/80">{trend}</div>
           <div className="flex items-center justify-between">
             <span>{description}</span>
             {actionButton}
@@ -116,18 +108,18 @@ const ATSChart = ({ data }: { data: ATSByJobRole[] }) => {
 
   if (data.length === 0) {
     return (
-      <div className="bg-vista-white border border-gray-100 rounded-none p-8 shadow-lg relative overflow-hidden">
+      <div className="bg-vista-white dark:bg-onyx-gray border-0 rounded-t-none rounded-b-2xl p-8 shadow-lg relative overflow-hidden">
         {/* Gradient accent */}
         <div className="absolute top-0 left-0 right-0 h-1 bg-brand-gradient rounded-none"></div>
 
         {/* Empty State */}
         <div className="text-center py-12">
-          <h3 className="text-mine-shaft text-2xl font-bebas tracking-tight mb-4">ATS Scores by Job Role</h3>
+          <h3 className="text-mine-shaft dark:text-platinum-gray text-2xl font-bebas tracking-tight mb-4">ATS Scores by Job Role</h3>
           <div className="flex items-center justify-center space-x-2">
             <svg className="w-5 h-5 text-sunglow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
             </svg>
-            <p className="text-mine-shaft/60 text-sm font-editorial">No ATS scores available yet. Click "New Resume" to get started!</p>
+            <p className="text-mine-shaft/60 dark:text-platinum-gray/60 text-sm font-editorial">No ATS scores available yet. Click "New Resume" to get started!</p>
           </div>
         </div>
       </div>
@@ -135,14 +127,14 @@ const ATSChart = ({ data }: { data: ATSByJobRole[] }) => {
   }
 
   return (
-    <div className="bg-vista-white border border-gray-100 rounded-none p-8 shadow-lg relative overflow-hidden">
+    <div className="bg-vista-white dark:bg-onyx-gray border-0 rounded-t-none rounded-b-2xl p-8 shadow-lg relative overflow-hidden">
       {/* Gradient accent */}
       <div className="absolute top-0 left-0 right-0 h-1 bg-brand-gradient rounded-none"></div>
 
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h3 className="text-mine-shaft text-2xl font-bebas tracking-tight mb-2">ATS Scores by Role & Company</h3>
-          <p className="text-mine-shaft/60 text-sm font-editorial">Performance comparison across different roles and companies</p>
+          <h3 className="text-mine-shaft dark:text-platinum-gray text-2xl font-bebas tracking-tight mb-2">ATS Scores by Role & Company</h3>
+          <p className="text-mine-shaft/60 dark:text-platinum-gray/60 text-sm font-editorial">Performance comparison across different roles and companies</p>
         </div>
       </div>
 
@@ -150,19 +142,19 @@ const ATSChart = ({ data }: { data: ATSByJobRole[] }) => {
         {data.map((item, index) => (
           <div key={index} className="flex items-center space-x-4">
             <div className="w-44 text-right">
-              <span className="text-mine-shaft text-sm font-sf font-medium truncate block" title={`${item.job_role}${item.target_company ? ` / ${item.target_company}` : ''}`}>
+              <span className="text-mine-shaft dark:text-platinum-gray text-sm font-sf font-medium truncate block" title={`${item.job_role}${item.target_company ? ` / ${item.target_company}` : ''}`}>
                 {item.job_role}{item.target_company ? ` / ${item.target_company}` : ''}
               </span>
             </div>
 
             <div className="flex-1 relative">
-              <div className="w-full bg-gray-100 rounded-full h-7 relative overflow-hidden shadow-inner">
+              <div className="w-full bg-gray-100 dark:bg-gray-800 rounded-full h-7 relative overflow-hidden shadow-inner">
                 <div
                   className={cn("h-full rounded-full transition-all duration-700 ease-out", getScoreColor(item.ats_score))}
                   style={{ width: `${Math.max(item.ats_score, 5)}%` }}
                 />
                 <div className="absolute inset-0 flex items-center justify-between px-4">
-                  <span className="text-mine-shaft text-xs font-sf font-semibold">
+                  <span className="text-mine-shaft dark:text-platinum-gray text-xs font-sf font-semibold">
                     {item.ats_score.toFixed(1)}%
                   </span>
                 </div>
@@ -199,23 +191,23 @@ const ATSChart = ({ data }: { data: ATSByJobRole[] }) => {
         ))}
       </div>
 
-      <div className="mt-8 pt-6 border-t border-gray-100">
+      <div className="mt-8 pt-6 border-t border-gray-100 dark:border-gray-700">
         <div className="flex items-center justify-center space-x-8 text-xs">
           <div className="flex items-center space-x-3">
             <div className="w-4 h-4 bg-emerald-500 rounded-full shadow-sm"></div>
-            <span className="text-mine-shaft/70 font-sf font-medium">90%+ Excellent</span>
+            <span className="text-mine-shaft/70 dark:text-platinum-gray/70 font-sf font-medium">90%+ Excellent</span>
           </div>
           <div className="flex items-center space-x-3">
             <div className="w-4 h-4 bg-sunglow rounded-full shadow-sm"></div>
-            <span className="text-mine-shaft/70 font-sf font-medium">80-89% Good</span>
+            <span className="text-mine-shaft/70 dark:text-platinum-gray/70 font-sf font-medium">80-89% Good</span>
           </div>
           <div className="flex items-center space-x-3">
             <div className="w-4 h-4 bg-orange-500 rounded-full shadow-sm"></div>
-            <span className="text-mine-shaft/70 font-sf font-medium">70-79% Fair</span>
+            <span className="text-mine-shaft/70 dark:text-platinum-gray/70 font-sf font-medium">70-79% Fair</span>
           </div>
           <div className="flex items-center space-x-3">
             <div className="w-4 h-4 bg-red-500 rounded-full shadow-sm"></div>
-            <span className="text-mine-shaft/70 font-sf font-medium">&lt;70% Needs Work</span>
+            <span className="text-mine-shaft/70 dark:text-platinum-gray/70 font-sf font-medium">&lt;70% Needs Work</span>
           </div>
         </div>
       </div>
@@ -324,12 +316,12 @@ const GapAnalysisButton = ({
           ? "opacity-100 visible translate-y-0"
           : "opacity-0 invisible translate-y-2"
       )}>
-        <div className="bg-white border border-gray-200 rounded-lg shadow-2xl overflow-hidden min-w-48">
+        <div className="bg-white dark:bg-onyx-gray border border-gray-200 dark:border-gray-700 rounded-lg shadow-2xl overflow-hidden min-w-48">
           <div className="py-1">
             {!hasGapAnalysis && (
               <button
                 onClick={() => onRunGapAnalysis(projectId)}
-                className="w-full text-left px-4 py-2 text-sm text-mine-shaft hover:bg-gray-100 transition-colors flex items-center space-x-2"
+                className="w-full text-left px-4 py-2 text-sm text-mine-shaft dark:text-platinum-gray hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors flex items-center space-x-2"
               >
                 <span className="text-yellow-500">🔄</span>
                 <span>Run Gap Analysis</span>
@@ -338,7 +330,7 @@ const GapAnalysisButton = ({
             {hasGapAnalysis && (
               <button
                 onClick={() => onShowContent('gap-analysis', projectId)}
-                className="w-full text-left px-4 py-2 text-sm text-mine-shaft hover:bg-gray-100 transition-colors flex items-center space-x-2"
+                className="w-full text-left px-4 py-2 text-sm text-mine-shaft dark:text-platinum-gray hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors flex items-center space-x-2"
               >
                 <span className="text-sunglow">📊</span>
                 <span>Gap Analysis</span>
@@ -348,14 +340,14 @@ const GapAnalysisButton = ({
               <>
                 <button
                   onClick={() => onShowContent('upskill', projectId)}
-                  className="w-full text-left px-4 py-2 text-sm text-mine-shaft hover:bg-gray-100 transition-colors flex items-center space-x-2"
+                  className="w-full text-left px-4 py-2 text-sm text-mine-shaft dark:text-platinum-gray hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors flex items-center space-x-2"
                 >
                   <span className="text-sunglow">📚</span>
                   <span>Upskill Plan</span>
                 </button>
                 <button
                   onClick={() => onShowContent('project-recommendations', projectId)}
-                  className="w-full text-left px-4 py-2 text-sm text-mine-shaft hover:bg-gray-100 transition-colors flex items-center space-x-2"
+                  className="w-full text-left px-4 py-2 text-sm text-mine-shaft dark:text-platinum-gray hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors flex items-center space-x-2"
                 >
                   <span className="text-sunglow">🎯</span>
                   <span>Project Recommendations</span>
@@ -448,19 +440,19 @@ const DataTable = ({
   const router = useRouter();
 
   return (
-    <div className="bg-vista-white border border-gray-100 rounded-none overflow-hidden shadow-lg relative">
+    <div className="bg-vista-white dark:bg-onyx-gray border-0 rounded-t-none rounded-b-2xl overflow-hidden shadow-lg relative">
       {/* Gradient accent */}
       <div className="absolute top-0 left-0 right-0 h-1 bg-brand-gradient rounded-none"></div>
 
       {/* Header */}
-      <div className="px-8 py-6 border-b border-gray-100">
-        <h3 className="text-mine-shaft text-2xl font-bebas tracking-tight mb-2">Your Resumes</h3>
-        <p className="text-mine-shaft/60 text-sm font-editorial">Manage and track your resume portfolio</p>
+      <div className="px-8 py-6 border-b-0">
+        <h3 className="text-mine-shaft dark:text-platinum-gray text-2xl font-bebas tracking-tight mb-2">Your Resumes</h3>
+        <p className="text-mine-shaft/60 dark:text-platinum-gray/60 text-sm font-editorial">Manage and track your resume portfolio</p>
       </div>
 
       {/* Table Header */}
-      <div className="px-8 py-4 bg-gray-50/50 border-b border-gray-100">
-        <div className="grid grid-cols-5 gap-4 text-xs font-sf font-semibold text-mine-shaft/70 uppercase tracking-wider">
+      <div className="px-8 py-4 bg-gray-50/50 dark:bg-gray-800/50 border-b-0">
+        <div className="grid grid-cols-5 gap-4 text-xs font-sf font-semibold text-mine-shaft/70 dark:text-platinum-gray/70 uppercase tracking-wider">
           <div>Job Role</div>
           <div>Target Company</div>
           <div>ATS Score</div>
@@ -470,29 +462,29 @@ const DataTable = ({
       </div>
 
       {/* Table Rows */}
-      <div className="divide-y divide-gray-200">
+      <div className="divide-y-0">
         {loading ? (
           <div className="px-8 py-12 text-center">
             <div className="w-8 h-8 border-2 border-sunglow border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-            <p className="text-mine-shaft/60 text-sm font-editorial">Loading your resumes...</p>
+            <p className="text-mine-shaft/60 dark:text-platinum-gray/60 text-sm font-editorial">Loading your resumes...</p>
           </div>
         ) : projects.length === 0 ? (
           <div className="px-8 py-12 text-center">
             <div className="mb-4">
-              <div className="w-16 h-16 bg-gradient-to-br from-sunglow/20 to-sunglow/10 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-gradient-to-br from-sunglow/20 to-sunglow/10 dark:from-sunglow/30 dark:to-sunglow/20 rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg className="w-8 h-8 text-sunglow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
               </div>
             </div>
-            <p className="text-mine-shaft/60 text-sm font-editorial">No resumes created yet. Click "New Resume" to get started!</p>
+            <p className="text-mine-shaft/60 dark:text-platinum-gray/60 text-sm font-editorial">No resumes created yet. Click "New Resume" to get started!</p>
           </div>
         ) : (
           projects.map((project) => (
-            <div key={project.id} className="px-8 py-6 hover:bg-gray-50/30 transition-all duration-200 border-l-4 border-transparent hover:border-sunglow/30">
+            <div key={project.id} className="px-8 py-6 hover:bg-gray-50/30 dark:hover:bg-gray-800/30 transition-all duration-200 border-l-4 border-transparent hover:border-sunglow/30">
               <div className="grid grid-cols-5 gap-4 items-center">
-                <div className="text-mine-shaft text-sm font-sf font-medium">{project.job_role}</div>
-                <div className="text-mine-shaft/60 text-sm font-editorial">{project.target_company || 'Not specified'}</div>
+                <div className="text-mine-shaft dark:text-platinum-gray text-sm font-sf font-medium">{project.job_role}</div>
+                <div className="text-mine-shaft/60 dark:text-platinum-gray/60 text-sm font-editorial">{project.target_company || 'Not specified'}</div>
                 <div className="flex items-center space-x-3">
                   {project.ats_score ? (
                     <>
@@ -508,7 +500,7 @@ const DataTable = ({
                       )}></div>
                     </>
                   ) : (
-                    <span className="text-mine-shaft/40 text-sm font-sf">Pending</span>
+                    <span className="text-mine-shaft/40 dark:text-platinum-gray/40 text-sm font-sf">Pending</span>
                   )}
                 </div>
                 <div>
@@ -932,9 +924,9 @@ export default function DashboardPage() {
   const atsByJobRole = dashboardData?.ats_by_job_role || [];
 
   return (
-    <div className="min-h-screen bg-vista-white texture-paper text-mine-shaft">
+    <div className="min-h-screen bg-vista-white dark:bg-charcoal-black dark:texture-grid-dark text-mine-shaft dark:text-platinum-gray">
       {/* Header */}
-      <div className="h-20 bg-vista-white/95 backdrop-blur-sm border-b border-gray-100 flex items-center justify-between px-8 sticky top-0 z-40">
+      <div className="h-20 bg-vista-white/95 dark:bg-charcoal-black/95 backdrop-blur-sm border-b border-gray-100 dark:border-gray-800 flex items-center justify-between px-8 sticky top-0 z-40">
         <div className="flex items-center space-x-8">
           {/* Logo/Brand */}
           <div className="flex items-center space-x-4">
@@ -945,30 +937,33 @@ export default function DashboardPage() {
                 className="w-full h-full object-cover"
               />
             </div>
-            <span className="text-mine-shaft font-bebas text-xl tracking-tight">Resume Builder</span>
+            <span className="text-mine-shaft dark:text-platinum-gray font-bebas text-xl tracking-tight">Resume Builder</span>
           </div>
         </div>
 
-        <NewResumeModal />
+        <div className="flex items-center space-x-4">
+          <ThemeToggle />
+          <NewResumeModal />
+        </div>
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col bg-vista-white">
+      <div className="flex-1 flex flex-col bg-vista-white dark:bg-charcoal-black">
 
         {/* Content */}
-        <div className="flex-1 p-8 space-y-8 bg-vista-white">
+        <div className="flex-1 p-8 space-y-8 bg-vista-white dark:bg-charcoal-black">
           {/* Welcome Message */}
           <div className="hidden md:block mb-4">
-            <span className="text-mine-shaft/60 text-lg font-sf">Welcome back,</span>
-            <span className="text-mine-shaft text-2xl font-sf font-medium ml-2">
+            <span className="text-mine-shaft/60 dark:text-platinum-gray/60 text-lg font-sf">Welcome back,</span>
+            <span className="text-mine-shaft dark:text-platinum-gray text-2xl font-sf font-medium ml-2">
               {user?.full_name || user?.email?.split('@')[0]}
             </span>
           </div>
 
           {/* Page Title */}
           <div className="mb-8">
-            <h1 className="text-mine-shaft text-4xl font-bebas tracking-tight mb-2">Dashboard</h1>
-            <p className="text-mine-shaft/60 text-lg font-editorial">Track your resume performance and progress</p>
+            <h1 className="text-mine-shaft dark:text-platinum-gray text-4xl font-bebas tracking-tight mb-2">Dashboard</h1>
+            <p className="text-mine-shaft/60 dark:text-platinum-gray/60 text-lg font-editorial">Track your resume performance and progress</p>
           </div>
 
           {/* KPIs */}

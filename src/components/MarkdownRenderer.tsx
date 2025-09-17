@@ -24,14 +24,14 @@ export default function MarkdownRenderer({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-mine-shaft/90 backdrop-blur-sm z-[99999] flex items-center justify-center p-4">
-      <div className="bg-vista-white rounded-xl border border-mine-shaft/20 shadow-2xl w-full max-w-7xl max-h-[95vh] flex flex-col">
+    <div className="fixed inset-0 bg-mine-shaft/90 dark:bg-onyx-gray/90 backdrop-blur-sm z-[99999] flex items-center justify-center p-4">
+      <div className="bg-vista-white dark:bg-onyx-gray rounded-xl border border-mine-shaft/20 dark:border-gray-700 shadow-2xl w-full max-w-7xl max-h-[95vh] flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-mine-shaft/10">
-          <h2 className="text-2xl font-bebas tracking-tight text-mine-shaft">{title}</h2>
+        <div className="flex items-center justify-between p-6 border-b border-mine-shaft/10 dark:border-gray-700">
+          <h2 className="text-2xl font-bebas tracking-tight text-mine-shaft dark:text-platinum-gray">{title}</h2>
           <TextButton
             onClick={onClose}
-            className="p-2 text-mine-shaft/50 hover:text-mine-shaft hover:bg-sunglow/10 rounded-lg"
+            className="p-2 text-mine-shaft/50 dark:text-platinum-gray/50 hover:text-mine-shaft dark:hover:text-platinum-gray hover:bg-sunglow/10 dark:hover:bg-gray-800 rounded-lg"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -45,7 +45,7 @@ export default function MarkdownRenderer({
             <div className="flex items-center justify-center py-12">
               <div className="text-center">
                 <div className="w-8 h-8 border-2 border-sunglow border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-                <p className="text-mine-shaft/60 font-editorial">Loading {title.toLowerCase()}...</p>
+                <p className="text-mine-shaft/60 dark:text-platinum-gray/60 font-editorial">Loading {title.toLowerCase()}...</p>
               </div>
             </div>
           ) : (
@@ -57,47 +57,47 @@ export default function MarkdownRenderer({
                 components={{
                   // Custom styling for markdown elements
                   h1: ({ children }) => (
-                    <h1 className="text-3xl font-bebas tracking-tight text-mine-shaft mb-6 pb-2 border-b border-mine-shaft/10">
+                    <h1 className="text-3xl font-bebas tracking-tight text-mine-shaft dark:text-platinum-gray mb-6 pb-2 border-b border-mine-shaft/10 dark:border-gray-700">
                       {children}
                     </h1>
                   ),
                   h2: ({ children }) => (
-                    <h2 className="text-2xl font-bebas tracking-tight text-mine-shaft mb-4 mt-8">
+                    <h2 className="text-2xl font-bebas tracking-tight text-mine-shaft dark:text-platinum-gray mb-4 mt-8">
                       {children}
                     </h2>
                   ),
                   h3: ({ children }) => (
-                    <h3 className="text-xl font-sf font-semibold text-mine-shaft mb-3 mt-6">
+                    <h3 className="text-xl font-sf font-semibold text-mine-shaft dark:text-platinum-gray mb-3 mt-6">
                       {children}
                     </h3>
                   ),
                   h4: ({ children }) => (
-                    <h4 className="text-lg font-sf font-semibold text-mine-shaft mb-2 mt-4">
+                    <h4 className="text-lg font-sf font-semibold text-mine-shaft dark:text-platinum-gray mb-2 mt-4">
                       {children}
                     </h4>
                   ),
                   p: ({ children }) => (
-                    <p className="text-mine-shaft/80 font-editorial mb-4 leading-relaxed">
+                    <p className="text-mine-shaft/80 dark:text-platinum-gray/80 font-editorial mb-4 leading-relaxed">
                       {children}
                     </p>
                   ),
                   ul: ({ children }) => (
-                    <ul className="list-disc list-inside text-mine-shaft/80 font-editorial mb-4 space-y-2">
+                    <ul className="list-disc list-inside text-mine-shaft/80 dark:text-platinum-gray/80 font-editorial mb-4 space-y-2">
                       {children}
                     </ul>
                   ),
                   ol: ({ children }) => (
-                    <ol className="list-decimal list-inside text-mine-shaft/80 font-editorial mb-4 space-y-2">
+                    <ol className="list-decimal list-inside text-mine-shaft/80 dark:text-platinum-gray/80 font-editorial mb-4 space-y-2">
                       {children}
                     </ol>
                   ),
                   li: ({ children }) => (
-                    <li className="text-mine-shaft/80 font-editorial">
+                    <li className="text-mine-shaft/80 dark:text-platinum-gray/80 font-editorial">
                       {children}
                     </li>
                   ),
                   blockquote: ({ children }) => (
-                    <blockquote className="border-l-4 border-sunglow bg-sunglow/5 p-4 my-6 italic text-mine-shaft/70 font-editorial">
+                    <blockquote className="border-l-4 border-sunglow bg-sunglow/5 dark:bg-sunglow/10 p-4 my-6 italic text-mine-shaft/70 dark:text-platinum-gray/70 font-editorial">
                       {children}
                     </blockquote>
                   ),
@@ -105,31 +105,31 @@ export default function MarkdownRenderer({
                     const isBlock = className?.includes('language-');
                     if (isBlock) {
                       return (
-                        <pre className="bg-mine-shaft/5 rounded-lg p-4 overflow-x-auto mb-4">
-                          <code className="text-db3b09 text-sm font-mono">
+                        <pre className="bg-mine-shaft/5 dark:bg-gray-800 rounded-lg p-4 overflow-x-auto mb-4">
+                          <code className="text-db3b09 dark:text-green-400 text-sm font-mono">
                             {children}
                           </code>
                         </pre>
                       );
                     }
                     return (
-                      <code className="bg-mine-shaft/5 text-db3b09 px-2 py-1 rounded text-sm font-mono">
+                      <code className="bg-mine-shaft/5 dark:bg-gray-800 text-db3b09 dark:text-green-400 px-2 py-1 rounded text-sm font-mono">
                         {children}
                       </code>
                     );
                   },
                   strong: ({ children }) => (
-                    <strong className="text-mine-shaft font-sf font-semibold">
+                    <strong className="text-mine-shaft dark:text-platinum-gray font-sf font-semibold">
                       {children}
                     </strong>
                   ),
                   em: ({ children }) => (
-                    <em className="text-mine-shaft/70 font-editorial italic">
+                    <em className="text-mine-shaft/70 dark:text-platinum-gray/70 font-editorial italic">
                       {children}
                     </em>
                   ),
                   hr: () => (
-                    <hr className="border-mine-shaft/10 my-8" />
+                    <hr className="border-mine-shaft/10 dark:border-gray-700 my-8" />
                   ),
                   a: ({ children, href }) => (
                     <a 
@@ -143,13 +143,13 @@ export default function MarkdownRenderer({
                   ),
                   table: ({ children }) => (
                     <div className="overflow-x-auto mb-8">
-                      <table className="min-w-full border-collapse border border-mine-shaft/10 bg-mine-shaft/5 rounded-lg">
+                      <table className="min-w-full border-collapse border border-mine-shaft/10 dark:border-gray-700 bg-mine-shaft/5 dark:bg-gray-800 rounded-lg">
                         {children}
                       </table>
                     </div>
                   ),
                   thead: ({ children }) => (
-                    <thead className="bg-mine-shaft/10">
+                    <thead className="bg-mine-shaft/10 dark:bg-gray-700">
                       {children}
                     </thead>
                   ),
@@ -159,17 +159,17 @@ export default function MarkdownRenderer({
                     </tbody>
                   ),
                   tr: ({ children }) => (
-                    <tr className="border-b border-mine-shaft/10 hover:bg-sunglow/5 transition-colors">
+                    <tr className="border-b border-mine-shaft/10 dark:border-gray-700 hover:bg-sunglow/5 dark:hover:bg-gray-700 transition-colors">
                       {children}
                     </tr>
                   ),
                   th: ({ children }) => (
-                    <th className="border border-mine-shaft/10 px-3 py-2 text-left text-mine-shaft font-sf font-semibold text-xs bg-mine-shaft/5">
+                    <th className="border border-mine-shaft/10 dark:border-gray-700 px-3 py-2 text-left text-mine-shaft dark:text-platinum-gray font-sf font-semibold text-xs bg-mine-shaft/5 dark:bg-gray-700">
                       {children}
                     </th>
                   ),
                   td: ({ children }) => (
-                    <td className="border border-mine-shaft/10 px-3 py-2 text-mine-shaft/80 font-editorial text-xs align-top max-w-xs break-words overflow-hidden">
+                    <td className="border border-mine-shaft/10 dark:border-gray-700 px-3 py-2 text-mine-shaft/80 dark:text-platinum-gray/80 font-editorial text-xs align-top max-w-xs break-words overflow-hidden">
                       {children}
                     </td>
                   ),
@@ -182,7 +182,7 @@ export default function MarkdownRenderer({
         </div>
 
         {/* Footer */}
-        <div className="flex justify-end p-6 border-t border-mine-shaft/10">
+        <div className="flex justify-end p-6 border-t border-mine-shaft/10 dark:border-gray-700">
           <BrandButton
             onClick={onClose}
             variant="primary"
