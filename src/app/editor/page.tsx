@@ -302,7 +302,7 @@ design:
         try {
           console.log('🏢 Loading project YAML (dashboard flow)');
           console.log(`📁 Project ID: ${projectId}`);
-          const response = await fetch(`http://localhost:8000/project/${projectId}/yaml`, {
+          const response = await fetch(`https://stable-dane-quickly.ngrok-free.app/project/${projectId}/yaml`, {
             headers: {
               'Authorization': `Bearer ${token}`,
               'ngrok-skip-browser-warning': 'true',
@@ -382,7 +382,7 @@ design:
             yaml_content: yamlContent || '# Generated from gap analysis session',
           };
 
-          const createResponse = await fetch('http://localhost:8000/create-project', {
+          const createResponse = await fetch('https://stable-dane-quickly.ngrok-free.app/create-project', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -411,7 +411,7 @@ design:
         formData.append('project_id', currentProjectId);
       }
 
-      const response = await fetch('http://localhost:8000/run-gap-analysis', {
+      const response = await fetch('https://stable-dane-quickly.ngrok-free.app/run-gap-analysis', {
         method: 'POST',
         headers: {
           'ngrok-skip-browser-warning': 'true',
@@ -455,8 +455,8 @@ design:
 
       console.log('🔍 Fetching gap analysis content:', fileType);
       const url = projectId
-        ? `http://localhost:8000/get-gap-analysis-content/${fileType}?project_id=${projectId}`
-        : `http://localhost:8000/get-gap-analysis-content/${fileType}`;
+        ? `https://stable-dane-quickly.ngrok-free.app/get-gap-analysis-content/${fileType}?project_id=${projectId}`
+        : `https://stable-dane-quickly.ngrok-free.app/get-gap-analysis-content/${fileType}`;
       const response = await fetch(url, {
         headers: {
           'ngrok-skip-browser-warning': 'true',
@@ -595,7 +595,7 @@ design:
       console.log('🔍 Session ATS: Resume blob size:', resumeBlob.size);
       console.log('🔍 Session ATS: JD path:', jobDescriptionPath);
 
-      const response = await fetch('http://localhost:8000/get-ats-score-with-stored-jd', {
+      const response = await fetch('https://stable-dane-quickly.ngrok-free.app/get-ats-score-with-stored-jd', {
         method: 'POST',
         headers: {
           'ngrok-skip-browser-warning': 'true',
@@ -840,7 +840,7 @@ cv:
         const formData = new FormData();
         formData.append('yaml_content', yamlContent);
 
-        const response = await fetch(`http://localhost:8000/project/${projectId}/calculate-ats`, {
+        const response = await fetch(`https://stable-dane-quickly.ngrok-free.app/project/${projectId}/calculate-ats`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -911,7 +911,7 @@ cv:
       formData.append('originalResumePath', originalResumePath);
       formData.append('jobDescriptionPath', jobDescriptionPath);
 
-      const atsResponse = await fetch('http://localhost:8000/get-original-ats-score', {
+      const atsResponse = await fetch('https://stable-dane-quickly.ngrok-free.app/get-original-ats-score', {
         method: 'POST',
         headers: {
           'ngrok-skip-browser-warning': 'true',
@@ -984,7 +984,7 @@ cv:
       console.log('📦 Request payload theme:', requestBody.theme);
       console.log('📦 Request payload YAML length:', requestBody.yamlContent.length);
 
-      const response = await fetch('http://localhost:8000/render-resume', {
+      const response = await fetch('https://stable-dane-quickly.ngrok-free.app/render-resume', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

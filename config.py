@@ -16,7 +16,8 @@ class Settings:
     # CORS Configuration
     CORS_ORIGINS: list = [
         "http://localhost:3000",
-        "http://127.0.0.1:3000"
+        "http://127.0.0.1:3000",
+        "https://stable-dane-quickly.ngrok-free.app"
     ]
 
 settings = Settings()

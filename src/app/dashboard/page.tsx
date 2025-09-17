@@ -621,7 +621,7 @@ export default function DashboardPage() {
     }
 
     try {
-      const response = await fetch(`http://localhost:8000/download-job-description/${projectId}`, {
+      const response = await fetch(`https://stable-dane-quickly.ngrok-free.app/download-job-description/${projectId}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'ngrok-skip-browser-warning': 'true',
@@ -674,8 +674,8 @@ export default function DashboardPage() {
 
       console.log('🔍 Dashboard: Fetching gap analysis content:', fileType, 'for project:', projectId);
       const url = projectId
-        ? `http://localhost:8000/get-gap-analysis-content/${fileType}?project_id=${projectId}`
-        : `http://localhost:8000/get-gap-analysis-content/${fileType}`;
+        ? `https://stable-dane-quickly.ngrok-free.app/get-gap-analysis-content/${fileType}?project_id=${projectId}`
+        : `https://stable-dane-quickly.ngrok-free.app/get-gap-analysis-content/${fileType}`;
       const response = await fetch(url, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -741,7 +741,7 @@ export default function DashboardPage() {
       const formData = new FormData();
       formData.append('project_id', projectId);
 
-      const response = await fetch('http://localhost:8000/run-gap-analysis-cloud', {
+      const response = await fetch('https://stable-dane-quickly.ngrok-free.app/run-gap-analysis-cloud', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -803,7 +803,7 @@ export default function DashboardPage() {
 
     try {
       console.log('🔍 Dashboard: Fetching dashboard data...');
-      const url = `http://localhost:8000/dashboard?page=${page}&projects_per_page=${projectsPerPage}`;
+      const url = `https://stable-dane-quickly.ngrok-free.app/dashboard?page=${page}&projects_per_page=${projectsPerPage}`;
       const response = await fetch(url, {
         headers: {
           'Authorization': `Bearer ${token}`,
