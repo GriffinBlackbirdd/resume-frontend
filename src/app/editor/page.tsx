@@ -126,6 +126,7 @@ design:
   const [yamlWasManuallyEdited, setYamlWasManuallyEdited] = useState(false);
   const [skipInitialFormSync, setSkipInitialFormSync] = useState(false);
   const [justInitializedForm, setJustInitializedForm] = useState(false);
+  const [isRemoveOperation, setIsRemoveOperation] = useState(false);
 
   // Multi-step form state
   const [currentStep, setCurrentStep] = useState(0);
@@ -679,40 +680,40 @@ design:
   const convertFormToYaml = () => {
     const yaml = `# RenderCV Resume Configuration
 cv:
-  name: ${formData.personalInfo.name}
-  location: ${formData.personalInfo.location}
-  email: ${formData.personalInfo.email}
-  phone: ${formData.personalInfo.phone}
-  website: ${formData.personalInfo.website}${formData.socialNetworks.some(sn => sn.network.trim() && sn.username.trim()) ? `
+  name: ${formData.personalInfo.name || 'Your Name'}
+  location: ${formData.personalInfo.location || 'Your Location'}
+  email: ${formData.personalInfo.email || 'your.email@example.com'}
+  phone: ${formData.personalInfo.phone || '+91-9999999999'}
+  website: ${formData.personalInfo.website || 'https://yourwebsite.com'}${formData.socialNetworks.some(sn => sn.network.trim() || sn.username.trim()) ? `
 
-  social_networks:${formData.socialNetworks.filter(sn => sn.network.trim() && sn.username.trim()).map(sn => `
+  social_networks:${formData.socialNetworks.filter(sn => sn.network.trim() || sn.username.trim()).map(sn => `
     - network: '${sn.network}'
-      username: ${sn.username}`).join('')}` : ''}
+      username: ${sn.username.trim() || 'your-username'}`).join('')}` : ''}
 
   sections:
-    summary:${formData.summary.map(item => `\n      - ${item}`).join('')}
+    summary:${formData.summary.map(item => `\n      - ${item || 'Professional summary point'}`).join('')}
 
     experience:${formData.experience.map(exp => `
-      - company: ${exp.company}
-        position: ${exp.position}
-        location: ${exp.location}
-        start_date: ${exp.start_date}
-        end_date: ${exp.end_date}
-        highlights:${exp.highlights.map(h => `\n          - ${h}`).join('')}`).join('')}${formData.projects.some(p => p.name.trim()) ? `
+      - company: ${exp.company || 'Company Name'}
+        position: ${exp.position || 'Job Title'}
+        location: ${exp.location || 'City, State'}
+        start_date: ${exp.start_date || '2023-01'}
+        end_date: ${exp.end_date || 'present'}
+        highlights:${exp.highlights.map(h => `\n          - ${h || 'Achievement or responsibility'}`).join('')}`).join('')}${formData.projects.some(p => p.name.trim()) ? `
 
     projects:${formData.projects.filter(p => p.name.trim()).map(proj => `
       - name: ${proj.name}${proj.summary.trim() ? `\n        summary: ${proj.summary}` : ''}${proj.highlights.some(h => h.trim()) ? `\n        highlights:${proj.highlights.filter(h => h.trim()).map(h => `\n          - ${h}`).join('')}` : ''}`).join('')}` : ''}
 
     education:${formData.education.map(edu => `
-      - institution: ${edu.institution}
-        area: ${edu.area}
-        degree: ${edu.degree}
-        start_date: ${edu.start_date}
-        end_date: ${edu.end_date}${edu.gpa && (edu.gpa as string).trim() ? `\n        highlights:\n          - 'CGPA: ${edu.gpa}'` : ''}${edu.highlights && (edu.highlights as string[]).some(h => (h as string).trim()) ? `${edu.gpa && (edu.gpa as string).trim() ? '' : '\n        highlights:'}${(edu.highlights as string[]).filter(h => (h as string).trim()).map(h => `\n          - '${h}'`).join('')}` : ''}`).join('')}
+      - institution: ${edu.institution || 'University Name'}
+        area: ${edu.area || 'Field of Study'}
+        degree: ${edu.degree || 'Bachelor of Science'}
+        start_date: ${edu.start_date || '2020-09'}
+        end_date: ${edu.end_date || '2024-06'}${edu.gpa && (edu.gpa as string).trim() ? `\n        highlights:\n          - 'CGPA: ${edu.gpa}'` : ''}${edu.highlights && (edu.highlights as string[]).some(h => (h as string).trim()) ? `${edu.gpa && (edu.gpa as string).trim() ? '' : '\n        highlights:'}${(edu.highlights as string[]).filter(h => (h as string).trim()).map(h => `\n          - '${h}'`).join('')}` : ''}`).join('')}
 
     technologies:${formData.technologies.map(tech => `
-      - label: ${tech.label}
-        details: ${tech.details}`).join('')}${formData.certifications.some(cert => cert.name.trim()) ? `
+      - label: ${tech.label || 'Technology Category'}
+        details: ${tech.details || 'List of technologies'}`).join('')}${formData.certifications.some(cert => cert.name.trim()) ? `
 
     Certifications:${formData.certifications.filter(cert => cert.name.trim()).map(cert => `
       - name: ${cert.name}
@@ -761,7 +762,7 @@ cv:
         socialNetworks: cv.social_networks ? cv.social_networks.map((sn: any) => ({
           network: sn.network || '',
           username: sn.username || ''
-        })) : [{ network: '', username: '' }],
+        })) : [{ network: 'GitHub', username: '' }],
         summary: getFlexibleField(sections, 'summary', 'Summary') || [''],
         experience: (() => {
           const expData = getFlexibleField(sections, 'experience', 'Experience', 'work_experience', 'Work Experience');
@@ -1180,6 +1181,36 @@ cv:
     }, 100); // Small delay to prevent flicker
   };
 
+  // Immediate sync handler for remove operations
+  const handleImmediateSync = () => {
+    // Clear any existing timeout
+    if (formEditTimeout) {
+      clearTimeout(formEditTimeout);
+      setFormEditTimeout(null);
+    }
+
+    // Set flag to prevent YAML-to-form sync during remove
+    setIsRemoveOperation(true);
+
+    // Ensure we're not marked as actively editing
+    setIsFormFieldActive(false);
+
+    // Schedule YAML sync for after the remove operation settles
+    setTimeout(() => {
+      if (activeTab === 'form' && formDataInitialized && !syncInProgress) {
+        const newYaml = convertFormToYaml();
+        if (newYaml !== yamlContent) {
+          setYamlContent(newYaml);
+        }
+      }
+
+      // Reset the flag to allow normal syncing
+      setTimeout(() => {
+        setIsRemoveOperation(false);
+      }, 100);
+    }, 50);
+  };
+
   // Universal form input props to prevent sync loops
   const getFormInputProps = () => ({
     onFocus: handleFormFieldFocus,
@@ -1213,14 +1244,14 @@ cv:
     }
   }, [formData, activeTab, selectedTheme, formDataInitialized, syncInProgress, skipInitialFormSync, yamlContent, originalYamlContent, yamlWasManuallyEdited]);
 
-  // Sync YAML to form data when YAML changes (but NOT when form fields are being edited)
+  // Sync YAML to form data when YAML changes (but NOT when form fields are being edited or during remove operations)
   useEffect(() => {
-    if (yamlContent && yamlContent.trim() && !syncInProgress && !isFormFieldActive) {
+    if (yamlContent && yamlContent.trim() && !syncInProgress && !isFormFieldActive && !isRemoveOperation) {
       setSyncInProgress(true);
       convertYamlToForm(yamlContent);
       setTimeout(() => setSyncInProgress(false), 100);
     }
-  }, [yamlContent, syncInProgress, isFormFieldActive]);
+  }, [yamlContent, syncInProgress, isFormFieldActive, isRemoveOperation]);
 
   // Initialize form data when switching to form tab
   useEffect(() => {
@@ -1712,6 +1743,7 @@ cv:
                                 onClick={() => {
                                   const newSocial = formData.socialNetworks.filter((_, si) => si !== index);
                                   setFormData(prev => ({ ...prev, socialNetworks: newSocial }));
+                                  handleImmediateSync();
                                 }}
                                 className="mt-4 px-3 py-1 bg-red-600/20 text-red-400 border border-red-600/30 rounded-lg hover:bg-red-600/30 transition-colors text-sm"
                               >
@@ -1759,6 +1791,7 @@ cv:
                               onClick={() => {
                                 const newSummary = formData.summary.filter((_, i) => i !== index);
                                 setFormData(prev => ({ ...prev, summary: newSummary }));
+                                handleImmediateSync();
                               }}
                               className="ml-2 px-3 py-2 bg-red-600/20 text-red-400 border border-red-600/30 rounded-lg hover:bg-red-600/30 transition-colors"
                             >
@@ -1917,6 +1950,7 @@ cv:
                                         const newExp = [...formData.experience];
                                         newExp[index].highlights = newExp[index].highlights.filter((_, hi) => hi !== hIndex);
                                         setFormData(prev => ({ ...prev, experience: newExp }));
+                                        handleImmediateSync();
                                       }}
                                       className="ml-2 px-3 py-2 bg-red-600/20 text-red-400 border border-red-600/30 rounded-lg hover:bg-red-600/30 transition-colors"
                                     >
@@ -1941,6 +1975,7 @@ cv:
                                   onClick={() => {
                                     const newExp = formData.experience.filter((_, ei) => ei !== index);
                                     setFormData(prev => ({ ...prev, experience: newExp }));
+                                    handleImmediateSync();
                                   }}
                                   className="px-3 py-1 bg-red-600/20 text-red-400 border border-red-600/30 rounded-lg hover:bg-red-600/30 transition-colors text-sm"
                                 >
@@ -2031,6 +2066,7 @@ cv:
                                           const newProjects = [...formData.projects];
                                           newProjects[index].highlights = newProjects[index].highlights.filter((_, hi) => hi !== hIndex);
                                           setFormData(prev => ({ ...prev, projects: newProjects }));
+                                          handleImmediateSync();
                                         }}
                                         className="ml-2 px-3 py-2 bg-red-600/20 text-red-400 border border-red-600/30 rounded-lg hover:bg-red-600/30 transition-colors"
                                       >
@@ -2056,6 +2092,7 @@ cv:
                                   onClick={() => {
                                     const newProjects = formData.projects.filter((_, pi) => pi !== index);
                                     setFormData(prev => ({ ...prev, projects: newProjects }));
+                                    handleImmediateSync();
                                   }}
                                   className="px-3 py-1 bg-red-600/20 text-red-400 border border-red-600/30 rounded-lg hover:bg-red-600/30 transition-colors text-sm self-start"
                                 >
@@ -2195,6 +2232,7 @@ cv:
                                 onClick={() => {
                                   const newEdu = formData.education.filter((_, ei) => ei !== index);
                                   setFormData(prev => ({ ...prev, education: newEdu }));
+                                  handleImmediateSync();
                                 }}
                                 className="mt-4 px-3 py-1 bg-red-600/20 text-red-400 border border-red-600/30 rounded-lg hover:bg-red-600/30 transition-colors text-sm"
                               >
@@ -2263,6 +2301,7 @@ cv:
                                     onClick={() => {
                                       const newTech = formData.technologies.filter((_, i) => i !== index);
                                       setFormData(prev => ({ ...prev, technologies: newTech }));
+                                      handleImmediateSync();
                                     }}
                                     className="ml-2 px-3 py-2 bg-red-600/20 text-red-400 border border-red-600/30 rounded-lg hover:bg-red-600/30 transition-colors"
                                   >
@@ -2334,6 +2373,7 @@ cv:
                                 onClick={() => {
                                   const newCerts = formData.certifications.filter((_, ci) => ci !== index);
                                   setFormData(prev => ({ ...prev, certifications: newCerts }));
+                                  handleImmediateSync();
                                 }}
                                 className="mt-4 px-3 py-1 bg-red-600/20 text-red-400 border border-red-600/30 rounded-lg hover:bg-red-600/30 transition-colors text-sm"
                               >
@@ -2423,6 +2463,7 @@ cv:
                                           const newAchievements = [...formData.achievements];
                                           newAchievements[index].highlights = newAchievements[index].highlights.filter((_, hi) => hi !== hIndex);
                                           setFormData(prev => ({ ...prev, achievements: newAchievements }));
+                                          handleImmediateSync();
                                         }}
                                         className="ml-2 px-3 py-2 bg-red-600/20 text-red-400 border border-red-600/30 rounded-lg hover:bg-red-600/30 transition-colors"
                                       >
@@ -2449,6 +2490,7 @@ cv:
                                 onClick={() => {
                                   const newAchievements = formData.achievements.filter((_, ai) => ai !== index);
                                   setFormData(prev => ({ ...prev, achievements: newAchievements }));
+                                  handleImmediateSync();
                                 }}
                                 className="mt-4 px-3 py-1 bg-red-600/20 text-red-400 border border-red-600/30 rounded-lg hover:bg-red-600/30 transition-colors text-sm"
                               >
