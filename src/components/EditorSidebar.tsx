@@ -44,20 +44,6 @@ export default function Sidebar({
       {/* Navigation Tabs */}
       <div className="p-2 space-y-1">
         <BrandButton
-          variant={activeTab === 'yaml' ? 'primary' : 'ghost'}
-          onClick={() => onTabChange('yaml')}
-          className={cn(
-            "w-full flex items-center justify-start space-x-3 px-3 py-2.5 text-sm font-medium",
-            activeTab === 'yaml'
-              ? "bg-sunglow text-mine-shaft shadow-lg"
-              : "text-gray-400 hover:bg-gray-800 hover:text-white"
-          )}
-        >
-          <FileText className="w-4 h-4 flex-shrink-0" />
-          {!isCollapsed && <span>YAML Editor</span>}
-        </BrandButton>
-
-        <BrandButton
           variant={activeTab === 'form' ? 'primary' : 'ghost'}
           onClick={() => onTabChange('form')}
           className={cn(
@@ -69,6 +55,20 @@ export default function Sidebar({
         >
           <Settings className="w-4 h-4 flex-shrink-0" />
           {!isCollapsed && <span>Form Builder</span>}
+        </BrandButton>
+
+        <BrandButton
+          variant={activeTab === 'yaml' ? 'primary' : 'ghost'}
+          onClick={() => onTabChange('yaml')}
+          className={cn(
+            "w-full flex items-center justify-start space-x-3 px-3 py-2.5 text-sm font-medium",
+            activeTab === 'yaml'
+              ? "bg-sunglow text-mine-shaft shadow-lg"
+              : "text-gray-400 hover:bg-gray-800 hover:text-white"
+          )}
+        >
+          <FileText className="w-4 h-4 flex-shrink-0" />
+          {!isCollapsed && <span>YAML Editor</span>}
         </BrandButton>
       </div>
 

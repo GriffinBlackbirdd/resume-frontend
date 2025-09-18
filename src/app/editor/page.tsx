@@ -117,7 +117,7 @@ design:
   const [generatedFiles, setGeneratedFiles] = useState<string[]>([]);
 
   // Editor tab state
-  const [activeTab, setActiveTab] = useState<'yaml' | 'form'>('yaml');
+  const [activeTab, setActiveTab] = useState<'yaml' | 'form'>('form');
   const [formDataInitialized, setFormDataInitialized] = useState(false);
   const [syncInProgress, setSyncInProgress] = useState(false);
   const [isFormFieldActive, setIsFormFieldActive] = useState(false);
@@ -1412,18 +1412,6 @@ cv:
           {/* Tab Headers */}
           <div className="flex border-b border-mine-shaft/10 dark:border-gray-700 dark:border-gray-800">
             <BrandButton
-              variant={activeTab === 'yaml' ? 'primary' : 'ghost'}
-              onClick={() => handleTabSwitch('yaml')}
-              className={cn(
-                "flex-1 px-4 py-2 text-sm font-medium focus:ring-none focus:ring-offset-0 rounded-none border-none focus:border-none",
-                activeTab === 'yaml'
-                  ? "bg-sunglow text-mine-shaft dark:text-platinum-gray"
-                  : "text-mine-shaft dark:text-platinum-gray/60 hover:text-mine-shaft dark:text-platinum-gray hover:bg-mine-shaft/5"
-              )}
-            >
-              <span className="font-sf font-medium">YAML Editor</span>
-            </BrandButton>
-            <BrandButton
               variant={activeTab === 'form' ? 'primary' : 'ghost'}
               onClick={() => handleTabSwitch('form')}
               className={cn(
@@ -1435,38 +1423,23 @@ cv:
             >
               <span className="font-sf font-medium">Form Editor</span>
             </BrandButton>
+            <BrandButton
+              variant={activeTab === 'yaml' ? 'primary' : 'ghost'}
+              onClick={() => handleTabSwitch('yaml')}
+              className={cn(
+                "flex-1 px-4 py-2 text-sm font-medium focus:ring-none focus:ring-offset-0 rounded-none border-none focus:border-none",
+                activeTab === 'yaml'
+                  ? "bg-sunglow text-mine-shaft dark:text-platinum-gray"
+                  : "text-mine-shaft dark:text-platinum-gray/60 hover:text-mine-shaft dark:text-platinum-gray hover:bg-mine-shaft/5"
+              )}
+            >
+              <span className="font-sf font-medium">YAML Editor</span>
+            </BrandButton>
           </div>
 
           {/* Tab Content */}
           <div className="h-[calc(100vh-210px)]">
-            {activeTab === 'yaml' ? (
-              <div className="h-full p-4">
-                <div className="h-[calc(100%-2rem)] border border-mine-shaft/10 dark:border-gray-700 rounded-lg overflow-hidden">
-                  <MonacoEditor
-                    height="100%"
-                    defaultLanguage="yaml"
-                    value={yamlContent}
-                    onChange={handleYamlChange}
-                    theme={theme === 'dark' ? 'vs-dark' : 'light'}
-                    options={{
-                      minimap: { enabled: false },
-                      fontSize: 14,
-                      lineNumbers: "on",
-                      renderWhitespace: "selection",
-                      tabSize: 2,
-                      insertSpaces: true,
-                      wordWrap: "on",
-                      automaticLayout: true,
-                      scrollBeyondLastLine: false,
-                      folding: true,
-                      bracketPairColorization: { enabled: true },
-                      cursorBlinking: "smooth",
-                      cursorSmoothCaretAnimation: "on",
-                    }}
-                  />
-                </div>
-              </div>
-            ) : (
+            {activeTab === 'form' ? (
               <div className="h-full flex">
 
                 {/* Sidebar Navigation */}
@@ -2543,7 +2516,34 @@ cv:
                   </div>
                 </div>
               </div>
-            )}
+            ) : activeTab === 'yaml' ? (
+              <div className="h-full p-4">
+                <div className="h-[calc(100%-2rem)] border border-mine-shaft/10 dark:border-gray-700 rounded-lg overflow-hidden">
+                  <MonacoEditor
+                    height="100%"
+                    defaultLanguage="yaml"
+                    value={yamlContent}
+                    onChange={handleYamlChange}
+                    theme={theme === 'dark' ? 'vs-dark' : 'light'}
+                    options={{
+                      minimap: { enabled: false },
+                      fontSize: 14,
+                      lineNumbers: "on",
+                      renderWhitespace: "selection",
+                      tabSize: 2,
+                      insertSpaces: true,
+                      wordWrap: "on",
+                      automaticLayout: true,
+                      scrollBeyondLastLine: false,
+                      folding: true,
+                      bracketPairColorization: { enabled: true },
+                      cursorBlinking: "smooth",
+                      cursorSmoothCaretAnimation: "on",
+                    }}
+                  />
+                </div>
+              </div>
+            ) : null}
           </div>
         </div>
 
