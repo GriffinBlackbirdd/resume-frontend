@@ -117,7 +117,7 @@ export default function RevampPage() {
         console.log('⚠️ No token found - request will be made without authentication');
       }
 
-      const response = await fetch('https://stable-dane-quickly.ngrok-free.app/revamp-existing', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/revamp-existing`, {
         method: 'POST',
         headers,
         body: apiFormData,

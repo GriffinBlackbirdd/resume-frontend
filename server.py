@@ -708,12 +708,12 @@ import os
 import pypdf
 def revamp(resumePath, jobRole, jobDescriptionPath):
     """
-    Revamp function copied from /Users/arreyanhamid/Developer/ai-resume/main.py
+    Revamp function copied from main.py
     Handles both .txt and .pdf job description inputs.
     """
 
     # Load YAML template
-    with open("/Users/arreyanhamid/Developer/ai-resume/template.yaml", "r", encoding="utf-8") as f:
+    with open("config/template.yaml", "r", encoding="utf-8") as f:
         yamlContent = f.read()
 
     jobDescription = None
@@ -762,8 +762,8 @@ def revamp(resumePath, jobRole, jobDescriptionPath):
     # Check for success
     if response.status_code == 200:
         data = response.json()
-        # Save JSON response into a file in ai-resume directory
-        keywords_path = "/Users/arreyanhamid/Developer/ai-resume/keywords.json"
+        # Save JSON response into a file in config directory
+        keywords_path = "config/keywords.json"
         with open(keywords_path, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=4, ensure_ascii=False)
         print("✅ Response saved to keywords.json")
@@ -771,13 +771,13 @@ def revamp(resumePath, jobRole, jobDescriptionPath):
         print(f"❌ Request failed with status {response.status_code}: {response.text}")
         # Create fallback keywords file
         data = {"keywords": [], "required_skills": [], "preferred_skills": []}
-        keywords_path = "/Users/arreyanhamid/Developer/ai-resume/keywords.json"
+        keywords_path = "config/keywords.json"
         with open(keywords_path, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=4, ensure_ascii=False)
         print("Created fallback keywords.json")
 
 
-    with open("/Users/arreyanhamid/Developer/ai-resume/keywords.json", "r", encoding="utf-8") as f:
+    with open("config/keywords.json", "r", encoding="utf-8") as f:
         jsonContent = f.read()
 
 
@@ -868,7 +868,7 @@ def revamp(resumePath, jobRole, jobDescriptionPath):
         f"Revamp the uploaded resume with the Job Description uploaded by the user, I have also attached a jd_keywords.json file that contains all the main keywords from the JD, you need to include 100% of these keywords in the revamp resume. template.yaml: {yamlContent}, Job Role: {jobRole}, Job Description:\n{jobDescription}, JD Keywords:\n{jsonContent}", files=[AgnoFile(filepath=resumePath)]
     )
     print(response.content)
-    resume_yaml_path = "/Users/arreyanhamid/Developer/ai-resume/resume.yaml"
+    resume_yaml_path = "config/resume.yaml"
     with open(resume_yaml_path, "w", encoding="utf-8") as f:
         f.write(response.content if response.content is not None else "")
 
@@ -876,7 +876,7 @@ def revamp(resumePath, jobRole, jobDescriptionPath):
 
 def review(resumePath, jobDescriptionPath):
     """
-    Review function copied from /Users/arreyanhamid/Developer/ai-resume/review.py
+    Review function copied from review.py
     """
     jobDescription_path = jobDescriptionPath
     if jobDescription_path:
@@ -1507,7 +1507,7 @@ async def revamp_existing(
             yaml_content = ""
             ats_score = None
             original_ats_score = None
-            resume_yaml_path = "/Users/arreyanhamid/Developer/ai-resume/resume.yaml"
+            resume_yaml_path = "config/resume.yaml"
 
             if os.path.exists(resume_yaml_path):
                 with open(resume_yaml_path, "r", encoding="utf-8") as f:
@@ -1549,7 +1549,7 @@ async def revamp_existing(
                         yaml_temp_path = os.path.join(temp_dir, 'resume.yaml')
 
                         # Copy designs folder for rendering
-                        source_designs_dir = '/Users/arreyanhamid/Developer/ai-resume/designs'
+                        source_designs_dir = 'config/designs'
                         target_designs_dir = os.path.join(temp_dir, 'designs')
 
                         try:
@@ -1711,7 +1711,7 @@ async def render_resume(request: RenderRequest):
         yaml_path = os.path.join(temp_dir, 'resume.yaml')
 
         # Copy entire designs folder to temp directory
-        source_designs_dir = '/Users/arreyanhamid/Developer/ai-resume/designs'
+        source_designs_dir = 'config/designs'
         target_designs_dir = os.path.join(temp_dir, 'designs')
 
         try:
@@ -1838,7 +1838,7 @@ async def render_resume_watch(request: WatchRequest):
                 del active_watchers[resume_temp_dir]
 
             # Copy entire designs folder to temp directory
-            source_designs_dir = '/Users/arreyanhamid/Developer/ai-resume/designs'
+            source_designs_dir = 'config/designs'
             target_designs_dir = os.path.join(resume_temp_dir, 'designs')
 
             try:
@@ -2084,7 +2084,7 @@ async def get_ats_score_with_stored_jd(
             local_filename = f"jd_{session_id}.{file_extension}"
 
             # Convert to local JD directory path
-            local_jd_path = f"/Users/arreyanhamid/Developer/ai-resume/JD/{local_filename}"
+            local_jd_path = f"uploads/JD/{local_filename}"
         else:
             # It's already a local path
             local_jd_path = jobDescriptionPath
@@ -2172,7 +2172,7 @@ async def get_original_ats_score(
             # New simple structure: "session_id/job_description.ext" -> Local: "jd_[session_id].ext"
             file_extension = storage_filename.split('.')[-1] if '.' in storage_filename else 'txt'
             local_filename = f"jd_{session_id}.{file_extension}"
-            local_jd_path = f"/Users/arreyanhamid/Developer/ai-resume/JD/{local_filename}"
+            local_jd_path = f"uploads/JD/{local_filename}"
         else:
             local_jd_path = jobDescriptionPath
 
@@ -2232,7 +2232,7 @@ async def get_original_resume(file_path: str):
     """
     try:
         # Security check: ensure the file path is within expected directories
-        if not (file_path.startswith('/tmp/') or file_path.startswith('/Users/arreyanhamid/Developer/ai-resume/')):
+        if not (file_path.startswith('/tmp/') or file_path.startswith('./') or file_path.startswith('uploads/')):
             raise HTTPException(status_code=403, detail="Access denied")
 
         if not os.path.exists(file_path):
@@ -2336,7 +2336,7 @@ async def calculate_project_ats(
             yaml_temp_path = os.path.join(temp_dir, 'resume.yaml')
 
             # Copy designs folder for rendering
-            source_designs_dir = '/Users/arreyanhamid/Developer/ai-resume/designs'
+            source_designs_dir = 'config/designs'
             target_designs_dir = os.path.join(temp_dir, 'designs')
 
             try:
@@ -2453,7 +2453,7 @@ async def run_gap_analysis(
         if originalResumePath.count('/') >= 1:  # It's a storage path like "session_id/original_resume.pdf"
             storage_filename = originalResumePath.split('/')[-1]
             # New simple structure: "session_id/original_resume.pdf" -> Local: stored in resumes folder
-            local_resume_path = f"/Users/arreyanhamid/Developer/ai-resume/resumes/{storage_filename}"
+            local_resume_path = f"uploads/resumes/{storage_filename}"
             print(f"🔍 GAP ANALYSIS: Converted resume path: {originalResumePath} -> {local_resume_path}")
         else:
             local_resume_path = originalResumePath
@@ -2465,7 +2465,7 @@ async def run_gap_analysis(
             session_id = jobDescriptionPath.split('/')[0].replace('session_', '')
             file_extension = storage_filename.split('.')[-1] if '.' in storage_filename else 'txt'
             local_filename = f"jd_{session_id}.{file_extension}"
-            local_jd_path = f"/Users/arreyanhamid/Developer/ai-resume/JD/{local_filename}"
+            local_jd_path = f"uploads/JD/{local_filename}"
             print(f"🔍 GAP ANALYSIS: Converted JD path: {jobDescriptionPath} -> {local_jd_path}")
         else:
             local_jd_path = jobDescriptionPath
@@ -2505,7 +2505,7 @@ async def run_gap_analysis(
             raise HTTPException(status_code=404, detail=f"Job description file not found at local path: {local_jd_path}")
 
         # Path to the gap analysis script
-        script_path = "/Users/arreyanhamid/Developer/ai-resume/reviewCall.py"
+        script_path = "reviewCall.py"
 
         if not os.path.exists(script_path):
             raise HTTPException(status_code=500, detail="Gap analysis script not found")
@@ -2517,7 +2517,7 @@ async def run_gap_analysis(
             "python3", script_path, local_resume_path, local_jd_path,
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE,
-            cwd="/Users/arreyanhamid/Developer/ai-resume"
+            cwd="."
         )
 
         stdout, stderr = await process.communicate()
@@ -2688,7 +2688,7 @@ async def get_gap_analysis_content(
 
         # If no content from cloud storage, try local file
         if content is None:
-            file_path = f"/Users/arreyanhamid/Developer/ai-resume/{filename}"
+            file_path = f"config/{filename}"
 
             if not os.path.exists(file_path):
                 raise HTTPException(
@@ -2957,7 +2957,7 @@ async def download_gap_analysis_file(file_type: str, project_id: Optional[str] =
         # Fallback to local file if cloud storage fails or no project_id provided
         if content is None:
             print(f"🔍 DOWNLOAD: Trying local file for {filename}")
-            file_path = f"/Users/arreyanhamid/Developer/ai-resume/{filename}"
+            file_path = f"config/{filename}"
 
             if not os.path.exists(file_path):
                 raise HTTPException(

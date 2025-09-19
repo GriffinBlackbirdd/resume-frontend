@@ -1,0 +1,116 @@
+# src/config/tasks.yaml
+
+gap_analysis_task:
+  description: >
+    Analyze the given job description {jd} and resume {resume} in comprehensive detail to identify
+    all required skills, qualifications, and competencies that are present, missing, or
+    partially demonstrated. Create a structured gap analysis in tabular format with 5 columns:
+    [JD Skill/Requirement, Present in Resume (Yes/No/Partial), Current Level (Beginner/Intermediate/Advanced if present),
+    Gap Severity (Critical/High/Medium/Low), Gap Notes with specific improvement suggestions].
+    Also assess the candidate's overall experience level for the target role (Beginner/Intermediate/Advanced)
+    to inform subsequent learning and project planning phases. Analyze both technical skills
+    and soft skills from {jd}, consider transferable experience shown in {resume}, and prioritize gaps
+    based on job criticality and market demand. Make sure the table is well-formatted in markdown
+    for clarity and easy readability.
+  expected_output: >
+    A comprehensive markdown document containing: 1) Executive summary with overall candidate-job
+    fit assessment between {resume} and {jd} with key findings, 2) Complete skill gap analysis table
+    with all 5 required columns covering every skill mentioned in the {jd}, 3) Overall candidate
+    experience level assessment for the target role based on {resume} analysis, 4) Prioritized list
+    of critical gaps requiring immediate attention, 5) Summary of identified strengths and transferable
+    skills from {resume}. The gap analysis table must be properly formatted in markdown with specific,
+    actionable gap notes for each identified weakness and justified gap severity ratings based on
+    job requirements from {jd} and industry standards.
+  agent: gap_analyst
+  markdown: true
+  output_file: gap_analysis.md
+
+upskilling_plan_task:
+  description: >
+    Based on the gap analysis results from comparing {resume} with {jd} and the candidate's assessed
+    skill level (beginner, intermediate, or advanced), create two comprehensive actionable learning plans with
+    extensive web research to find current, verified learning resources. Search the web
+    using terms like '[skill] tutorial', '[skill] free course', '[skill] documentation',
+    '[skill] learning path' for each identified skill gap. Create: 1) Immediate Plan (1-2 weeks)
+    for quick wins and foundational concepts, 2) Long-Term Plan (15-30 days) for comprehensive
+    skill development and mastery. Adapt content complexity based on candidate's current level from {resume} -
+    for beginners focus on fundamentals and guided tutorials, for advanced learners provide
+    specialized topics and best practices. Include specific time investments, progress milestones,
+    hands-on exercises, and verify all resource links before inclusion. Ensure learning plans
+    directly address the skills required in {jd} that are missing or weak in {resume}.
+  expected_output: >
+    A detailed structured markdown document with two comprehensive sections:
+    ## Immediate Learning Plan (1-2 weeks) - For each priority skill gap identified between {resume} and {jd}:
+    learning objectives and weekly milestones, daily time investment recommendations, specific resources formatted
+    as "**Resource Name** - [Link](URL) - Description/Why recommended", hands-on exercises and
+    practice activities, progress tracking methods and checkpoints.
+    ## Long-term Learning Plan (15-30 days) - For comprehensive skill development to meet {jd} requirements:
+    advanced learning objectives and monthly milestones, weekly time investment recommendations,
+    progressive resource sequence with verified working links, real-world application projects
+    and exercises, skill assessment and certification opportunities. All plans must be tailored
+    to the candidate's assessed expertise level from {resume} with content complexity matching their current
+    capabilities, and all resource links must be current, accessible, and properly formatted.
+  agent: upskilling_planner
+  markdown: true
+  output_file: upskilling_plan.md
+
+project_recommendation_task:
+  description: >
+    Research and recommend 5-8 diverse, practical, resume-worthy projects that are specifically
+    aligned with the target job role from {jd} and demonstrate the missing skills identified in the gap
+    analysis between {resume} and {jd}. Conduct extensive web research using targeted queries like
+    '[job_role] projects', '[skill] project tutorial', 'github [technology] projects', 'awesome [technology] projects',
+    '[role] portfolio projects' to find current project ideas, implementation tutorials, GitHub
+    repositories, live demos, and comprehensive resources. These projects should help the candidate
+    strengthen missing skills from the {resume} vs {jd} comparison, demonstrate applied expertise, and build an impressive portfolio.
+    Ensure projects range from beginner to advanced difficulty levels, solve real-world problems
+    relevant to the target industry mentioned in {jd}, and collectively cover all critical skills from the gap analysis.
+  expected_output: >
+    A comprehensive markdown document with 5-8 detailed project recommendations, each containing:
+    ## Project [N]: [Project Title] - Comprehensive project description and business problem solved,
+    skills demonstrated/developed (specifically addressing gaps from {resume} vs {jd} analysis), difficulty level
+    (Beginner/Intermediate/Advanced) with justification, estimated completion timeline with weekly
+    breakdown, complete technology stack and tools required, comprehensive implementation resources
+    with verified working links formatted as "**Resource Type** - [Description](URL) - Why this
+    resource helps" including: tutorial guides for step-by-step implementation, GitHub repositories
+    with starter templates or similar projects, live demos and examples (if available), official
+    documentation for technologies used, datasets or API references (if applicable), portfolio
+    presentation guidance on how to showcase effectively, interview talking points for technical
+    discussions. Include project sequencing recommendations and integration guidance with the
+    learning plans to ensure optimal skill development progression toward meeting {jd} requirements.
+  agent: project_recommender
+  markdown: true
+  output_file: project_recommendations.md
+
+team_leader_task:
+  description: >
+    Coordinate and synthesize all outputs from the gap analyst, upskilling planner, and project
+    recommender into one unified, comprehensive career development report in markdown format that
+    bridges the gap between {resume} and {jd}. Ensure consistency across all deliverables by reviewing
+    skill level assessments, verifying that learning plans address identified gaps from {resume} vs {jd},
+    confirming projects cover necessary skills to meet {jd} requirements, and validating all resource links
+    are working and current. Create a cohesive narrative that logically flows from gap analysis to learning
+    plans to project implementation, with clear connections between each phase. Provide executive summary,
+    detailed analysis integration, implementation timeline with priority matrix, and actionable next steps
+    for immediate and long-term career advancement toward the target role in {jd}.
+  expected_output: >
+    A single comprehensive markdown file structured as a professional career development report:
+    # Career Development Report: [Candidate from {resume}] → [Target Role from {jd}] containing: 1) Executive Summary
+    with overall candidate-job fit percentage between {resume} and {jd}, key findings and critical gaps, recommended development
+    timeline, priority focus areas for maximum impact, 2) Detailed Skill Gap Analysis with complete
+    gap analysis table comparing {resume} to {jd}, assessment methodology explanation, prioritized action items based on gap
+    severity, strengths and transferable skills analysis from {resume}, 3) Structured Learning Development Plans
+    with immediate plan (1-2 weeks) including verified resource links, long-term plan (15-30 days)
+    with comprehensive roadmap, integration points between learning and project work, progress
+    tracking and milestone recommendations, 4) Strategic Project Recommendations with 5-8 curated
+    projects including complete implementation resources, project sequencing aligned with learning
+    progression, portfolio development and interview preparation guidance, 5) Implementation Roadmap
+    & Timeline with week-by-week action plan, priority matrix for skill development focus, resource
+    allocation and time management recommendations, progress checkpoints and success metrics,
+    6) Next Steps & Action Items with immediate actions for 24-48 hours, weekly and monthly goals,
+    networking and community engagement recommendations. The final document must be professional,
+    actionable, and specifically tailored to bridge the candidate's current capabilities shown in {resume}
+    to meet the target role requirements outlined in {jd}.
+  agent: team_leader
+  markdown: true
+  output_file: final_gap_report.md

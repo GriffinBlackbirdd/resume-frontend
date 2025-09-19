@@ -1,0 +1,65 @@
+```yaml
+cv:
+  name: Garv Khurana
+  sections:
+    summary:
+      - Highly analytical and innovative AI Engineer with 9+ months of Python expertise, specializing in machine learning, NLP, and Reinforcement Learning for developing scalable AI models. Proven ability to design, implement, and deploy robust solutions for product recommendation systems, marketplaces, and translation systems. Proficient with ML libraries including TensorFlow, PyTorch, and Keras, alongside AI orchestration tools like LangChain, CrewAI, and Phidata for building advanced AI agents and agentic systems/workflows. Experienced in data preprocessing, ETL, and data manipulation, with a strong foundation in feature engineering and model evaluation. Skilled in cloud platforms such as AWS, Azure, and GCP, leveraging Docker for production deployment and MLOps principles to ensure reliability and scalability. Demonstrates strong problem-solving skills, attention to detail, and effective teamwork for innovative software engineering.
+    Experience:
+      - company: Peaks2Tails
+        position: Data Analyst Intern
+        start_date: 2024-09
+        end_date: 2024-11
+        highlights:
+          - Executed data preprocessing and ETL, cleaning raw data for machine learning model training, improving data reliability by 15%.
+          - Performed statistical analysis for analytical insights, informing business requirements and improving data-driven decision-making.
+          - Collaborated with teams to understand business requirements and communicate findings, fostering teamwork and project alignment.
+    Projects:
+      - name: Malicious URL Detection
+        summary: Developed a Malicious URL Detector ML pipeline incorporating MLOps tools.
+        highlights:
+          - Engineered a Python-based Malicious URL Detector ML pipeline, applying machine learning techniques similar to recommendation systems, achieving 92% accuracy.
+          - Developed a modular ML pipeline with Flask and Docker, implementing CI/CD on AWS with Jenkins for scalable production deployment.
+          - Automated ML lifecycle from data ingestion to deployment, tracking metrics with MLflow and monitoring with Grafana, enhancing operational efficiency and reliability.
+          - Utilized data preprocessing and feature engineering to optimize model performance, demonstrating attention to detail for improved analytical outcomes.
+      - name: Auto Apply AI agent Email sender
+        summary: Developed an Auto Apply AI email sender with LLMops tools.
+        highlights:
+          - Developed a Python AI Email Agent using LangChain and Groq (LLaMA 3), leveraging NLP to auto-generate application emails, reducing time by 30%.
+          - Implemented CI/CD with GitHub Actions, Docker, AWS ECR and EC2 for automated testing and production deployment of the AI agent, ensuring scalability and reliability.
+          - Designed modular architecture using Phidata for scalable agent deployment, incorporating secure credential handling and software engineering principles.
+      - name: Student performance prediction
+        summary: Crafted a smart ML pipeline to forecast student performance, harnessing MLOps tools.
+        highlights:
+          - Crafted a Python machine learning pipeline to forecast student performance, applying data preprocessing and ETL to MongoDB data for model training, improving accuracy by 15%.
+          - Engineered workflow for data refinement, feature extraction, and model evaluation, ensuring high performance and reliability of the predictive AI model.
+          - Integrated CI/CD with GitHub Actions, Docker, and AWS for smooth model iteration and release, demonstrating MLOps for efficient model deployment.
+    Education:
+      - institution: Bhagwan Parshuram Institute of Technology
+        area: Artificial Intelligence and Data Science
+        degree: BTech
+        start_date: 2022-09
+        end_date: 2026-06
+        highlights:
+          - 'CGPA: 8.0'
+    Skills & Abilities:
+      - label: Programming Languages
+        details: Python (expert), SQL
+      - label: Machine Learning and AI
+        details: TensorFlow, PyTorch, Keras, scikit-learn, NLP, Reinforcement Learning, Deep Learning, Supervised and Unsupervised ML, ANN, CNN, RNN, LSTM, Transfer Learning, Feature Engineering, Model Evaluation, AI Agents, Agentic Systems, Recommendation Systems, Translation Systems, Marketplaces
+      - label: AI Orchestration and LLMs
+        details: LangChain, CrewAI, Phidata, Langgraph, Llama, Groq
+      - label: Cloud Platforms and DevOps
+        details: AWS (EC2, S3, ECR, VPC, IAM), Azure, GCP, Docker, Kubernetes, Jenkins, GitHub Actions, MLOps, CI/CD, Production Deployment
+      - label: Data Management and Tools
+        details: ETL, Data Preprocessing, Data Manipulation, MySQL, MongoDB, FAISS, DVC, MLflow, Numpy, Pandas, Flask, Streamlit, Grafana, Jupyter Notebook, Apache Airflow, Git
+      - label: Soft Skills
+        details: Analytical, Problem-solving, Teamwork, Communication, Attention to Detail, Innovation
+    Achievements:
+      - name: AI/ML Head, Namespace/Bhagwan Parshuram Institute of Technology
+        start_date: 2024-08
+        end_date: 2025-03
+        highlights:
+          - Mentored juniors in machine learning concepts and best practices, enhancing AI model application.
+          - Guided juniors in improving coding structure and debugging, fostering strong software engineering principles.
+          - Facilitated teamwork and interdisciplinary collaboration by integrating machine learning into projects, promoting communication and problem-solving.
+```

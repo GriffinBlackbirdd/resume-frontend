@@ -142,8 +142,8 @@ const ATSChart = ({ data }: { data: ATSByJobRole[] }) => {
         {data.map((item, index) => (
           <div key={index} className="flex items-center space-x-4">
             <div className="w-44 text-right">
-              <span className="text-mine-shaft dark:text-platinum-gray text-sm font-sf font-medium truncate block" title={`${item.job_role}${item.target_company ? ` / ${item.target_company}` : ''}`}>
-                {item.job_role}{item.target_company ? ` / ${item.target_company}` : ''}
+              <span className="text-mine-shaft dark:text-platinum-gray text-sm font-sf font-medium truncate block" title={item.job_role + (item.target_company ? ' / ' + item.target_company : '')}>
+                {item.job_role}{item.target_company ? ' / ' + item.target_company : ''}
               </span>
             </div>
 
@@ -151,7 +151,7 @@ const ATSChart = ({ data }: { data: ATSByJobRole[] }) => {
               <div className="w-full bg-gray-100 dark:bg-gray-800 rounded-full h-7 relative overflow-hidden shadow-inner">
                 <div
                   className={cn("h-full rounded-full transition-all duration-700 ease-out", getScoreColor(item.ats_score))}
-                  style={{ width: `${Math.max(item.ats_score, 5)}%` }}
+                  style={{ width: Math.max(item.ats_score, 5) + '%' }}
                 />
                 <div className="absolute inset-0 flex items-center justify-between px-4">
                   <span className="text-mine-shaft dark:text-platinum-gray text-xs font-sf font-semibold">
@@ -165,7 +165,7 @@ const ATSChart = ({ data }: { data: ATSByJobRole[] }) => {
               <ActionButton
                 size="sm"
                 variant="primary"
-                onClick={() => router.push(`/editor?project_id=${item.project_id}`)}
+                onClick={() => router.push('/editor?project_id=' + item.project_id)}
                 icon={
                   <svg
                     fill="none"
@@ -229,7 +229,7 @@ const GapAnalysisColumn = ({
   isAnalyzing?: boolean;
 }) => {
   // Debug what props this component receives
-  console.log(`🔍 GapAnalysisColumn ${projectId}:`, {
+  console.log('GapAnalysisColumn ' + projectId + ':', {
     hasGapAnalysis,
     isAnalyzing,
     typeof_hasGapAnalysis: typeof hasGapAnalysis
@@ -516,7 +516,7 @@ const DataTable = ({
                   <ActionButton
                     size="sm"
                     variant="primary"
-                    onClick={() => router.push(`/editor?project_id=${project.id}`)}
+                    onClick={() => router.push('/editor?project_id=' + project.id)}
                     icon={
                       <svg
                         fill="none"
@@ -613,9 +613,10 @@ export default function DashboardPage() {
     }
 
     try {
-      const response = await fetch(`https://stable-dane-quickly.ngrok-free.app/download-job-description/${projectId}`, {
+      const downloadUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000') + '/download-job-description/' + projectId;
+      const response = await fetch(downloadUrl, {
         headers: {
-          'Authorization': `Bearer ${token}`,
+          'Authorization': 'Bearer ' + token,
           'ngrok-skip-browser-warning': 'true',
         },
       });
@@ -665,12 +666,13 @@ export default function DashboardPage() {
       }));
 
       console.log('🔍 Dashboard: Fetching gap analysis content:', fileType, 'for project:', projectId);
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
       const url = projectId
-        ? `https://stable-dane-quickly.ngrok-free.app/get-gap-analysis-content/${fileType}?project_id=${projectId}`
-        : `https://stable-dane-quickly.ngrok-free.app/get-gap-analysis-content/${fileType}`;
+        ? baseUrl + '/get-gap-analysis-content/' + fileType + '?project_id=' + projectId
+        : baseUrl + '/get-gap-analysis-content/' + fileType;
       const response = await fetch(url, {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          'Authorization': 'Bearer ' + localStorage.getItem('token'),
           'Content-Type': 'application/json',
           'ngrok-skip-browser-warning': 'true',
         },
@@ -694,7 +696,7 @@ export default function DashboardPage() {
           isOpen: true,
           isLoading: false,
           title: "Error",
-          content: `**Error loading content:** ${errorData.detail || response.statusText}`,
+          content: '**Error loading content:** ' + (errorData.detail || response.statusText),
         });
       }
     } catch (error) {
@@ -703,7 +705,7 @@ export default function DashboardPage() {
         isOpen: true,
         isLoading: false,
         title: "Error",
-        content: `**Network Error:** ${error instanceof Error ? error.message : 'Unknown error occurred'}`,
+        content: '**Network Error:** ' + (error instanceof Error ? error.message : 'Unknown error occurred'),
       });
     }
   };
@@ -733,10 +735,11 @@ export default function DashboardPage() {
       const formData = new FormData();
       formData.append('project_id', projectId);
 
-      const response = await fetch('https://stable-dane-quickly.ngrok-free.app/run-gap-analysis-cloud', {
+      const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000') + '/run-gap-analysis-cloud';
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${token}`,
+          'Authorization': 'Bearer ' + token,
           'ngrok-skip-browser-warning': 'true',
         },
         body: formData,
@@ -795,10 +798,11 @@ export default function DashboardPage() {
 
     try {
       console.log('🔍 Dashboard: Fetching dashboard data...');
-      const url = `https://stable-dane-quickly.ngrok-free.app/dashboard?page=${page}&projects_per_page=${projectsPerPage}`;
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+      const url = baseUrl + '/dashboard?page=' + page + '&projects_per_page=' + projectsPerPage;
       const response = await fetch(url, {
         headers: {
-          'Authorization': `Bearer ${token}`,
+          'Authorization': 'Bearer ' + token,
           'ngrok-skip-browser-warning': 'true',
         },
       });
@@ -821,7 +825,7 @@ export default function DashboardPage() {
         // Debug gap analysis status for projects
         if (data.recent_projects) {
           data.recent_projects.forEach((project: any) => {
-            console.log(`📋 Project ${project.id}:`, {
+            console.log('Project ' + project.id + ':', {
               id: project.id,
               job_role: project.job_role,
               has_gap_analysis: project.has_gap_analysis,
@@ -980,7 +984,7 @@ export default function DashboardPage() {
                   <ActionButton
                     size="sm"
                     variant="primary"
-                    onClick={() => router.push(`/editor?project_id=${stats.highest_project_id}`)}
+                    onClick={() => router.push('/editor?project_id=' + stats.highest_project_id)}
                     icon={
                       <svg
                         fill="none"

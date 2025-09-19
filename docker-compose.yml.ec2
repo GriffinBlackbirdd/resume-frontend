@@ -1,0 +1,57 @@
+ version: '3.8'
+
+  services:
+    backend:
+      image: eaglex2/resume-builder-backend:latest
+      container_name: resume_backend
+      ports:
+        - "8000:8000"
+      environment:
+        - PYTHONPATH=/app
+      volumes:
+        - uploads_data:/app/uploads
+      restart: unless-stopped
+      networks:
+        - resume_network
+
+    frontend:
+      image: eaglex2/resume-builder-frontend:latest
+      container_name: resume_frontend
+      ports:
+        - "3000:3000"
+      environment:
+        - NODE_ENV=production
+        - NEXT_PUBLIC_API_URL=http://backend:8000
+        - FASTAPI_URL=http://backend:8000
+        - NEXT_PUBLIC_SUPABASE_URL=https://buvnzjfspowdttkgohtb.supabase.co
+        - NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ1dm56amZzcG93ZHR0a2dvaHRiIiwicm9s
+  ZSI6ImFub24iLCJpYXQiOjE3NTcwODcxODMsImV4cCI6MjA3MjY2MzE4M30.QtTmwQ7-T16Vw9lqqxphi5yBOM0_oy8ep93KE5GzhMI
+        - SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ1dm56amZzcG93ZHR0a2dvaHRiIiwicm9sZSI6
+  ImFub24iLCJpYXQiOjE3NTcwODcxODMsImV4cCI6MjA3MjY2MzE4M30.QtTmwQ7-T16Vw9lqqxphi5yBOM0_oy8ep93KE5GzhMI
+      depends_on:
+        - backend
+      restart: unless-stopped
+      networks:
+        - resume_network
+
+    nginx:
+      image: eaglex2/resume-builder-nginx:latest
+      container_name: resume_nginx
+      ports:
+        - "80:80"
+        - "443:443"
+      volumes:
+        - ./ssl:/etc/ssl/certs:ro
+      depends_on:
+        - frontend
+        - backend
+      restart: unless-stopped
+      networks:
+        - resume_network
+
+  networks:
+    resume_network:
+      driver: bridge
+
+  volumes:
+    uploads_data:

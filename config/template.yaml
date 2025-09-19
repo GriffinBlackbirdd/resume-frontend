@@ -1,0 +1,70 @@
+
+
+cv:
+  name: John Doe
+  sections:
+    summary:
+      - professional summary of the user
+    Experience:
+      - company: This time it's an ExperienceEntry.
+        position: Your position
+        start_date: 2019-01
+        end_date: 2020-01
+        highlights:
+          - This is a highlight (a bullet point).
+          - This is another highlight.
+      - company: Another ExperienceEntry.
+        position: Your position
+        start_date: 2019-01
+        end_date: 2020-01
+        highlights:
+          - This is a highlight (a bullet point).
+          - This is another highlight.
+
+    Projects:
+      - name: Some Project
+        start_date: 2019-01-01
+        end_date: 2020-01-10
+        summary: Tech Stack used in the project
+        highlights:
+          - Developed a web application with **React** and **Django**.
+          - Implemented a **RESTful API**
+      - name: Some Project
+        start_date: 2019-01-01
+        end_date: 2020-01-10
+        summary: Tech Stack used in the project
+        highlights:
+          - Developed a web application with **React** and **Django**.
+          - Implemented a **RESTful API**
+
+    Education:
+      - institution: Boğaziçi University
+        area: Mechanical Engineering
+        degree: BS
+        location: Istanbul, Turkey
+        start_date: 2015-09
+        end_date: 2020-06
+        highlights:
+          - 'CGPA: 3.24/4.00'
+
+    Skills & Abilities:
+      - label: Programming
+        details: JavaScript, Python, C++
+      - label: Web Development
+        details: HTML, CSS, React
+      - label: Database Management
+        details: MySQL, MongoDB
+    Achievements:
+      - name: Data Dive
+        highlights:
+          - Finalist in the Data Dive Data Analytics and GenAI Hackathon conducted by IEEE BPIT, demonstrating strong problem-solving and innovation skills.
+      - name: Myntra Hackerramp 2024
+        highlights:
+          - Selected among the top teams from 30,000 participating teams in Myntra Hackerramp 2024, showcasing exceptional AI development and collaborative abilities.
+
+
+    Certifications:
+      - name: AWS Certified Solutions Architect
+        date: 2021-05
+      - name: Certified Kubernetes Administrator
+        date: 2020-11

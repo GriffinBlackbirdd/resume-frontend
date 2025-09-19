@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 export async function GET() {
   try {
     // Check if FastAPI backend is running
-    const response = await fetch('https://stable-dane-quickly.ngrok-free.app/health', {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/health`, {
       method: 'GET',
     });
 

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import MonacoEditor from "@monaco-editor/react";
 import { cn } from "@/lib/utils";
 import { useSearchParams } from "next/navigation";
@@ -127,6 +127,12 @@ design:
   const [skipInitialFormSync, setSkipInitialFormSync] = useState(false);
   const [justInitializedForm, setJustInitializedForm] = useState(false);
   const [isRemoveOperation, setIsRemoveOperation] = useState(false);
+
+  // Ref to prevent multiple concurrent renders
+  const isRenderingRef = React.useRef(false);
+
+  // Ref to track last render time for debouncing
+  const lastRenderTimeRef = React.useRef(0);
 
   // Multi-step form state
   const [currentStep, setCurrentStep] = useState(0);
@@ -308,7 +314,7 @@ design:
         try {
           console.log('🏢 Loading project YAML (dashboard flow)');
           console.log(`📁 Project ID: ${projectId}`);
-          const response = await fetch(`https://stable-dane-quickly.ngrok-free.app/project/${projectId}/yaml`, {
+          const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/project/${projectId}/yaml`, {
             headers: {
               'Authorization': `Bearer ${token}`,
               'ngrok-skip-browser-warning': 'true',
@@ -388,7 +394,7 @@ design:
             yaml_content: yamlContent || '# Generated from gap analysis session',
           };
 
-          const createResponse = await fetch('https://stable-dane-quickly.ngrok-free.app/create-project', {
+          const createResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/create-project`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -417,7 +423,7 @@ design:
         formData.append('project_id', currentProjectId);
       }
 
-      const response = await fetch('https://stable-dane-quickly.ngrok-free.app/run-gap-analysis', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/run-gap-analysis`, {
         method: 'POST',
         headers: {
           'ngrok-skip-browser-warning': 'true',
@@ -461,8 +467,8 @@ design:
 
       console.log('🔍 Fetching gap analysis content:', fileType);
       const url = projectId
-        ? `https://stable-dane-quickly.ngrok-free.app/get-gap-analysis-content/${fileType}?project_id=${projectId}`
-        : `https://stable-dane-quickly.ngrok-free.app/get-gap-analysis-content/${fileType}`;
+        ? `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/get-gap-analysis-content/${fileType}?project_id=${projectId}`
+        : `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/get-gap-analysis-content/${fileType}`;
       const response = await fetch(url, {
         headers: {
           'ngrok-skip-browser-warning': 'true',
@@ -643,7 +649,7 @@ design:
       console.log('🔍 Session ATS: Resume blob size:', resumeBlob.size);
       console.log('🔍 Session ATS: JD path:', jobDescriptionPath);
 
-      const response = await fetch('https://stable-dane-quickly.ngrok-free.app/get-ats-score-with-stored-jd', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/get-ats-score-with-stored-jd`, {
         method: 'POST',
         headers: {
           'ngrok-skip-browser-warning': 'true',
@@ -888,7 +894,7 @@ cv:
         const formData = new FormData();
         formData.append('yaml_content', yamlContent);
 
-        const response = await fetch(`https://stable-dane-quickly.ngrok-free.app/project/${projectId}/calculate-ats`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/project/${projectId}/calculate-ats`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -959,7 +965,7 @@ cv:
       formData.append('originalResumePath', originalResumePath);
       formData.append('jobDescriptionPath', jobDescriptionPath);
 
-      const atsResponse = await fetch('https://stable-dane-quickly.ngrok-free.app/get-original-ats-score', {
+      const atsResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/get-original-ats-score`, {
         method: 'POST',
         headers: {
           'ngrok-skip-browser-warning': 'true',
@@ -1003,7 +1009,20 @@ cv:
   };
 
   // Render function using FastAPI endpoint
-  const renderResume = async (themeOverride?: string) => {
+  const renderResume = useCallback(async (themeOverride?: string) => {
+    // Prevent multiple concurrent renders
+    if (isRenderingRef.current) {
+      console.log('⚠️ Render already in progress, skipping...');
+      return;
+    }
+
+    // Debounce - prevent rapid successive calls (minimum 2 seconds between renders)
+    const now = Date.now();
+    if (now - lastRenderTimeRef.current < 2000) {
+      console.log('⚠️ Render called too soon, debouncing...');
+      return;
+    }
+
     const themeToUse = themeOverride || selectedTheme;
     console.log('🔍 RENDER DEBUG:');
     console.log('   - themeOverride:', themeOverride);
@@ -1011,6 +1030,7 @@ cv:
     console.log('   - themeToUse (final):', themeToUse);
     console.log('   - typeof themeToUse:', typeof themeToUse);
 
+    isRenderingRef.current = true;
     setIsRendering(true);
     setError(null);
 
@@ -1032,7 +1052,7 @@ cv:
       console.log('📦 Request payload theme:', requestBody.theme);
       console.log('📦 Request payload YAML length:', requestBody.yamlContent.length);
 
-      const response = await fetch('https://stable-dane-quickly.ngrok-free.app/render-resume', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/render-resume`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -1080,8 +1100,10 @@ cv:
       setError('Failed to render resume. Make sure FastAPI server is running on port 8000.');
     } finally {
       setIsRendering(false);
+      isRenderingRef.current = false;
+      lastRenderTimeRef.current = Date.now();
     }
-  };
+  }, [selectedTheme, yamlContent, pdfUrl]);
 
   // Effect to handle initial loading and delayed PDF rendering
   useEffect(() => {
