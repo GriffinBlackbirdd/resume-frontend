@@ -1221,8 +1221,8 @@ async def gap_analysis(
         if not any(jobDescriptionFile.filename.endswith(ext) for ext in allowed_jd_extensions):
             raise HTTPException(status_code=400, detail="Job description must be PDF, DOCX, or TXT")
 
-        # Create temporary files in the ai-resume directory structure
-        ai_resume_dir = "/Users/arreyanhamid/Developer/ai-resume"
+        # Create temporary files in the container directory structure
+        ai_resume_dir = "/app"
         resumes_dir = os.path.join(ai_resume_dir, "resumes")
         jd_dir = os.path.join(ai_resume_dir, "JD")
 
@@ -1461,7 +1461,7 @@ async def revamp_existing(
                     await save_project_files(project_id, file_entries)
 
         # Create temporary files for processing (backward compatibility with existing revamp function)
-        ai_resume_dir = "/Users/arreyanhamid/Developer/ai-resume"
+        ai_resume_dir = "/app"
         resumes_dir = os.path.join(ai_resume_dir, "resumes")
         jd_dir = os.path.join(ai_resume_dir, "JD")
 
@@ -2534,7 +2534,7 @@ async def run_gap_analysis(
         print(f"✅ GAP ANALYSIS: Output: {stdout.decode()[:500]}...")
 
         # Check if output files were generated
-        base_path = "/Users/arreyanhamid/Developer/ai-resume"
+        base_path = "/app"
         expected_files = ["gap_analysis.md", "upskilling_plan.md", "project_recommendations.md"]
         generated_files = []
 
@@ -2797,13 +2797,13 @@ async def run_gap_analysis_cloud(
 
         # Import and use the existing reviewCall framework
         import sys
-        sys.path.append("/Users/arreyanhamid/Developer/ai-resume")
+        sys.path.append("/app")
 
         from reviewCall import run_with_custom_paths
 
         # Change to the correct working directory before running analysis
         original_cwd = os.getcwd()
-        target_dir = "/Users/arreyanhamid/Developer/ai-resume"
+        target_dir = "/app"
 
         print(f"🔍 CLOUD GAP ANALYSIS: Changing to directory: {target_dir}")
         os.chdir(target_dir)
@@ -2824,7 +2824,7 @@ async def run_gap_analysis_cloud(
 
             # The reviewCall framework should have generated the markdown files
             # Check if the files were created by the existing framework
-            gap_analysis_dir = "/Users/arreyanhamid/Developer/ai-resume"
+            gap_analysis_dir = "/app"
             expected_files = ["gap_analysis.md", "upskilling_plan.md", "project_recommendations.md"]
 
             # If files don't exist, create them with the final result
@@ -2859,7 +2859,7 @@ async def run_gap_analysis_cloud(
         # Upload markdown files to cloud storage in session-specific folder
         print(f"🔍 CLOUD GAP ANALYSIS: Uploading markdown files to cloud storage...")
         session_folder = f"session_{project_id}"
-        gap_analysis_dir = "/Users/arreyanhamid/Developer/ai-resume"
+        gap_analysis_dir = "/app"
         markdown_files = ["gap_analysis.md", "upskilling_plan.md", "project_recommendations.md"]
         uploaded_files = []
 
@@ -3037,6 +3037,108 @@ async def download_job_description(project_id: str, current_user: Dict[str, Any]
     except Exception as e:
         print(f"❌ DOWNLOAD JD: Error downloading job description: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Download error: {str(e)}")
+
+@app.delete("/delete-resume")
+async def delete_resume(
+    request: Dict[str, str],
+    current_user: Dict[str, Any] = Depends(get_current_user)
+):
+    """
+    Delete a resume project and all associated files from database and storage
+    """
+    try:
+        project_id = request.get("project_id")
+        if not project_id:
+            raise HTTPException(status_code=400, detail="Project ID is required")
+
+        user_id = current_user["id"]
+
+        # Verify project belongs to user
+        project_response = supabase_admin.table("resume_projects").select("user_id").eq("id", project_id).execute()
+        if not project_response.data or project_response.data[0]["user_id"] != user_id:
+            raise HTTPException(status_code=403, detail="Access denied to this project")
+
+        print(f"🔍 DELETE: Starting deletion of project {project_id}")
+
+        # Get all project files from database to delete from storage
+        files_response = supabase_admin.table("project_files").select("file_path").eq("project_id", project_id).execute()
+
+        # Delete all files from storage buckets
+        deleted_files = []
+        failed_deletions = []
+
+        if files_response.data:
+            for file_record in files_response.data:
+                file_path = file_record["file_path"]
+                try:
+                    # Determine bucket based on file path
+                    if "generated-content" in file_path:
+                        bucket = "generated-content"
+                    else:
+                        bucket = "user-documents"
+
+                    print(f"🔍 DELETE: Deleting file {file_path} from bucket {bucket}")
+
+                    # Delete file from storage
+                    delete_response = supabase_admin.storage.from_(bucket).remove([file_path])
+                    if delete_response:
+                        deleted_files.append(file_path)
+                        print(f"✅ DELETE: Successfully deleted {file_path}")
+                    else:
+                        failed_deletions.append(file_path)
+                        print(f"⚠️ DELETE: Failed to delete {file_path}")
+
+                except Exception as e:
+                    failed_deletions.append(file_path)
+                    print(f"❌ DELETE: Error deleting {file_path}: {str(e)}")
+
+        # Delete all gap analysis files from session folder
+        session_folder = f"session_{project_id}"
+        gap_analysis_files = [
+            f"{session_folder}/gap_analysis.md",
+            f"{session_folder}/upskilling_plan.md",
+            f"{session_folder}/project_recommendations.md"
+        ]
+
+        for gap_file in gap_analysis_files:
+            try:
+                print(f"🔍 DELETE: Attempting to delete gap analysis file {gap_file}")
+                delete_response = supabase_admin.storage.from_("user-documents").remove([gap_file])
+                if delete_response:
+                    deleted_files.append(gap_file)
+                    print(f"✅ DELETE: Successfully deleted {gap_file}")
+                else:
+                    print(f"⚠️ DELETE: Gap analysis file {gap_file} may not exist")
+            except Exception as e:
+                print(f"⚠️ DELETE: Error deleting gap analysis file {gap_file}: {str(e)}")
+
+        # Delete project files records from database
+        project_files_delete = supabase_admin.table("project_files").delete().eq("project_id", project_id).execute()
+        print(f"🔍 DELETE: Deleted {len(project_files_delete.data) if project_files_delete.data else 0} project file records")
+
+        # Delete project results from database
+        project_results_delete = supabase_admin.table("project_results").delete().eq("project_id", project_id).execute()
+        print(f"🔍 DELETE: Deleted {len(project_results_delete.data) if project_results_delete.data else 0} project result records")
+
+        # Finally delete the main project record
+        project_delete = supabase_admin.table("resume_projects").delete().eq("id", project_id).execute()
+        if not project_delete.data:
+            raise HTTPException(status_code=500, detail="Failed to delete project from database")
+
+        print(f"✅ DELETE: Successfully deleted project {project_id}")
+
+        return {
+            "message": "Resume project deleted successfully",
+            "project_id": project_id,
+            "deleted_files": deleted_files,
+            "failed_deletions": failed_deletions if failed_deletions else None
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"❌ DELETE: Error deleting resume project: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Delete error: {str(e)}")
 
 if __name__ == "__main__":
     import uvicorn

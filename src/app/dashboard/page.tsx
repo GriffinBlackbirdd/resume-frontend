@@ -9,6 +9,7 @@ import MarkdownRenderer from "@/components/MarkdownRenderer";
 import { ActionButton } from "@/components/ui/action-button";
 import { CompareDemo } from "@/components/ui/compare-demo";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { ConfirmationModal } from "@/components/ui/confirmation-modal";
 
 // Types for dashboard data
 interface DashboardStats {
@@ -425,7 +426,9 @@ const DataTable = ({
   onShowGapAnalysis,
   onRunGapAnalysis,
   onDownloadJobDescription,
-  analyzingProjects
+  onDeleteResume,
+  analyzingProjects,
+  deletingProjects
 }: {
   projects: ResumeProject[];
   loading: boolean;
@@ -435,7 +438,9 @@ const DataTable = ({
   onShowGapAnalysis: (fileType: string) => void;
   onRunGapAnalysis: (projectId: string) => void;
   onDownloadJobDescription: (projectId: string) => void;
+  onDeleteResume: (projectId: string) => void;
   analyzingProjects: Set<string>;
+  deletingProjects: Set<string>;
 }) => {
   const router = useRouter();
 
@@ -563,6 +568,33 @@ const DataTable = ({
                   >
                     Download JD
                   </ActionButton>
+
+                  <button
+                    onClick={() => onDeleteResume(project.id)}
+                    disabled={deletingProjects.has(project.id)}
+                    title="Delete Resume"
+                    className="p-2 text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {deletingProjects.has(project.id) ? (
+                      <div className="w-4 h-4 border-2 border-red-600 border-t-transparent rounded-full animate-spin"></div>
+                    ) : (
+                      <svg
+                        fill="none"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        width="16"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M3 6h18m-2 0v12a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="1.5"
+                        />
+                      </svg>
+                    )}
+                  </button>
                 </div>
               </div>
             </div>
@@ -591,6 +623,20 @@ export default function DashboardPage() {
 
   // Track projects being analyzed
   const [analyzingProjects, setAnalyzingProjects] = useState<Set<string>>(new Set());
+
+  // Track projects being deleted
+  const [deletingProjects, setDeletingProjects] = useState<Set<string>>(new Set());
+
+  // Delete confirmation modal state
+  const [deleteConfirmation, setDeleteConfirmation] = useState<{
+    isOpen: boolean;
+    projectId: string | null;
+    projectName: string;
+  }>({
+    isOpen: false,
+    projectId: null,
+    projectName: '',
+  });
 
   // Gap Analysis modal state
   const [markdownModal, setMarkdownModal] = useState<{
@@ -717,6 +763,87 @@ export default function DashboardPage() {
       content: "",
       isLoading: false,
     });
+  };
+
+  // Show delete confirmation modal
+  const showDeleteConfirmation = (projectId: string) => {
+    const project = dashboardData?.recent_projects.find(p => p.id === projectId);
+    const projectName = project ? `${project.job_role}${project.target_company ? ` at ${project.target_company}` : ''}` : 'this resume';
+
+    setDeleteConfirmation({
+      isOpen: true,
+      projectId,
+      projectName,
+    });
+  };
+
+  // Close delete confirmation modal
+  const closeDeleteConfirmation = () => {
+    setDeleteConfirmation({
+      isOpen: false,
+      projectId: null,
+      projectName: '',
+    });
+  };
+
+  // Delete resume function
+  const deleteResume = async () => {
+    const projectId = deleteConfirmation.projectId;
+
+    if (!token || !projectId) {
+      console.error('No authentication token or project ID found');
+      return;
+    }
+
+    try {
+      // Add project to deleting set
+      setDeletingProjects(prev => new Set(prev).add(projectId));
+
+      console.log('🔍 Dashboard: Starting deletion of project:', projectId);
+
+      const deleteUrl = '/api/delete-resume';
+      const response = await fetch(deleteUrl, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': 'Bearer ' + token,
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': 'true',
+        },
+        body: JSON.stringify({ project_id: projectId }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log('✅ Dashboard: Resume deleted successfully:', data);
+
+        // Refresh dashboard data to remove the deleted project
+        await fetchDashboardData();
+
+        // Show success message (optional)
+        console.log('✅ Dashboard: Project deleted and dashboard refreshed');
+
+        // Close the confirmation modal
+        closeDeleteConfirmation();
+
+      } else {
+        const errorData = await response.json().catch(() => ({ error: response.statusText }));
+        console.error('❌ Dashboard: Failed to delete resume:', errorData.error);
+
+        // Show error message to user (could be enhanced with a toast notification)
+        alert('Failed to delete resume: ' + (errorData.error || 'Unknown error'));
+      }
+
+    } catch (error) {
+      console.error('Error deleting resume:', error);
+      alert('Error deleting resume: ' + (error instanceof Error ? error.message : 'Unknown error'));
+    } finally {
+      // Remove project from deleting set
+      setDeletingProjects(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(projectId);
+        return newSet;
+      });
+    }
   };
 
   // Run gap analysis for cloud projects
@@ -1030,7 +1157,9 @@ export default function DashboardPage() {
             onShowGapAnalysis={showGapAnalysisContent}
             onRunGapAnalysis={runGapAnalysis}
             onDownloadJobDescription={downloadJobDescription}
+            onDeleteResume={showDeleteConfirmation}
             analyzingProjects={analyzingProjects}
+            deletingProjects={deletingProjects}
           />
 
           {/* ATS Optimization Comparison - Hidden for now */}
@@ -1101,6 +1230,19 @@ export default function DashboardPage() {
         title={markdownModal.title}
         content={markdownModal.content}
         isLoading={markdownModal.isLoading}
+      />
+
+      {/* Delete Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={deleteConfirmation.isOpen}
+        onClose={closeDeleteConfirmation}
+        onConfirm={deleteResume}
+        title="Delete Resume"
+        message={`Are you sure you want to delete "${deleteConfirmation.projectName}"? This action cannot be undone and will remove all associated files including the resume, job description, and any gap analysis reports.`}
+        confirmText="Delete Resume"
+        cancelText="Cancel"
+        isLoading={deleteConfirmation.projectId ? deletingProjects.has(deleteConfirmation.projectId) : false}
+        variant="danger"
       />
     </div>
   );

@@ -2,7 +2,7 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 export interface ActionButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "outline" | "ghost";
+  variant?: "primary" | "secondary" | "outline" | "ghost" | "destructive";
   size?: "sm" | "md" | "lg";
   icon?: React.ReactNode;
 }
@@ -16,6 +16,7 @@ const ActionButton = React.forwardRef<HTMLButtonElement, ActionButtonProps>(
       secondary: "bg-mine-shaft dark:bg-onyx-gray text-vista-white dark:text-platinum-gray hover:bg-mine-shaft/90 dark:hover:bg-onyx-gray/90 focus:ring-mine-shaft dark:focus:ring-gray-600 shadow-sm hover:shadow-md rounded-xl",
       outline: "border-2 border-sunglow text-sunglow bg-vista-white dark:bg-onyx-gray hover:bg-sunglow/10 dark:hover:bg-sunglow/20 focus:ring-sunglow rounded-xl",
       ghost: "text-mine-shaft dark:text-platinum-gray hover:bg-gray-100 dark:hover:bg-gray-800 focus:ring-gray-300 dark:focus:ring-gray-600 rounded-lg",
+      destructive: "bg-red-600 text-white hover:bg-red-700 focus:ring-red-500 shadow-sm hover:shadow-md rounded-xl",
     };
 
     const sizes = {

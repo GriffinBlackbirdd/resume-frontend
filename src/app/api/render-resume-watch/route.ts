@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
     }
     
     // Copy entire designs folder to temp directory
-    const sourceDesignsDir = '/Users/arreyanhamid/Developer/ai-resume/designs';
+    const sourceDesignsDir = '/app/config/designs';
     const targetDesignsDir = join(tempDir, 'designs');
     
     console.log('ATTEMPTING TO COPY DESIGNS FOLDER');

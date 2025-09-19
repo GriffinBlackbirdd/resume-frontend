@@ -30,13 +30,14 @@ COPY reviewCall.py ./
 COPY config/ ./config/
 
 # Create necessary directories
-RUN mkdir -p uploads/JD uploads/resumes
+RUN mkdir -p uploads/JD uploads/resumes outputs gap_analysis temp
 
 # Create a non-root user
 RUN adduser --disabled-password --gecos '' --uid 1001 fastapi
 
-# Change ownership of the app directory
+# Change ownership of the app directory and set permissions
 RUN chown -R fastapi:fastapi /app
+RUN chmod 755 /app/outputs /app/gap_analysis /app/temp
 USER fastapi
 
 # Expose port
