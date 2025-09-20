@@ -8,6 +8,8 @@ import shutil
 import time
 import subprocess
 import asyncio
+import threading
+import queue
 from typing import Optional, Dict, Any
 from typing import Iterator
 from agno.agent import Agent, RunOutput
@@ -30,6 +32,49 @@ from dotenv import load_dotenv
 
 # Load environment variables
 load_dotenv()
+
+# Job System Models
+from enum import Enum
+import uuid
+
+class JobType(str, Enum):
+    GAP_ANALYSIS = "gap_analysis"
+
+class JobStatus(str, Enum):
+    PENDING = "pending"
+    RUNNING = "running"
+    COMPLETED = "completed"
+    FAILED = "failed"
+
+class Job(BaseModel):
+    id: str
+    type: JobType
+    status: JobStatus
+    project_id: str
+    user_id: str
+    progress: int = 0
+    message: str = ""
+    result: Optional[Dict[str, Any]] = None
+    error: Optional[str] = None
+    created_at: datetime
+    updated_at: Optional[datetime] = None
+
+class JobResponse(BaseModel):
+    id: str
+    type: JobType
+    status: JobStatus
+    progress: int
+    message: str
+    result: Optional[Dict[str, Any]] = None
+    error: Optional[str] = None
+    created_at: datetime
+    updated_at: Optional[datetime] = None
+
+# In-memory job storage
+jobs: Dict[str, Job] = {}
+
+# Job queue for background processing
+job_queue = queue.Queue()
 
 app = FastAPI(title="Resume Builder API with Auth", version="2.0.0")
 
@@ -990,6 +1035,243 @@ def review(resumePath, jobDescriptionPath):
     print(response.content)
     with open("review.md", "w", encoding="utf-8") as f:
       f.write(response.content)
+
+# =====================
+# JOB SYSTEM FUNCTIONS
+# =====================
+
+def create_job(job_type: JobType, project_id: str, user_id: str) -> str:
+    """Create a new job and return job ID"""
+    job_id = str(uuid.uuid4())
+    job = Job(
+        id=job_id,
+        type=job_type,
+        status=JobStatus.PENDING,
+        project_id=project_id,
+        user_id=user_id,
+        progress=0,
+        message="Job queued",
+        created_at=datetime.now(),
+        updated_at=datetime.now()
+    )
+    jobs[job_id] = job
+    job_queue.put(job_id)
+    print(f"🔍 JOB: Created job {job_id} for project {project_id}")
+    return job_id
+
+def update_job_status(job_id: str, status: JobStatus, progress: int = None, message: str = None, result: Dict[str, Any] = None, error: str = None):
+    """Update job status and progress"""
+    if job_id not in jobs:
+        return False
+
+    job = jobs[job_id]
+    job.status = status
+    job.updated_at = datetime.now()
+
+    if progress is not None:
+        job.progress = progress
+    if message is not None:
+        job.message = message
+    if result is not None:
+        job.result = result
+    if error is not None:
+        job.error = error
+
+    print(f"🔍 JOB: Updated job {job_id} - {status} ({progress}%) - {message}")
+    return True
+
+def get_job(job_id: str) -> Optional[Job]:
+    """Get job by ID"""
+    return jobs.get(job_id)
+
+async def process_gap_analysis_job(job_id: str):
+    """Process gap analysis job in background"""
+    job = get_job(job_id)
+    if not job:
+        return
+
+    try:
+        update_job_status(job_id, JobStatus.RUNNING, 0, "Starting gap analysis...")
+
+        project_id = job.project_id
+        user_id = job.user_id
+
+        # Get project details and stored files
+        update_job_status(job_id, JobStatus.RUNNING, 10, "Fetching project data...")
+        project_response = supabase_admin.table("resume_projects").select("*").eq("id", project_id).eq("user_id", user_id).execute()
+
+        if not project_response.data:
+            update_job_status(job_id, JobStatus.FAILED, 0, "Project not found", error="Project not found")
+            return
+
+        session_folder = f"session_{project_id}"
+        storage_resume_path = f"{session_folder}/original_resume.pdf"
+
+        # Try to find JD file extension
+        update_job_status(job_id, JobStatus.RUNNING, 20, "Locating job description file...")
+        jd_extension = None
+        storage_jd_path = None
+        jd_response = None
+
+        for ext in ['txt', 'pdf']:
+            test_jd_path = f"{session_folder}/job_description.{ext}"
+            try:
+                test_response = supabase_admin.storage.from_("user-documents").download(test_jd_path)
+                if test_response:
+                    storage_jd_path = test_jd_path
+                    jd_extension = ext
+                    jd_response = test_response
+                    break
+            except Exception:
+                continue
+
+        if not storage_jd_path:
+            update_job_status(job_id, JobStatus.FAILED, 0, "Job description file not found", error="Job description file not found")
+            return
+
+        # Download files from storage
+        update_job_status(job_id, JobStatus.RUNNING, 30, "Downloading project files...")
+        import tempfile
+        temp_dir = tempfile.mkdtemp()
+        local_resume_path = os.path.join(temp_dir, "original_resume.pdf")
+        local_jd_path = os.path.join(temp_dir, f"job_description.{jd_extension}")
+
+        try:
+            # Download resume
+            update_job_status(job_id, JobStatus.RUNNING, 40, "Downloading resume...")
+            resume_response = supabase_admin.storage.from_("user-documents").download(storage_resume_path)
+            if resume_response:
+                with open(local_resume_path, "wb") as f:
+                    f.write(resume_response)
+            else:
+                update_job_status(job_id, JobStatus.FAILED, 0, "Resume file not found in storage", error="Resume file not found")
+                return
+
+            # Save JD
+            update_job_status(job_id, JobStatus.RUNNING, 50, "Preparing job description...")
+            with open(local_jd_path, "wb") as f:
+                f.write(jd_response)
+
+            # Run gap analysis
+            update_job_status(job_id, JobStatus.RUNNING, 60, "Running gap analysis...")
+            import sys
+            sys.path.append("/app")
+            from reviewCall import run_with_custom_paths
+
+            # Change to correct working directory
+            original_cwd = os.getcwd()
+            target_dir = "/app"
+            os.chdir(target_dir)
+
+            try:
+                update_job_status(job_id, JobStatus.RUNNING, 80, "Analyzing resume against job requirements...")
+                final_result = run_with_custom_paths(local_resume_path, local_jd_path)
+            finally:
+                os.chdir(original_cwd)
+
+            if final_result:
+                update_job_status(job_id, JobStatus.RUNNING, 90, "Saving analysis results...")
+
+                # Save generated markdown files
+                gap_analysis_dir = "/app"
+                expected_files = ["gap_analysis.md", "upskilling_plan.md", "project_recommendations.md"]
+
+                # Create files if they don't exist
+                if not os.path.exists(f"{gap_analysis_dir}/gap_analysis.md"):
+                    with open(f"{gap_analysis_dir}/gap_analysis.md", "w", encoding="utf-8") as f:
+                        f.write(str(final_result))
+
+                if not os.path.exists(f"{gap_analysis_dir}/upskilling_plan.md"):
+                    with open(f"{gap_analysis_dir}/upskilling_plan.md", "w", encoding="utf-8") as f:
+                        f.write("# Upskilling Plan\n\nGenerated by reviewCall framework. Check main gap analysis for details.")
+
+                if not os.path.exists(f"{gap_analysis_dir}/project_recommendations.md"):
+                    with open(f"{gap_analysis_dir}/project_recommendations.md", "w", encoding="utf-8") as f:
+                        f.write("# Project Recommendations\n\nGenerated by reviewCall framework. Check main gap analysis for details.")
+
+                # Upload files to cloud storage
+                uploaded_files = []
+                for filename in expected_files:
+                    local_file_path = f"{gap_analysis_dir}/{filename}"
+                    if os.path.exists(local_file_path):
+                        try:
+                            with open(local_file_path, "rb") as f:
+                                file_content = f.read()
+
+                            storage_path = f"{session_folder}/{filename}"
+                            upload_response = supabase_admin.storage.from_("user-documents").upload(
+                                path=storage_path,
+                                file=file_content,
+                                file_options={"content-type": "text/plain", "upsert": "true"}
+                            )
+
+                            if upload_response:
+                                uploaded_files.append(filename)
+                        except Exception as upload_error:
+                            print(f"❌ Error uploading {filename}: {upload_error}")
+
+                # Update project status
+                await update_project_gap_analysis(project_id, True)
+
+                # Job completed successfully
+                result = {
+                    "success": True,
+                    "message": "Gap analysis completed successfully",
+                    "project_id": project_id,
+                    "files_generated": uploaded_files,
+                    "storage_location": session_folder
+                }
+
+                update_job_status(job_id, JobStatus.COMPLETED, 100, "Gap analysis completed successfully", result)
+
+            else:
+                update_job_status(job_id, JobStatus.FAILED, 0, "Gap analysis failed to generate results", error="Analysis returned no results")
+
+        finally:
+            # Clean up temp directory
+            try:
+                if temp_dir and os.path.exists(temp_dir):
+                    import shutil
+                    shutil.rmtree(temp_dir)
+            except Exception:
+                pass
+
+    except Exception as e:
+        print(f"❌ JOB ERROR: {str(e)}")
+        update_job_status(job_id, JobStatus.FAILED, 0, f"Gap analysis failed: {str(e)}", error=str(e))
+
+def job_worker():
+    """Background worker to process jobs"""
+    print("🔍 JOB WORKER: Started background job worker")
+    while True:
+        try:
+            # Get job from queue (blocking)
+            job_id = job_queue.get(timeout=1)
+            job = get_job(job_id)
+
+            if job and job.status == JobStatus.PENDING:
+                print(f"🔍 JOB WORKER: Processing job {job_id}")
+
+                if job.type == JobType.GAP_ANALYSIS:
+                    # Run gap analysis in asyncio context
+                    import asyncio
+                    loop = asyncio.new_event_loop()
+                    asyncio.set_event_loop(loop)
+                    try:
+                        loop.run_until_complete(process_gap_analysis_job(job_id))
+                    finally:
+                        loop.close()
+
+                job_queue.task_done()
+
+        except queue.Empty:
+            continue
+        except Exception as e:
+            print(f"❌ JOB WORKER ERROR: {str(e)}")
+
+# Start background worker thread
+worker_thread = threading.Thread(target=job_worker, daemon=True)
+worker_thread.start()
 
 # =====================
 # AUTHENTICATION ENDPOINTS
@@ -2713,207 +2995,82 @@ async def get_gap_analysis_content(
         print(f"❌ GET CONTENT: Error getting {file_type} content: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Content retrieval error: {str(e)}")
 
-@app.post("/run-gap-analysis-cloud")
+@app.post("/run-gap-analysis-cloud", response_model=JobResponse)
 async def run_gap_analysis_cloud(
     project_id: str = Form(...),
     current_user: Dict[str, Any] = Depends(get_current_user)
 ):
     """
-    Execute gap analysis for a cloud project by fetching stored resume and JD
+    Start asynchronous gap analysis for a cloud project
     """
     try:
         user_id = current_user["id"]
-        print(f"🔍 CLOUD GAP ANALYSIS: Starting analysis for project {project_id}")
+        print(f"🔍 ASYNC GAP ANALYSIS: Starting job for project {project_id}")
 
-        # Get project details and stored files
+        # Verify project exists and belongs to user
         project_response = supabase_admin.table("resume_projects").select("*").eq("id", project_id).eq("user_id", user_id).execute()
-
         if not project_response.data:
             raise HTTPException(status_code=404, detail="Project not found")
 
-        project = project_response.data[0]
-        print(f"🔍 CLOUD GAP ANALYSIS: Project data: {project}")
+        # Create background job
+        job_id = create_job(JobType.GAP_ANALYSIS, project_id, user_id)
 
-        # Files are stored in Supabase storage bucket with pattern: session_{project_id}/original_resume.pdf and session_{project_id}/job_description.{txt|pdf}
-        session_folder = f"session_{project_id}"
-        storage_resume_path = f"{session_folder}/original_resume.pdf"
-
-        # Try to determine JD file extension by attempting to download each type
-        jd_extension = None
-        storage_jd_path = None
-        jd_response = None
-
-        # Try .txt first (for pasted text), then .pdf (for uploaded files)
-        for ext in ['txt', 'pdf']:
-            test_jd_path = f"{session_folder}/job_description.{ext}"
-            try:
-                print(f"🔍 CLOUD GAP ANALYSIS: Trying to download JD as .{ext} file...")
-                test_response = supabase_admin.storage.from_("user-documents").download(test_jd_path)
-                if test_response:
-                    storage_jd_path = test_jd_path
-                    jd_extension = ext
-                    jd_response = test_response
-                    print(f"✅ CLOUD GAP ANALYSIS: Found JD file with extension: .{ext}")
-                    break
-            except Exception as e:
-                print(f"🔍 CLOUD GAP ANALYSIS: JD file not found as .{ext}: {e}")
-                continue
-
-        if not storage_jd_path:
-            raise HTTPException(status_code=404, detail=f"Job description file not found in storage (tried both .txt and .pdf)")
-
-        print(f"🔍 CLOUD GAP ANALYSIS: Storage resume path: {storage_resume_path}")
-        print(f"🔍 CLOUD GAP ANALYSIS: Storage JD path: {storage_jd_path}")
-
-        # Download files from Supabase storage to local temp paths
-        import tempfile
-        temp_dir = tempfile.mkdtemp()
-        local_resume_path = os.path.join(temp_dir, "original_resume.pdf")
-        local_jd_path = os.path.join(temp_dir, f"job_description.{jd_extension}")
-
-        try:
-            # Download resume from storage
-            print("🔍 CLOUD GAP ANALYSIS: Downloading resume from storage...")
-            resume_response = supabase_admin.storage.from_("user-documents").download(storage_resume_path)
-            if resume_response:
-                with open(local_resume_path, "wb") as f:
-                    f.write(resume_response)
-                print(f"✅ CLOUD GAP ANALYSIS: Resume downloaded to {local_resume_path}")
-            else:
-                raise HTTPException(status_code=404, detail=f"Resume file not found in storage: {storage_resume_path}")
-
-            # Save the already-downloaded JD to local file
-            print(f"🔍 CLOUD GAP ANALYSIS: Saving JD to local file: {local_jd_path}")
-            with open(local_jd_path, "wb") as f:
-                f.write(jd_response)
-            print(f"✅ CLOUD GAP ANALYSIS: JD saved to {local_jd_path}")
-
-        except Exception as download_error:
-            print(f"❌ CLOUD GAP ANALYSIS: Error downloading files: {download_error}")
-            raise HTTPException(status_code=404, detail=f"Could not download project files from storage: {str(download_error)}")
-
-        # Use existing gap analysis framework
-        print(f"🔍 CLOUD GAP ANALYSIS: Executing analysis using reviewCall.py...")
-
-        # Import and use the existing reviewCall framework
-        import sys
-        sys.path.append("/app")
-
-        from reviewCall import run_with_custom_paths
-
-        # Change to the correct working directory before running analysis
-        original_cwd = os.getcwd()
-        target_dir = "/app"
-
-        print(f"🔍 CLOUD GAP ANALYSIS: Changing to directory: {target_dir}")
-        os.chdir(target_dir)
-
-        try:
-            # Run the gap analysis using your existing framework
-            print(f"🔍 CLOUD GAP ANALYSIS: Running reviewCall with paths:")
-            print(f"  Resume: {local_resume_path}")
-            print(f"  Job Description: {local_jd_path}")
-
-            final_result = run_with_custom_paths(local_resume_path, local_jd_path)
-        finally:
-            # Always restore the original working directory
-            os.chdir(original_cwd)
-
-        if final_result:
-            print("✅ CLOUD GAP ANALYSIS: Analysis completed successfully using reviewCall framework")
-
-            # The reviewCall framework should have generated the markdown files
-            # Check if the files were created by the existing framework
-            gap_analysis_dir = "/app"
-            expected_files = ["gap_analysis.md", "upskilling_plan.md", "project_recommendations.md"]
-
-            # If files don't exist, create them with the final result
-            if not os.path.exists(f"{gap_analysis_dir}/gap_analysis.md"):
-                print("🔍 CLOUD GAP ANALYSIS: Creating gap_analysis.md from reviewCall result")
-                with open(f"{gap_analysis_dir}/gap_analysis.md", "w", encoding="utf-8") as f:
-                    f.write(str(final_result))
-
-            # Ensure other files exist (they should be created by your review framework)
-            if not os.path.exists(f"{gap_analysis_dir}/upskilling_plan.md"):
-                print("🔍 CLOUD GAP ANALYSIS: upskilling_plan.md not found, creating placeholder")
-                with open(f"{gap_analysis_dir}/upskilling_plan.md", "w", encoding="utf-8") as f:
-                    f.write("# Upskilling Plan\n\nGenerated by reviewCall framework. Check main gap analysis for details.")
-
-            if not os.path.exists(f"{gap_analysis_dir}/project_recommendations.md"):
-                print("🔍 CLOUD GAP ANALYSIS: project_recommendations.md not found, creating placeholder")
-                with open(f"{gap_analysis_dir}/project_recommendations.md", "w", encoding="utf-8") as f:
-                    f.write("# Project Recommendations\n\nGenerated by reviewCall framework. Check main gap analysis for details.")
-        else:
-            print("❌ CLOUD GAP ANALYSIS: reviewCall framework returned no results")
-            raise Exception("Gap analysis failed - reviewCall returned no results")
-
-        # Update project in database to mark it has gap analysis
-        print(f"🔍 CLOUD GAP ANALYSIS: Updating project {project_id} gap analysis status...")
-        gap_analysis_updated = await update_project_gap_analysis(project_id, True)
-
-        if gap_analysis_updated:
-            print("✅ CLOUD GAP ANALYSIS: Project gap analysis status updated successfully")
-        else:
-            print("⚠️ CLOUD GAP ANALYSIS: Failed to update project gap analysis status")
-
-        # Upload markdown files to cloud storage in session-specific folder
-        print(f"🔍 CLOUD GAP ANALYSIS: Uploading markdown files to cloud storage...")
-        session_folder = f"session_{project_id}"
-        gap_analysis_dir = "/app"
-        markdown_files = ["gap_analysis.md", "upskilling_plan.md", "project_recommendations.md"]
-        uploaded_files = []
-
-        for filename in markdown_files:
-            local_file_path = f"{gap_analysis_dir}/{filename}"
-            if os.path.exists(local_file_path):
-                try:
-                    # Read the markdown file
-                    with open(local_file_path, "rb") as f:
-                        file_content = f.read()
-
-                    # Upload to cloud storage in session folder
-                    storage_path = f"{session_folder}/{filename}"
-                    upload_response = supabase_admin.storage.from_("user-documents").upload(
-                        path=storage_path,
-                        file=file_content,
-                        file_options={"content-type": "text/plain", "upsert": "true"}
-                    )
-
-                    if upload_response:
-                        print(f"✅ CLOUD GAP ANALYSIS: Uploaded {filename} to {storage_path}")
-                        uploaded_files.append(filename)
-                    else:
-                        print(f"⚠️ CLOUD GAP ANALYSIS: Failed to upload {filename}")
-
-                except Exception as upload_error:
-                    print(f"❌ CLOUD GAP ANALYSIS: Error uploading {filename}: {upload_error}")
-            else:
-                print(f"⚠️ CLOUD GAP ANALYSIS: File not found: {local_file_path}")
-
-        print("✅ CLOUD GAP ANALYSIS: Analysis completed and saved")
-
-        return {
-            "success": True,
-            "message": "Gap analysis completed successfully",
-            "project_id": project_id,
-            "files_generated": uploaded_files,
-            "storage_location": session_folder
-        }
+        # Return job information immediately
+        job = get_job(job_id)
+        return JobResponse(
+            id=job_id,
+            type=job.type,
+            status=job.status,
+            progress=job.progress,
+            message=job.message,
+            result=job.result,
+            error=job.error,
+            created_at=job.created_at,
+            updated_at=job.updated_at
+        )
 
     except HTTPException:
         raise
     except Exception as e:
-        print(f"❌ CLOUD GAP ANALYSIS: Exception: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Cloud gap analysis error: {str(e)}")
-    finally:
-        # Clean up temporary directory
-        try:
-            if 'temp_dir' in locals():
-                import shutil
-                shutil.rmtree(temp_dir)
-                print(f"🧹 CLOUD GAP ANALYSIS: Cleaned up temp directory: {temp_dir}")
-        except Exception as cleanup_error:
-            print(f"⚠️ CLOUD GAP ANALYSIS: Error cleaning up temp files: {cleanup_error}")
+        print(f"❌ ASYNC GAP ANALYSIS: Exception: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to start gap analysis: {str(e)}")
+
+@app.get("/job-status/{job_id}", response_model=JobResponse)
+async def get_job_status(
+    job_id: str,
+    current_user: Dict[str, Any] = Depends(get_current_user)
+):
+    """
+    Get the status of a background job
+    """
+    try:
+        user_id = current_user["id"]
+        job = get_job(job_id)
+
+        if not job:
+            raise HTTPException(status_code=404, detail="Job not found")
+
+        # Verify job belongs to user
+        if job.user_id != user_id:
+            raise HTTPException(status_code=403, detail="Access denied to this job")
+
+        return JobResponse(
+            id=job_id,
+            type=job.type,
+            status=job.status,
+            progress=job.progress,
+            message=job.message,
+            result=job.result,
+            error=job.error,
+            created_at=job.created_at,
+            updated_at=job.updated_at
+        )
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"❌ JOB STATUS: Exception: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to get job status: {str(e)}")
 
 @app.get("/download-gap-analysis/{file_type}")
 async def download_gap_analysis_file(file_type: str, project_id: Optional[str] = None):

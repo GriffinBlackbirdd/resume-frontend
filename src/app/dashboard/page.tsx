@@ -10,6 +10,8 @@ import { ActionButton } from "@/components/ui/action-button";
 import { CompareDemo } from "@/components/ui/compare-demo";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { ConfirmationModal } from "@/components/ui/confirmation-modal";
+import { useJobStatus } from "@/hooks/useJobStatus";
+import { JobMonitor } from "@/components/JobMonitor";
 
 // Types for dashboard data
 interface DashboardStats {
@@ -221,13 +223,17 @@ const GapAnalysisColumn = ({
   onRunGapAnalysis,
   projectId,
   hasGapAnalysis,
-  isAnalyzing
+  isAnalyzing,
+  jobProgress,
+  jobMessage
 }: {
   onShowContent: (fileType: string, projectId?: string) => void;
   onRunGapAnalysis: (projectId: string) => void;
   projectId: string;
   hasGapAnalysis?: boolean;
   isAnalyzing?: boolean;
+  jobProgress?: number;
+  jobMessage?: string;
 }) => {
   // Debug what props this component receives
   console.log('GapAnalysisColumn ' + projectId + ':', {
@@ -237,9 +243,26 @@ const GapAnalysisColumn = ({
   });
   if (isAnalyzing) {
     return (
-      <div className="flex items-center space-x-2">
-        <div className="w-4 h-4 border-2 border-sunglow border-t-transparent rounded-full animate-spin"></div>
-        <span className="text-sunglow text-sm">Analyzing...</span>
+      <div className="flex flex-col space-y-1">
+        <div className="flex items-center space-x-2">
+          <div className="w-4 h-4 border-2 border-sunglow border-t-transparent rounded-full animate-spin"></div>
+          <span className="text-sunglow text-sm font-medium">
+            {jobProgress !== undefined ? `${jobProgress}%` : 'Analyzing...'}
+          </span>
+        </div>
+        {jobMessage && (
+          <div className="text-xs text-mine-shaft/60 dark:text-platinum-gray/60 max-w-40 truncate">
+            {jobMessage}
+          </div>
+        )}
+        {jobProgress !== undefined && (
+          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1">
+            <div
+              className="bg-sunglow h-1 rounded-full transition-all duration-300 ease-out"
+              style={{ width: `${Math.max(0, Math.min(100, jobProgress))}%` }}
+            ></div>
+          </div>
+        )}
       </div>
     );
   }
@@ -428,7 +451,8 @@ const DataTable = ({
   onDownloadJobDescription,
   onDeleteResume,
   analyzingProjects,
-  deletingProjects
+  deletingProjects,
+  jobProgress
 }: {
   projects: ResumeProject[];
   loading: boolean;
@@ -441,6 +465,7 @@ const DataTable = ({
   onDeleteResume: (projectId: string) => void;
   analyzingProjects: Set<string>;
   deletingProjects: Set<string>;
+  jobProgress: Map<string, { progress: number; message: string }>;
 }) => {
   const router = useRouter();
 
@@ -515,6 +540,8 @@ const DataTable = ({
                     projectId={project.id}
                     hasGapAnalysis={project.has_gap_analysis}
                     isAnalyzing={analyzingProjects.has(project.id)}
+                    jobProgress={jobProgress.get(project.id)?.progress}
+                    jobMessage={jobProgress.get(project.id)?.message}
                   />
                 </div>
                 <div className="flex space-x-2 items-center">
@@ -637,6 +664,10 @@ export default function DashboardPage() {
     projectId: null,
     projectName: '',
   });
+
+  // Job tracking state for asynchronous gap analysis
+  const [activeJobs, setActiveJobs] = useState<Map<string, string>>(new Map()); // projectId -> jobId mapping
+  const [jobProgress, setJobProgress] = useState<Map<string, { progress: number; message: string }>>(new Map()); // projectId -> progress info
 
   // Gap Analysis modal state
   const [markdownModal, setMarkdownModal] = useState<{
@@ -846,7 +877,7 @@ export default function DashboardPage() {
     }
   };
 
-  // Run gap analysis for cloud projects
+  // Run gap analysis for cloud projects (asynchronous)
   const runGapAnalysis = async (projectId: string) => {
     if (!token) {
       console.log('No token available for gap analysis');
@@ -873,23 +904,18 @@ export default function DashboardPage() {
       });
 
       if (response.ok) {
-        const data = await response.json();
-        console.log('✅ Dashboard: Gap analysis completed successfully');
+        const jobData = await response.json();
+        console.log('✅ Dashboard: Gap analysis job started successfully:', jobData);
 
-        // Refresh dashboard data to show updated project status
-        console.log('🔍 Dashboard: Refreshing dashboard data after gap analysis...');
-        await fetchDashboardData();
-        console.log('✅ Dashboard: Dashboard data refreshed');
+        // Store the job ID for this project
+        setActiveJobs(prev => new Map(prev).set(projectId, jobData.job_id));
 
-        // Remove project from analyzing set
-        setAnalyzingProjects(prev => {
-          const newSet = new Set(prev);
-          newSet.delete(projectId);
-          return newSet;
-        });
+        // Job will be monitored by useJobStatus hook
+        console.log('🔍 Dashboard: Job queued, monitoring will start automatically');
+
       } else {
         const errorData = await response.json().catch(() => ({ detail: response.statusText }));
-        console.error('❌ Dashboard: Failed to run gap analysis:', errorData.detail);
+        console.error('❌ Dashboard: Failed to start gap analysis:', errorData.detail);
 
         // Remove project from analyzing set
         setAnalyzingProjects(prev => {
@@ -898,8 +924,7 @@ export default function DashboardPage() {
           return newSet;
         });
 
-        // Show error in console, optionally you could show a toast notification
-        console.error('Gap analysis failed:', errorData.detail);
+        alert('Failed to start gap analysis: ' + errorData.detail);
       }
     } catch (error) {
       console.error('Error running gap analysis:', error);
@@ -910,7 +935,78 @@ export default function DashboardPage() {
         newSet.delete(projectId);
         return newSet;
       });
+
+      alert('Error starting gap analysis: ' + (error instanceof Error ? error.message : 'Unknown error'));
     }
+  };
+
+  // Handle job completion
+  const handleJobComplete = async (projectId: string) => {
+    console.log('🎉 Gap analysis completed for project:', projectId);
+
+    // Remove from analyzing projects
+    setAnalyzingProjects(prev => {
+      const newSet = new Set(prev);
+      newSet.delete(projectId);
+      return newSet;
+    });
+
+    // Remove from active jobs
+    setActiveJobs(prev => {
+      const newMap = new Map(prev);
+      newMap.delete(projectId);
+      return newMap;
+    });
+
+    // Remove from job progress
+    setJobProgress(prev => {
+      const newMap = new Map(prev);
+      newMap.delete(projectId);
+      return newMap;
+    });
+
+    // Refresh dashboard data to show updated project status
+    console.log('🔍 Dashboard: Refreshing data after job completion...');
+    await fetchDashboardData();
+    console.log('✅ Dashboard: Data refreshed successfully');
+  };
+
+  // Handle job error
+  const handleJobError = (projectId: string, error: string) => {
+    console.error('❌ Gap analysis failed for project:', projectId, error);
+
+    // Remove from analyzing projects
+    setAnalyzingProjects(prev => {
+      const newSet = new Set(prev);
+      newSet.delete(projectId);
+      return newSet;
+    });
+
+    // Remove from active jobs
+    setActiveJobs(prev => {
+      const newMap = new Map(prev);
+      newMap.delete(projectId);
+      return newMap;
+    });
+
+    // Remove from job progress
+    setJobProgress(prev => {
+      const newMap = new Map(prev);
+      newMap.delete(projectId);
+      return newMap;
+    });
+
+    // Show error to user
+    alert(`Gap analysis failed: ${error}`);
+  };
+
+  // Handle job progress updates
+  const handleJobProgress = (projectId: string, progress: number, message: string) => {
+    setJobProgress(prev => {
+      const newMap = new Map(prev);
+      newMap.set(projectId, { progress, message });
+      return newMap;
+    });
   };
 
   // Fetch dashboard data from API
@@ -992,7 +1088,16 @@ export default function DashboardPage() {
 
   if (loading || dashboardLoading) {
     return (
-      <div className="min-h-screen bg-vista-white texture-paper text-mine-shaft flex items-center justify-center">
+      <div
+        className="min-h-screen bg-vista-white dark:bg-[#0D0D0D] text-mine-shaft dark:text-platinum-gray flex items-center justify-center"
+        style={{
+          backgroundImage: `
+            linear-gradient(rgba(128, 128, 128, 0.25) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(128, 128, 128, 0.25) 1px, transparent 1px)
+          `,
+          backgroundSize: '20px 20px'
+        }}
+      >
         <div className="text-center">
           <div className="w-12 h-12 border-3 border-sunglow/30 border-t-sunglow rounded-full animate-spin mx-auto mb-6"></div>
           <p className="text-mine-shaft/60 font-editorial text-lg">Loading dashboard...</p>
@@ -1010,7 +1115,16 @@ export default function DashboardPage() {
   // Show error state if dashboard data failed to load
   if (dashboardError) {
     return (
-      <div className="min-h-screen bg-vista-white texture-paper text-mine-shaft">
+      <div
+        className="min-h-screen bg-vista-white dark:bg-[#0D0D0D] text-mine-shaft dark:text-platinum-gray"
+        style={{
+          backgroundImage: `
+            linear-gradient(rgba(128, 128, 128, 0.25) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(128, 128, 128, 0.25) 1px, transparent 1px)
+          `,
+          backgroundSize: '20px 20px'
+        }}
+      >
         {/* Header */}
         <div className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6">
           <div className="flex items-center space-x-6">
@@ -1055,9 +1169,18 @@ export default function DashboardPage() {
   const atsByJobRole = dashboardData?.ats_by_job_role || [];
 
   return (
-    <div className="min-h-screen bg-vista-white dark:bg-charcoal-black dark:texture-grid-dark text-mine-shaft dark:text-platinum-gray">
+    <div
+      className="min-h-screen bg-vista-white dark:bg-[#0D0D0D] text-mine-shaft dark:text-platinum-gray"
+      style={{
+        backgroundImage: `
+          linear-gradient(rgba(128, 128, 128, 0.25) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(128, 128, 128, 0.25) 1px, transparent 1px)
+        `,
+        backgroundSize: '20px 20px'
+      }}
+    >
       {/* Header */}
-      <div className="h-20 bg-vista-white/95 dark:bg-charcoal-black/95 backdrop-blur-sm border-b border-gray-100 dark:border-gray-800 flex items-center justify-between px-8 sticky top-0 z-40">
+      <div className="h-20 bg-vista-white/95 dark:bg-[#0D0D0D]/95 backdrop-blur-sm border-b border-gray-100 dark:border-gray-800 flex items-center justify-between px-8 sticky top-0 z-40">
         <div className="flex items-center space-x-8">
           {/* Logo/Brand */}
           <div className="flex items-center space-x-4">
@@ -1079,10 +1202,10 @@ export default function DashboardPage() {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col bg-vista-white dark:bg-charcoal-black">
+      <div className="flex-1 flex flex-col bg-transparent">
 
         {/* Content */}
-        <div className="flex-1 p-8 space-y-8 bg-vista-white dark:bg-charcoal-black">
+        <div className="flex-1 p-8 space-y-8 bg-transparent">
           {/* Welcome Message */}
           <div className="hidden md:block mb-4">
             <span className="text-mine-shaft/60 dark:text-platinum-gray/60 text-lg font-sf">Welcome back,</span>
@@ -1160,6 +1283,7 @@ export default function DashboardPage() {
             onDeleteResume={showDeleteConfirmation}
             analyzingProjects={analyzingProjects}
             deletingProjects={deletingProjects}
+            jobProgress={jobProgress}
           />
 
           {/* ATS Optimization Comparison - Hidden for now */}
@@ -1244,6 +1368,18 @@ export default function DashboardPage() {
         isLoading={deleteConfirmation.projectId ? deletingProjects.has(deleteConfirmation.projectId) : false}
         variant="danger"
       />
+
+      {/* Job Monitors for active gap analysis jobs */}
+      {Array.from(activeJobs.entries()).map(([projectId, jobId]) => (
+        <JobMonitor
+          key={`${projectId}-${jobId}`}
+          projectId={projectId}
+          jobId={jobId}
+          onComplete={() => handleJobComplete(projectId)}
+          onError={(error) => handleJobError(projectId, error)}
+          onProgress={(progress, message) => handleJobProgress(projectId, progress, message)}
+        />
+      ))}
     </div>
   );
 }

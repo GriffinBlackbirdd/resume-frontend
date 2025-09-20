@@ -84,7 +84,14 @@ export default function VerticalStepper({
 
   return (
     <motion.div
-      className={cn("min-h-screen bg-vista-white texture-paper", className)}
+      className={cn("min-h-screen bg-vista-white dark:bg-[#0D0D0D]", className)}
+      style={{
+        backgroundImage: `
+          linear-gradient(rgba(128, 128, 128, 0.25) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(128, 128, 128, 0.25) 1px, transparent 1px)
+        `,
+        backgroundSize: '20px 20px'
+      }}
       {...rest}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -92,17 +99,17 @@ export default function VerticalStepper({
     >
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
         <motion.div
-          className="overflow-hidden rounded-2xl bg-vista-white shadow-xl border border-mine-shaft/10"
+          className="overflow-hidden rounded-2xl bg-vista-white dark:bg-[#1C1C1C] shadow-xl border border-gray-200 dark:border-gray-700"
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.1 }}
         >
           <div className="flex flex-col lg:flex-row min-h-[600px]">
             {/* Vertical Stepper Sidebar */}
-            <div className="w-full lg:w-80 bg-vista-white border-r border-mine-shaft/10 p-6 lg:p-8">
+            <div className="w-full lg:w-80 bg-vista-white dark:bg-[#1C1C1C] border-r border-gray-200 dark:border-gray-700 p-6 lg:p-8">
               <div className="mb-8">
-                <h1 className="text-3xl font-bebas tracking-tight text-mine-shaft">Revamp Your Resume</h1>
-                <p className="mt-2 text-sm text-mine-shaft/60 font-editorial">
+                <h1 className="text-3xl font-bebas tracking-tight text-mine-shaft dark:text-[#E0E0E0]">Revamp Your Resume</h1>
+                <p className="mt-2 text-sm text-mine-shaft/70 dark:text-[#E0E0E0]/70 font-editorial">
                   Complete all steps to optimize your resume
                 </p>
               </div>
@@ -126,10 +133,10 @@ export default function VerticalStepper({
                         className={cn(
                           "group relative w-full rounded-2xl p-3 lg:p-4 text-left transition-all duration-200",
                           status === 'active'
-                            ? "bg-sunglow/10 border-2 border-sunglow shadow-sm"
+                            ? "bg-[#FDBA2F]/10 border-2 border-[#FDBA2F] shadow-sm"
                             : status === 'complete'
-                            ? "bg-emerald-50 border-2 border-emerald-300 shadow-sm"
-                            : "bg-vista-white border-2 border-mine-shaft/10 hover:border-sunglow/30 hover:bg-sunglow/5",
+                            ? "bg-emerald-500/10 border-2 border-emerald-500 shadow-sm"
+                            : "bg-gray-100 dark:bg-[#0D0D0D] border-2 border-gray-300 dark:border-gray-600 hover:border-[#FDBA2F]/30 hover:bg-[#FDBA2F]/5",
                           status === 'inactive' && !validateStep(stepNumber - 1) && "opacity-50 cursor-not-allowed"
                         )}
                       >
@@ -145,28 +152,28 @@ export default function VerticalStepper({
                             {status === 'complete' ? (
                               <CheckCircle className="h-6 w-6 text-emerald-500" />
                             ) : status === 'active' ? (
-                              <div className="h-6 w-6 rounded-full bg-sunglow flex items-center justify-center shadow-sm">
-                                <span className="text-xs font-sf font-bold text-mine-shaft">{stepNumber}</span>
+                              <div className="h-6 w-6 rounded-full bg-[#FDBA2F] flex items-center justify-center shadow-sm">
+                                <span className="text-xs font-sf font-bold text-[#0D0D0D]">{stepNumber}</span>
                               </div>
                             ) : (
-                              <Circle className="h-6 w-6 text-mine-shaft/30" />
+                              <Circle className="h-6 w-6 text-mine-shaft/30 dark:text-[#E0E0E0]/30" />
                             )}
                           </motion.div>
 
                           <div className="flex-1 min-w-0">
                             <motion.h3
                               variants={{
-                                inactive: { color: '#9ca3af' },
-                                active: { color: '#1f2937' },
-                                complete: { color: '#059669' }
+                                inactive: { color: 'currentColor' },
+                                active: { color: 'currentColor' },
+                                complete: { color: '#10b981' }
                               }}
                               className={cn(
                                 "text-sm font-sf font-semibold transition-colors",
                                 status === 'active'
-                                  ? "text-mine-shaft"
+                                  ? "text-mine-shaft dark:text-[#E0E0E0]"
                                   : status === 'complete'
-                                  ? "text-emerald-600"
-                                  : "text-mine-shaft/50"
+                                  ? "text-emerald-500"
+                                  : "text-mine-shaft/50 dark:text-[#E0E0E0]/50"
                               )}
                             >
                               {stepInfo.title}
@@ -175,8 +182,8 @@ export default function VerticalStepper({
                               <p className={cn(
                                 "mt-1 text-xs font-editorial transition-colors",
                                 status === 'active'
-                                  ? "text-mine-shaft/70"
-                                  : "text-mine-shaft/50"
+                                  ? "text-mine-shaft/70 dark:text-[#E0E0E0]/70"
+                                  : "text-mine-shaft/50 dark:text-[#E0E0E0]/50"
                               )}>
                                 {stepInfo.description}
                               </p>
@@ -211,16 +218,16 @@ export default function VerticalStepper({
               </div>
 
               {/* Progress Indicator */}
-              <div className="mt-8 pt-6 border-t border-mine-shaft/10">
+              <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-mine-shaft/60 font-editorial">Progress</span>
-                  <span className="font-sf font-semibold text-mine-shaft">
+                  <span className="text-mine-shaft/70 dark:text-[#E0E0E0]/70 font-editorial">Progress</span>
+                  <span className="font-sf font-semibold text-mine-shaft dark:text-[#E0E0E0]">
                     {Math.round(((currentStep - 1) / totalSteps) * 100)}%
                   </span>
                 </div>
-                <div className="mt-2 h-3 bg-mine-shaft/10 rounded-full overflow-hidden">
+                <div className="mt-2 h-3 bg-gray-200 dark:bg-[#E0E0E0]/10 rounded-full overflow-hidden">
                   <motion.div
-                    className="h-full bg-brand-gradient rounded-full"
+                    className="h-full bg-gradient-to-r from-[#FDBA2F] to-[#8C3BFF] rounded-full"
                     initial={{ width: 0 }}
                     animate={{ width: `${((currentStep - 1) / totalSteps) * 100}%` }}
                     transition={{ duration: 0.5, ease: "easeOut" }}
@@ -230,7 +237,7 @@ export default function VerticalStepper({
             </div>
 
             {/* Content Area */}
-            <div className="flex-1 p-4 lg:p-8">
+            <div className="flex-1 p-4 lg:p-8 bg-vista-white dark:bg-[#0D0D0D]">
               <StepContentWrapper
                 isCompleted={isCompleted}
                 currentStep={currentStep}
@@ -241,7 +248,7 @@ export default function VerticalStepper({
               </StepContentWrapper>
 
               {!isCompleted && (
-                <div className={cn("mt-8 pt-6 border-t border-mine-shaft/10", footerClassName)}>
+                <div className={cn("mt-8 pt-6 border-t border-gray-200 dark:border-gray-700", footerClassName)}>
                   <div className={cn("flex", currentStep !== 1 ? 'justify-between' : 'justify-end')}>
                     {currentStep !== 1 && (
                       <BrandButton

@@ -188,16 +188,16 @@ export default function RevampPage() {
 
 
   return (
-    <div className="min-h-screen bg-vista-white texture-paper">
+    <div className="min-h-screen bg-vista-white dark:bg-[#0D0D0D]">
       <AnalysisLoadingScreen isVisible={isAnalyzing} />
 
       {/* Header */}
-      <div className="bg-vista-white/95 backdrop-blur-sm border-b border-gray-200">
+      <div className="bg-vista-white/95 dark:bg-[#1C1C1C]/95 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700">
         <div className="max-w-6xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             <TextButton
               onClick={() => router.back()}
-              className="flex items-center text-gray-600 hover:text-gray-900 group"
+              className="flex items-center text-mine-shaft dark:text-[#E0E0E0] hover:text-[#FDBA2F] group transition-colors"
             >
               <svg className="w-5 h-5 mr-2 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -205,8 +205,8 @@ export default function RevampPage() {
               Back
             </TextButton>
             <div className="text-center">
-              <h1 className="text-xl font-bold brand-heading text-mine-shaft">Resume Revamp</h1>
-              <p className="text-sm text-gray-600 brand-body">Optimize your resume for your dream job</p>
+              <h1 className="text-xl font-bold brand-heading text-mine-shaft dark:text-[#E0E0E0]">Resume Revamp</h1>
+              <p className="text-sm text-mine-shaft/70 dark:text-[#E0E0E0]/70 brand-body">Optimize your resume for your dream job</p>
             </div>
             <div className="w-20"></div> {/* Spacer for centering */}
           </div>
@@ -242,12 +242,12 @@ export default function RevampPage() {
           <VerticalStep>
             <div className="space-y-6">
               <div className="mb-6">
-                <h2 className="text-2xl font-bebas tracking-tight text-mine-shaft mb-2">Personal Information</h2>
-                <p className="text-mine-shaft/60 font-editorial">Enter your contact details and professional profiles</p>
+                <h2 className="text-2xl font-bebas tracking-tight text-mine-shaft dark:text-[#E0E0E0] mb-2">Personal Information</h2>
+                <p className="text-mine-shaft/70 dark:text-[#E0E0E0]/70 font-editorial">Enter your contact details and professional profiles</p>
               </div>
 
-              <div className="bg-vista-white rounded-2xl p-6 border border-gray-200">
-                <h3 className="text-lg font-sf font-semibold text-mine-shaft mb-6">Contact Information</h3>
+              <div className="bg-vista-white dark:bg-[#1C1C1C] rounded-2xl p-6 border border-gray-200 dark:border-gray-700">
+                <h3 className="text-lg font-sf font-semibold text-mine-shaft dark:text-[#E0E0E0] mb-6">Contact Information</h3>
                 <div className="space-y-6">
                     {/* Location */}
                     <EnhancedInput
@@ -317,10 +317,10 @@ export default function RevampPage() {
                 </div>
               </div>
 
-              <div className="bg-vista-white rounded-2xl p-6 border border-gray-200">
+              <div className="bg-vista-white dark:bg-[#1C1C1C] rounded-2xl p-6 border border-gray-200 dark:border-gray-700">
                 <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-lg font-sf font-semibold text-mine-shaft">Professional Links</h3>
-                  <span className="text-xs text-mine-shaft/60 bg-gray-100 px-3 py-1 rounded-full font-sf">Optional</span>
+                  <h3 className="text-lg font-sf font-semibold text-mine-shaft dark:text-[#E0E0E0]">Professional Links</h3>
+                  <span className="text-xs text-mine-shaft/60 dark:text-[#E0E0E0]/60 bg-gray-100 dark:bg-[#0D0D0D] px-3 py-1 rounded-full font-sf">Optional</span>
                 </div>
                 <div>
                     <EnhancedInput
@@ -346,12 +346,12 @@ export default function RevampPage() {
           <VerticalStep>
             <div className="space-y-6">
               <div className="mb-6">
-                <h2 className="text-2xl font-bebas tracking-tight text-mine-shaft mb-2">Job Details</h2>
-                <p className="text-mine-shaft/60 font-editorial">Tell us about the position you're targeting</p>
+                <h2 className="text-2xl font-bebas tracking-tight text-mine-shaft dark:text-[#E0E0E0] mb-2">Job Details</h2>
+                <p className="text-mine-shaft/70 dark:text-[#E0E0E0]/70 font-editorial">Tell us about the position you're targeting</p>
               </div>
 
-              <div className="bg-vista-white rounded-2xl p-6 border border-gray-200">
-                <h3 className="text-lg font-sf font-semibold text-mine-shaft mb-6">Target Position</h3>
+              <div className="bg-vista-white dark:bg-[#1C1C1C] rounded-2xl p-6 border border-gray-200 dark:border-gray-700">
+                <h3 className="text-lg font-sf font-semibold text-mine-shaft dark:text-[#E0E0E0] mb-6">Target Position</h3>
                 <div className="space-y-6">
                   <EnhancedInput
                     label="Target Job Role"
@@ -382,13 +382,13 @@ export default function RevampPage() {
           <VerticalStep>
             <div className="space-y-6">
               <div className="mb-6">
-                <h2 className="text-2xl font-bebas tracking-tight text-mine-shaft mb-2">Documents</h2>
-                <p className="text-mine-shaft/60 font-editorial">Upload your resume and job description for analysis</p>
+                <h2 className="text-2xl font-bebas tracking-tight text-mine-shaft dark:text-[#E0E0E0] mb-2">Documents</h2>
+                <p className="text-mine-shaft/70 dark:text-[#E0E0E0]/70 font-editorial">Upload your resume and job description for analysis</p>
               </div>
 
               <div className="space-y-6">
-                <div className="bg-vista-white rounded-2xl p-6 border border-gray-200">
-                  <h3 className="text-lg font-sf font-semibold text-mine-shaft mb-6">Current Resume</h3>
+                <div className="bg-vista-white dark:bg-[#1C1C1C] rounded-2xl p-6 border border-gray-200 dark:border-gray-700">
+                  <h3 className="text-lg font-sf font-semibold text-mine-shaft dark:text-[#E0E0E0] mb-6">Current Resume</h3>
                   <div>
                     <EnhancedFileUpload
                       label="Upload your current resume"
@@ -402,10 +402,10 @@ export default function RevampPage() {
                   </div>
                 </div>
 
-                <div className="bg-vista-white rounded-2xl p-6 border border-gray-200">
-                  <h3 className="text-lg font-sf font-semibold text-mine-shaft mb-6">Job Description</h3>
+                <div className="bg-vista-white dark:bg-[#1C1C1C] rounded-2xl p-6 border border-gray-200 dark:border-gray-700">
+                  <h3 className="text-lg font-sf font-semibold text-mine-shaft dark:text-[#E0E0E0] mb-6">Job Description</h3>
                   <div className="space-y-6">
-                    <div className="flex items-center space-x-3 p-4 bg-gray-50 rounded-xl">
+                    <div className="flex items-center space-x-3 p-4 bg-gray-100 dark:bg-[#0D0D0D] rounded-xl">
                       <input
                         type="checkbox"
                         id="use-text-jd"
@@ -418,9 +418,9 @@ export default function RevampPage() {
                             handleInputChange("jobDescriptionText", "");
                           }
                         }}
-                        className="w-4 h-4 text-sunglow bg-vista-white border-gray-300 rounded focus:ring-sunglow"
+                        className="w-4 h-4 text-[#FDBA2F] bg-vista-white dark:bg-[#1C1C1C] border-gray-300 dark:border-gray-600 rounded focus:ring-[#FDBA2F]"
                       />
-                      <label htmlFor="use-text-jd" className="cursor-pointer font-sf text-mine-shaft">
+                      <label htmlFor="use-text-jd" className="cursor-pointer font-sf text-mine-shaft dark:text-[#E0E0E0]">
                         Paste job description as text instead of uploading a file
                       </label>
                     </div>

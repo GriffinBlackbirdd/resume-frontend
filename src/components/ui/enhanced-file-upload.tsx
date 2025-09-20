@@ -101,7 +101,7 @@ export const EnhancedFileUpload: React.FC<EnhancedFileUploadProps> = ({
   return (
     <div className={cn("relative", className)}>
       <div className="mb-3">
-        <label className="block text-sm font-sf font-medium text-mine-shaft">
+        <label className="block text-sm font-sf font-medium text-mine-shaft dark:text-[#E0E0E0]">
           {label}
           {required && <span className="text-red-500 ml-1">*</span>}
         </label>
@@ -111,12 +111,12 @@ export const EnhancedFileUpload: React.FC<EnhancedFileUploadProps> = ({
         className={cn(
           "relative border-2 border-dashed rounded-2xl transition-all duration-300 cursor-pointer group",
           hasFile
-            ? "border-emerald-300 bg-emerald-50/50"
+            ? "border-emerald-300 bg-emerald-50/50 dark:bg-emerald-900/20"
             : isDragActive
             ? "border-sunglow bg-sunglow/10"
             : displayError
-            ? "border-red-300 bg-red-50/50"
-            : "border-gray-300 bg-gray-50/50 hover:border-sunglow/50 hover:bg-sunglow/5"
+            ? "border-red-300 bg-red-50/50 dark:bg-red-900/20"
+            : "border-gray-300 dark:border-gray-600 bg-gray-50/50 dark:bg-gray-800/30 hover:border-sunglow/50 hover:bg-sunglow/5"
         )}
         whileHover={{ scale: hasFile ? 1 : 1.02 }}
         whileTap={{ scale: 0.98 }}
@@ -143,12 +143,12 @@ export const EnhancedFileUpload: React.FC<EnhancedFileUploadProps> = ({
                 className="flex items-center justify-between"
               >
                 <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center">
+                  <div className="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/40 rounded-xl flex items-center justify-center">
                     <File className="w-6 h-6 text-emerald-600" />
                   </div>
                   <div>
-                    <p className="text-sm font-sf font-medium text-mine-shaft">{file.name}</p>
-                    <p className="text-xs text-mine-shaft/60 font-sf">
+                    <p className="text-sm font-sf font-medium text-mine-shaft dark:text-[#E0E0E0]">{file.name}</p>
+                    <p className="text-xs text-mine-shaft/60 dark:text-[#E0E0E0]/60 font-sf">
                       {(file.size / 1024 / 1024).toFixed(2)} MB
                     </p>
                   </div>
@@ -161,7 +161,7 @@ export const EnhancedFileUpload: React.FC<EnhancedFileUploadProps> = ({
                       e.stopPropagation();
                       removeFile();
                     }}
-                    className="w-8 h-8 bg-red-100 hover:bg-red-200 rounded-lg flex items-center justify-center transition-colors"
+                    className="w-8 h-8 bg-red-100 dark:bg-red-900/40 hover:bg-red-200 dark:hover:bg-red-900/60 rounded-lg flex items-center justify-center transition-colors"
                   >
                     <X className="w-4 h-4 text-red-600" />
                   </button>
@@ -181,8 +181,8 @@ export const EnhancedFileUpload: React.FC<EnhancedFileUploadProps> = ({
                     isDragActive
                       ? "bg-sunglow/20"
                       : displayError
-                      ? "bg-red-100"
-                      : "bg-gray-100 group-hover:bg-sunglow/10"
+                      ? "bg-red-100 dark:bg-red-900/40"
+                      : "bg-gray-100 dark:bg-gray-700 group-hover:bg-sunglow/10"
                   )}
                   animate={{
                     scale: isDragActive ? 1.1 : 1,
@@ -195,7 +195,7 @@ export const EnhancedFileUpload: React.FC<EnhancedFileUploadProps> = ({
                       ? "text-sunglow"
                       : displayError
                       ? "text-red-500"
-                      : "text-mine-shaft/60 group-hover:text-sunglow"
+                      : "text-mine-shaft/60 dark:text-[#E0E0E0]/60 group-hover:text-sunglow"
                   )} />
                 </motion.div>
 
@@ -206,14 +206,14 @@ export const EnhancedFileUpload: React.FC<EnhancedFileUploadProps> = ({
                       ? "text-sunglow"
                       : displayError
                       ? "text-red-600"
-                      : "text-mine-shaft"
+                      : "text-mine-shaft dark:text-[#E0E0E0]"
                   )}>
                     {isDragActive
                       ? "Drop your file here"
                       : `Click to upload or drag and drop`
                     }
                   </p>
-                  <p className="text-xs text-mine-shaft/60 font-sf">
+                  <p className="text-xs text-mine-shaft/60 dark:text-[#E0E0E0]/60 font-sf">
                     {accept.toUpperCase().replace(/\./g, '')} files up to {maxSize}MB
                   </p>
                 </div>
@@ -259,7 +259,7 @@ export const EnhancedFileUpload: React.FC<EnhancedFileUploadProps> = ({
               {displayError && <AlertCircle className="w-4 h-4 text-red-500 flex-shrink-0" />}
               <p className={cn(
                 "text-sm font-sf",
-                displayError ? "text-red-500" : "text-mine-shaft/60"
+                displayError ? "text-red-500" : "text-mine-shaft/60 dark:text-[#E0E0E0]/60"
               )}>
                 {displayError || helperText}
               </p>

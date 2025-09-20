@@ -29,12 +29,12 @@ export const EnhancedInput = React.forwardRef<HTMLInputElement, EnhancedInputPro
               <div className={cn(
                 "transition-colors duration-200",
                 isFocused
-                  ? "text-sunglow"
+                  ? "text-[#FDBA2F]"
                   : error
                   ? "text-red-500"
                   : success
                   ? "text-emerald-500"
-                  : "text-mine-shaft/40"
+                  : "text-mine-shaft/40 dark:text-[#E0E0E0]/40"
               )}>
                 {icon}
               </div>
@@ -55,13 +55,13 @@ export const EnhancedInput = React.forwardRef<HTMLInputElement, EnhancedInputPro
               props.onBlur?.(e);
             }}
             className={cn(
-              "w-full px-4 py-3 bg-vista-white border-2 rounded-2xl transition-all duration-300 font-sf text-mine-shaft placeholder-mine-shaft/40 focus:outline-none",
+              "w-full px-4 py-3 bg-vista-white dark:bg-[#1C1C1C] border-2 rounded-2xl transition-all duration-300 font-sf text-mine-shaft dark:text-[#E0E0E0] placeholder-mine-shaft/40 dark:placeholder-[#E0E0E0]/40 focus:outline-none",
               icon ? "pl-12" : "pl-4",
               error
                 ? "border-red-300 focus:border-red-500"
                 : success
                 ? "border-emerald-300 focus:border-emerald-500"
-                : "border-gray-200 focus:border-sunglow",
+                : "border-gray-300 dark:border-gray-600 focus:border-[#FDBA2F]",
               className
             )}
           />
@@ -96,7 +96,7 @@ export const EnhancedInput = React.forwardRef<HTMLInputElement, EnhancedInputPro
             >
               <p className={cn(
                 "text-sm font-sf",
-                error ? "text-red-500" : "text-mine-shaft/60"
+                error ? "text-red-500" : "text-mine-shaft/60 dark:text-[#E0E0E0]/60"
               )}>
                 {error || helperText}
               </p>
@@ -143,12 +143,12 @@ export const EnhancedTextarea = React.forwardRef<HTMLTextAreaElement, EnhancedTe
               props.onBlur?.(e);
             }}
             className={cn(
-              "w-full px-4 py-3 bg-vista-white border-2 rounded-2xl transition-all duration-300 font-sf text-mine-shaft placeholder-mine-shaft/40 focus:outline-none resize-vertical min-h-[120px]",
+              "w-full px-4 py-3 bg-vista-white dark:bg-[#1C1C1C] border-2 rounded-2xl transition-all duration-300 font-sf text-mine-shaft dark:text-[#E0E0E0] placeholder-mine-shaft/40 dark:placeholder-[#E0E0E0]/40 focus:outline-none resize-vertical min-h-[120px]",
               error
                 ? "border-red-300 focus:border-red-500"
                 : success
                 ? "border-emerald-300 focus:border-emerald-500"
-                : "border-gray-200 focus:border-sunglow",
+                : "border-gray-300 dark:border-gray-600 focus:border-[#FDBA2F]",
               className
             )}
           />
@@ -183,7 +183,7 @@ export const EnhancedTextarea = React.forwardRef<HTMLTextAreaElement, EnhancedTe
             >
               <p className={cn(
                 "text-sm font-sf",
-                error ? "text-red-500" : "text-mine-shaft/60"
+                error ? "text-red-500" : "text-mine-shaft/60 dark:text-[#E0E0E0]/60"
               )}>
                 {error || helperText}
               </p>

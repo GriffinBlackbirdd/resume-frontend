@@ -4,21 +4,21 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const loadingMessages = [
-  "🔍 Analyzing your resume in detail...",
-  "📊 Comparing your skills with job requirements...",
-  "🎯 Identifying skill gaps and opportunities...",
-  "📚 Researching the latest industry trends...",
-  "💡 Generating personalized upskilling recommendations...",
-  "🚀 Creating trending project suggestions...",
-  "📈 Building your career advancement roadmap...",
-  "🎪 Studying your background and experience...",
-  "🔬 Deep-diving into job market insights...",
-  "⚡ Crafting your personalized action plan...",
-  "📖 Reviewing industry best practices...",
-  "🎨 Designing your skill development journey...",
-  "🏆 Preparing success strategies for you...",
-  "💼 Analyzing market positioning opportunities...",
-  "🌟 Creating your competitive advantage plan..."
+  "🎨 Crafting your personalized resume...",
+  "📝 Optimizing content for ATS systems...",
+  "🎯 Tailoring skills to match job requirements...",
+  "⚡ Enhancing your professional experience...",
+  "🚀 Building your career narrative...",
+  "📊 Analyzing industry keywords...",
+  "💼 Structuring your achievements...",
+  "🌟 Highlighting your unique value proposition...",
+  "🔧 Fine-tuning resume formatting...",
+  "📈 Maximizing your impact statements...",
+  "🎪 Polishing your professional summary...",
+  "💡 Optimizing for hiring managers...",
+  "🏆 Showcasing your competitive advantages...",
+  "📖 Refining your work experience...",
+  "✨ Adding the finishing touches..."
 ];
 
 const AnalysisLoadingScreen = ({ isVisible }: { isVisible: boolean }) => {
@@ -50,36 +50,50 @@ const AnalysisLoadingScreen = ({ isVisible }: { isVisible: boolean }) => {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 flex items-center justify-center">
+    <div
+      className="fixed inset-0 bg-vista-white/95 dark:bg-[#0D0D0D]/95 backdrop-blur-sm z-50 flex items-center justify-center"
+      style={{
+        backgroundImage: `
+          linear-gradient(rgba(128, 128, 128, 0.25) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(128, 128, 128, 0.25) 1px, transparent 1px)
+        `,
+        backgroundSize: '20px 20px'
+      }}
+    >
       <div className="max-w-md w-full mx-4">
-        <div className="bg-zinc-900 rounded-2xl p-8 border border-zinc-800">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="bg-vista-white dark:bg-[#1C1C1C] rounded-2xl p-8 border border-gray-200 dark:border-gray-700 shadow-xl"
+        >
           {/* Animated Icon */}
           <div className="flex justify-center mb-6">
             <motion.div
-              animate={{ 
+              animate={{
                 scale: [1, 1.1, 1],
                 rotate: [0, 180, 360]
               }}
-              transition={{ 
-                duration: 2,
+              transition={{
+                duration: 3,
                 repeat: Infinity,
                 ease: "easeInOut"
               }}
-              className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center"
+              className="w-16 h-16 bg-gradient-to-r from-[#FDBA2F] to-[#8C3BFF] rounded-full flex items-center justify-center shadow-lg"
             >
               <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
             </motion.div>
           </div>
 
           {/* Title */}
           <div className="text-center mb-6">
-            <h2 className="text-2xl font-bold text-white mb-2">
-              Analyzing Your Profile
+            <h2 className="text-2xl font-bebas tracking-tight text-mine-shaft dark:text-[#E0E0E0] mb-2">
+              Crafting Your Resume
             </h2>
-            <p className="text-zinc-400 text-sm">
-              Our AI agents are working hard to create your personalized career roadmap
+            <p className="text-mine-shaft/60 dark:text-[#E0E0E0]/60 text-sm font-editorial">
+              Our AI is optimizing your resume for maximum impact
             </p>
           </div>
 
@@ -92,7 +106,7 @@ const AnalysisLoadingScreen = ({ isVisible }: { isVisible: boolean }) => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.3 }}
-                className="text-blue-400 text-sm text-center font-medium"
+                className="text-[#FDBA2F] text-sm text-center font-sf font-medium"
               >
                 {loadingMessages[currentMessageIndex]}
               </motion.p>
@@ -101,13 +115,13 @@ const AnalysisLoadingScreen = ({ isVisible }: { isVisible: boolean }) => {
 
           {/* Progress Bar */}
           <div className="space-y-3">
-            <div className="flex justify-between text-xs text-zinc-500">
+            <div className="flex justify-between text-xs text-mine-shaft/60 dark:text-[#E0E0E0]/60 font-sf">
               <span>Progress</span>
               <span>{Math.round(progress)}%</span>
             </div>
-            <div className="h-2 bg-zinc-800 rounded-full overflow-hidden">
+            <div className="h-3 bg-gray-200 dark:bg-[#E0E0E0]/10 rounded-full overflow-hidden">
               <motion.div
-                className="h-full bg-gradient-to-r from-blue-500 to-purple-600"
+                className="h-full bg-gradient-to-r from-[#FDBA2F] to-[#8C3BFF] rounded-full"
                 initial={{ width: 0 }}
                 animate={{ width: `${progress}%` }}
                 transition={{ duration: 0.5, ease: "easeInOut" }}
@@ -116,19 +130,19 @@ const AnalysisLoadingScreen = ({ isVisible }: { isVisible: boolean }) => {
           </div>
 
           {/* Animated Dots */}
-          <div className="flex justify-center space-x-1 mt-6">
+          <div className="flex justify-center space-x-2 mt-6">
             {[0, 1, 2].map((index) => (
               <motion.div
                 key={index}
-                className="w-2 h-2 bg-blue-500 rounded-full"
-                animate={{ 
-                  scale: [1, 1.2, 1],
+                className="w-2 h-2 bg-[#FDBA2F] rounded-full"
+                animate={{
+                  scale: [1, 1.3, 1],
                   opacity: [0.5, 1, 0.5]
                 }}
-                transition={{ 
+                transition={{
                   duration: 1.5,
                   repeat: Infinity,
-                  delay: index * 0.2
+                  delay: index * 0.3
                 }}
               />
             ))}
@@ -136,11 +150,11 @@ const AnalysisLoadingScreen = ({ isVisible }: { isVisible: boolean }) => {
 
           {/* Footer */}
           <div className="text-center mt-6">
-            <p className="text-xs text-zinc-500">
+            <p className="text-xs text-mine-shaft/50 dark:text-[#E0E0E0]/50 font-sf">
               This usually takes 2-5 minutes. Please don't close this window.
             </p>
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );

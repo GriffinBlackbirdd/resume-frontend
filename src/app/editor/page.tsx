@@ -1131,7 +1131,7 @@ cv:
 
       return () => clearTimeout(timer);
     }
-  }, [isLoadingProject, yamlContent, autoRenderEnabled, renderResume]);
+  }, [isLoadingProject, yamlContent, autoRenderEnabled]);
 
   useEffect(() => {
     // Auto-render when YAML content changes (debounced)
